@@ -1,0 +1,205 @@
+---
+title: "LET CFA Account for Pos and Neg Models"
+author: "Levi Brackman"
+date: "25 July 2015"
+output: html_document
+---
+---
+1.	In most ways my life is close to my ideal. 
+2.	The conditions of my life are excellent. 
+3.	I am satisfied with my life. 
+4.	So far I have gotten the important things I want in life. 
+5.	If I could live my life over, I would change almost nothing. 
+---
+
+```{r}
+library(lavaan)
+library(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+library(car)
+library(ggplot2)
+library(GGally)
+```
+#loadthedata
+```{r}
+data <- read.csv("~/Psychometric_study_data/allsurveysT1.csv")
+data<-tbl_df(data)
+LET<-select(data, LET_1,	LET_2,	LET_3,	LET_4,	LET_5,	LET_6)
+LET$LET_1  <-  6- LET$LET_1
+LET$LET_3  <-  6- LET$LET_3
+LET$LET_5  <-  6- LET$LET_5
+
+LET<-tbl_df(LET)
+LET
+```
+
+#Create the Models#
+As only one factor
+```{r}
+one.factor = 'LET =~ LET_1 +  LET_2  + LET_3  + LET_4 + LET_5 + LET_6
+' 
+```
+Two Factor, Positive and Nagative Model
+```{r}
+first.model= ' Negative =~ LET_1 +  LET_3  + LET_5   
+             Positive =~   LET_2 + LET_4 + LET_6
+' 
+```
+Second order models
+```{r}
+
+second.model = ' Negative =~ LET_1 +  LET_3  + LET_5   
+              Positive =~   LET_2 + LET_4 + LET_6
+              LET =~ NA*Positive + Negative
+'
+
+alternative.model  = 'Negative =~ LET_1 +  LET_3  + LET_5   
+              Positive =~ LET_2 + LET_4 + LET_6
+              LET =~ NA*Positive + Negative
+              LET~~1*LET
+'
+
+```
+Bifactor Models (similar to Models 6, 7 & 8 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+
+bifactor.model = 'Negative =~ LET_1 +  LET_3  + LET_5   
+              Positive =~   LET_2 + LET_4 + LET_6
+              Life Satisfaction =~ LET_1 +  LET_2  + LET_3 + LET_4 + LET_5 + LET_6
+'
+```
+Bifactor only with Negative questions protioned out (like model 7 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+
+bifactor.negative.model = 'Negative =~ LET_1 +  LET_3  + LET_5   
+                        LET =~ LET_1 +  LET_2  + LET_3 + LET_4 + LET_5 + LET_6
+'
+```
+Bifactor only with Positive questions protioned out (like model 8 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+bifactor.positive.model = 'Positive =~   LET_2 + LET_4 + LET_6
+                        LET =~ LET_1 +  LET_2  + LET_3 + LET_4 + LET_5 + LET_6
+'
+```
+Alternative method of writing bifactor model
+```{r}
+bifactor.model1 = 'LET =~ LET_1 +  LET_2  + LET_3 + LET_4 + LET_5 + LET_6
+                Negative =~ LET_1 +  LET_3  + LET_5   
+                Positive =~   LET_2 + LET_4 + LET_6
+                LET ~~ 0*Negative
+                LET ~~ 0*Positive
+                Negative~~0*Positive
+'
+```
+Running the models
+```{r}
+one.fit=cfa(one.factor, data=LET, std.lv = T)
+two.fit=cfa(first.model, data=LET, std.lv = T)
+second.fit=cfa(second.model, data=LET, std.lv = T)
+alt.fit=cfa(alternative.model, data=LET, std.lv = T)
+bifactor.fit=cfa(bifactor.model, data=LET, orthogonal = TRUE, std.lv = T)
+bifactor.fit1=cfa(bifactor.model1, data=LET, orthogonal = TRUE, std.lv = T)
+bifactor.negative.fit=cfa(bifactor.negative.model, data=LET, orthogonal = TRUE, std.lv = T)
+bifactor.positive.fit=cfa(bifactor.positive.model, data=LET, orthogonal = TRUE, std.lv = T)
+
+```
+Create pictures of models
+```{r}
+#One Factor
+semPaths(one.fit, whatLabels = "std", layout = "tree", title=T)
+#Two Factors Positive and Nagative
+semPaths(two.fit, whatLabels = "std", layout = "tree")
+#Second order factors
+semPaths(second.fit, whatLabels = "std", layout = "tree")
+semPaths(alt.fit, whatLabels = "std", layout = "tree")
+#Bifactor Models (similar to Models 6, 7 & 8 in Marsh, Scalas & Nagengast, 2010)
+semPaths(bifactor.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor.fit1, whatLabels = "std", layout = "tree")
+#Bifactor only with Negative questions protioned out (like model 7 in Marsh, Scalas & Nagengast, 2010)
+semPaths(bifactor.negative.fit, whatLabels = "std", layout = "tree")
+#Bifactor only with Negative questions protioned out (like model 7 in Marsh, Scalas & Nagengast, 2010)
+semPaths(bifactor.positive.fit, whatLabels = "std", layout = "tree")
+```
+Summaries
+```{r}
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+summary(two.fit, standardized = TRUE, rsquare=TRUE)
+summary(second.fit, standardized = TRUE, rsquare=TRUE)
+summary(alt.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.fit1, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.negative.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.positive.fit, standardized = TRUE, rsquare=TRUE)
+```
+Residual correlations
+```{r}
+correl.1 = residuals(one.fit, type="cor")
+correl.1
+#View(correl.1$cor)
+correl = residuals(two.fit, type="cor")
+correl
+#View(correl$cor)
+correl1 = residuals(second.fit, type="cor")
+correl1
+#View(correl1$cor)
+correl2 = residuals(alt.fit, type="cor")
+correl2
+#View(correl2$cor)
+correl3 = residuals(bifactor.fit, type="cor")
+correl3
+#View(correl3$cor)
+correl4 = residuals(bifactor.fit1, type="cor")
+correl4
+#View(correl4$cor)
+correl5 = residuals(bifactor.negative.fit, type="cor")
+correl5
+#View(correl5$cor)
+correl6 = residuals(bifactor.positive.fit, type="cor")
+correl6
+#View(correl6$cor)
+```
+zscore correlation anything over 1.96 is going to be statistically significant at the .05 level 
+```{r}
+zcorrels10 = residuals(one.fit, type = "standardized")
+zcorrels10$cov
+zcorrels = residuals(two.fit, type = "standardized")
+zcorrels$cov
+#zcorrels1 = residuals(second.fit, type = "standardized")
+#zcorrels1$cov
+#zcorrels2 = residuals(alt.fit, type = "standardized")
+#zcorrels2$cov
+#zcorrels3 = residuals(bifactor.fit, type = "standardized")
+#zcorrels3$cov
+#zcorrels4 = residuals(bifactor1.fit, type = "standardized")
+#zcorrels4$cov
+zcorrels5 = residuals(bifactor.negative.fit, type = "standardized")
+zcorrels5$cov
+zcorrels6 = residuals(bifactor.positive.fit, type = "standardized")
+zcorrels6$cov
+```
+Modification indicies
+```{r}
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(two.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(second.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(alt.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(bifactor.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(bifactor.fit1, sort. = TRUE, minimum.value = 3.84)
+modindices(bifactor.negative.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(bifactor.positive.fit, sort. = TRUE, minimum.value = 3.84)
+```
+Fit Measures
+```{r}
+fitmeasures(one.fit)
+fitmeasures(two.fit)
+fitmeasures(second.fit)
+fitmeasures(alt.fit)
+fitmeasures(bifactor.fit)
+fitmeasures(bifactor.fit1)
+fitmeasures(bifactor.negative.fit)
+fitmeasures(bifactor.positive.fit)
+```
+
+

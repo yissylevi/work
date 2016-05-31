@@ -1,0 +1,121 @@
+---
+title: "B5Fn_CFA"
+author: "Levi Brackman"
+date: "22 July 2015"
+output: html_document
+---
+
+I see myself as someone who:
+
+1.	Is sometimes rude to others. (Agreeableness)
+2.	Has a forgiving nature.(Agreeableness)
+3.	Is considerate and kind to almost everyone.(Agreeableness)
+4.	Does a thorough job.(Conscientiousness)
+5.	Tends to be lazy. (reverse-scored) (Conscientiousness)
+6.	Does things efficiently.(Conscientiousness)
+7.	Is talkative.(Extraversion)
+8.	Is outgoing, sociable.(Extraversion)
+9.	Is reserved. (reverse-scored) (Extraversion)
+10.	Worries a lot. (Neuroticism)
+11.	Gets nervous easily. (Neuroticism)
+12.	Is relaxed, handles stress well. (reverse-scored) (Neuroticism)
+13.	Is original, comes up with new ideas. (Openness to Experience)
+14.	Values artistic, aesthetic experiences. (Openness to Experience)
+15.	Has an active imagination, is original, comes up with new ideas. (Openness to Experience)
+
+```{r}
+library(lavaan)
+library(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+library(car)
+library(ggplot2)
+library(GGally)
+```
+#loadthedata
+```{r}
+data <- read.csv("~/Psychometric_study_data/allsurveysYT1.csv")
+B5<-select(data, B5F_1  , B5F_2 , B5F_3, B5F_4 ,  B5F_5 , B5F_6 ,B5F_7 , B5F_8 , B5F_9 , B5F_10 , B5F_11 , B5F_12 , B5F_13 , B5F_14 , B5F_15)
+B5$B5F_12  <-  9- B5$B5F_12
+B5$B5F_9  <-  9- B5$B5F_9
+B5$B5F_5  <-  9- B5$B5F_5
+B5<-tbl_df(B5)
+B5
+View(data)
+```
+#create plots
+```{r}
+#ggpairs(B5, columns = 1:15, title="Big 5 Marsh" )
+
+```
+#create the models
+```{r}
+five.model= ' agreeableness  =~ B5F_1 +  B5F_2  + B5F_3    
+              conscientiousness =~  B5F_4 + B5F_5 + B5F_6          
+              extraversion =~ B5F_7 + B5F_8 + B5F_9       
+              neuroticism =~ B5F_10 + B5F_11 + B5F_12      
+              openness  =~  B5F_13 +  B5F_14 + B5F_15' 
+
+one.model= 'Big5 =~ B5F_1 +  B5F_2  + B5F_3 + B5F_4 + B5F_5 + B5F_6 + B5F_7 + B5F_8 + B5F_9 + B5F_10 + B5F_11 + B5F_12 + B5F_13 +  B5F_14 + B5F_15'
+```
+#run the models
+```{r}
+five.fit=cfa(five.model, data=B5, missing = "fiml")
+one.fit=cfa(one.model, data=B5, missing = "fiml")
+```
+
+#create pictures
+```{r}
+semPaths(five.fit, whatLabels = "std", layout = "tree")
+semPaths(one.fit, whatLabels = "std", layout = "tree")
+```
+#summaries
+```{r}
+summary(five.fit, standardized = TRUE, rsquare=TRUE)
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+```
+#Residual correlations
+```{r}
+correl = residuals(five.fit, type="cor")
+correl
+View(correl$cor)
+correl1 = residuals(one.fit, type="cor")
+correl1
+View(correl1$cor)
+```
+#zscore correlation anything over 1.96 is going to be statistically significant at the .05 level 
+```{r}
+zcorrels = residuals(five.fit, type = "standardized")
+View(zcorrels$cov)
+zcorrels1 = residuals(one.fit, type = "standardized")
+View(zcorrels1$cov)
+```
+#Modification indicies
+```{r}
+modindices(five.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+```
+#Fit Measures
+```{r}
+fitmeasures(five.fit)
+fitmeasures(one.fit)
+```
+#Create dataset for Target rotation
+```{r}
+B5FTR<-select(data, B5F_1  , B5F_2 , B5F_3, B5F_4 ,  B5F_5 , B5F_6 ,B5F_7 , B5F_8 , B5F_9 , B5F_10 , B5F_11 , B5F_12 , B5F_13 , B5F_14 , B5F_15)
+colnames(B5FTR) <- c("1","2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15")
+#Target Roration
+```{r}
+Targ_key <- make.keys(15,list(f1=1:3,f2=4:6, f3=7:9, f4=10:12, f5=13:15))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+B5FTR_cor<-corFiml(B5FTR)
+out_targetQ <- fa(B5FTR_cor,5,rotate="TargetQ", n.obs = 670, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA","uniquenesses")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```

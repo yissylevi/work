@@ -1,0 +1,9 @@
+name: regression_to_mean_app
+account: levi
+server: shinyapps.io
+appId: 89036
+bundleId: 396584
+url: https://levi.shinyapps.io/regression_to_mean_app/
+when: 1458132721.11702
+asMultiple: FALSE
+asStatic: FALSE

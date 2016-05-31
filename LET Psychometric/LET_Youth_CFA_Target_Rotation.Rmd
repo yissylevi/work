@@ -1,0 +1,459 @@
+---
+title: "LET Youth CFA"
+author: "Levi Brackman"
+date: "May 2 2016"
+output: html_document
+---
+1.There is not enough purpose in my life. 
+2. To me, the things I do are all worthwhile. 
+3. Most of what I do seems trivial and unimportant to me. 
+4. I value my activities a lot. 
+5. I don't care very much about the things I do.
+6. I have lots of reasons for living. 
+
+---
+
+```{r}
+library(lubripack)
+lubripack("knitr", "dplyr", "lavaan", "GPArotation", "psych", "car", "GGally", "semPlot", "ggplot2", "xtable", "reshape")
+```
+#loadthedata
+```{r}
+data <- read.csv("/Users/levibrackman/Documents/stats_march_2016/allsurveysYT1_Jan2016.csv")
+LET<-select(data, LET_1,	LET_2,	LET_3,	LET_4,	LET_5,	LET_6)
+LET$LET_1  <-  6- LET$LET_1
+LET$LET_3  <-  6- LET$LET_3
+LET$LET_5  <-  6- LET$LET_5
+
+```
+EFA Let
+```{r}
+LET=na.omit(LET)#removes missing data
+#LET<- LET[complete.cases(LET[,]),]
+```
+##EFA
+##number of factors
+##parallal analysis and scree plot
+```{r}
+parallel<-fa.parallel(LET, fm="ml",fa="pc")
+```
+#three factors are greater than one Eigenvalue scree plot says there are three factors. 
+#Paralel analysis suggests 6 factors
+#eigenvalues (kaiser)
+```{r}
+parallel$fa.values
+#over 1=1, over .7=2
+```
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+```{r}
+princomp(na.omit(LET), cor = TRUE)
+parallel2<-princomp(na.omit(LET), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+```
+#simple structure
+```{r}
+onefactor<-fa(LET, nfactors=1, rotate="oblimin", fm="ml")
+onefactor
+twofactor<-fa(LET, nfactors=2, rotate="oblimin", fm="ml")
+twofactor
+```
+Tables EFA
+```{r}
+fa2latex(fa(LET,1, rotate="oblimin", fm="ml"),heading="Table 1. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation of MLQ")
+fa2latex(fa(LET,2, rotate="oblimin", fm="ml"),heading="Table 2. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation  of LET")
+```
+LET_6 "I have lots of reasons for living." loads on both factors so droping it
+```{r}
+twofactorWO6<-fa(LET[,c(-6)], nfactors=2, rotate="oblimin", fm="ml")
+twofactorWO6
+onenegfactor<-fa(LET[,c(-2, -4,-6)], nfactors=1, rotate="oblimin", fm="ml")
+onenegfactor
+oneposfactor<-fa(LET[,c(-1, -3,-5)], nfactors=1, rotate="oblimin", fm="ml")
+oneposfactor
+fa2latex(fa(LET[,c(-6)], nfactors=2, rotate="oblimin", fm="ml"),heading="Table 3. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation of MLQ")
+fa2latex(fa(LET[,c(-2, -4,-6)], rotate="oblimin", fm="ml"),heading="Table 4. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation  of LET")
+fa2latex(fa(LET[,c(-1, -3,-5)], rotate="oblimin", fm="ml"),heading="Table 5. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation  of LET")
+```
+Tables fo fit measures for EFA
+```{r}
+options(scipen=999)
+#Compute CFI
+CFIonefactor =  1 -((onefactor$STATISTIC - onefactor$dof)/(onefactor$null.chisq-onefactor$null.dof))
+CFItwofactor =  1 -((twofactor$STATISTIC - twofactor$dof)/(twofactor$null.chisq-twofactor$null.dof))
+CFItwofactorWO6 = 1-((twofactorWO6$STATISTIC - twofactorWO6$dof)/(twofactorWO6$null.chisq-twofactorWO6$null.dof))
+CFIonenegfactor = 1-((onenegfactor$STATISTIC - onenegfactor$dof)/(onenegfactor$null.chisq-onenegfactor$null.dof))
+CFIoneposfactor = 1-((oneposfactor$STATISTIC - oneposfactor$dof)/(oneposfactor$null.chisq-oneposfactor$null.dof))
+require(reshape)
+
+#Chisq & DF & P-Value & CFI & TLI & RMSEA & RMSEA ci upper & RMSEA ci lower & SRMR
+
+GoodnessfitMeasures<-function(model, CFI){
+ GoodnessfitMeasures1 = c(model$STATISTIC, model$dof, model$PVAL,  CFI, model$TLI, model$RMSEA, model$rms)
+ GoodnessfitMeasures1
+}
+
+Model = c("Chisq", "DF", "P-Value", "CFI", "TLI", "RMSEA", "RMSEA ci lower", "RMSEA ci upper", "Confidence", "SRMR")
+
+
+GoodnessfitMeasuresOneFactor<- GoodnessfitMeasures(onefactor, CFIonefactor)
+GoodnessfitMeasuresTwoFactor<- GoodnessfitMeasures(twofactor, CFItwofactor)
+GoodnessfitMeasurestwofactorWO6<- GoodnessfitMeasures(twofactorWO6, CFItwofactorWO6)
+#GoodnessfitMeasuresonenegfactor<- GoodnessfitMeasures(onenegfactor, CFIonenegfactor)
+#GoodnessfitMeasuresoneposfactor<- GoodnessfitMeasures(oneposfactor, CFIoneposfactor)
+
+round_df <- function(df, digits) {
+nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
+ 
+df[,nums] <- round(df[,nums], digits = digits)
+ 
+(df)
+}
+
+#Function to turn from multiple colunms to one colunm
+turntodataframe<- function(GoodnessfitMeasures, name){
+GoodnessfitMeasures = as.data.frame(GoodnessfitMeasures)
+GoodnessfitMeasures = round_df(GoodnessfitMeasures, 2)
+GoodnessfitMeasures = melt(GoodnessfitMeasures, id.vars= "GoodnessfitMeasures")
+colnames(GoodnessfitMeasures)[1] <- name
+#GoodnessfitMeasures = GoodnessfitMeasures[-9,]
+GoodnessfitMeasures
+}
+
+GoodnessfitMeasuresOneFactor<-turntodataframe(GoodnessfitMeasuresOneFactor, "One Factor Model")
+GoodnessfitMeasuresTwoFactor<-turntodataframe(GoodnessfitMeasuresTwoFactor, "Two Factor Model")
+GoodnessfitMeasurestwofactorWO6<-turntodataframe(GoodnessfitMeasurestwofactorWO6, "Two Factor No 6")
+#GoodnessfitMeasuresoneposfactor<-turntodataframe(GoodnessfitMeasuresoneposfactor)
+#GoodnessfitMeasuresonenegfactor<-turntodataframe(GoodnessfitMeasuresonenegfactor)
+Model = as.data.frame(Model)
+
+all = bind_cols(Model, GoodnessfitMeasuresOneFactor, GoodnessfitMeasuresTwoFactor, GoodnessfitMeasurestwofactorWO6)
+all<-t(all)
+all<-as.data.frame(all)
+
+all = all[,-9]
+xtable(all)
+
+
+```
+#Finding Alpha
+```{r}
+#alpha(LET, na.rm = TRUE, check.keys=TRUE)
+
+```
+#Create the Models, As only one factor
+```{r}
+one.factor = 'LET =~ LET_1 +  LET_2  +LET_3  + LET_4 + LET_5 + LET_6
+' 
+```
+Two Factor, Positive and Nagative Model
+```{r}
+first.model= ' Negative =~ LET_1 +  LET_3  + LET_5   
+             Positive =~   LET_2 + LET_4 + LET_6
+' 
+
+firstwo6.model= ' Negative =~ LET_1 +  LET_3  + LET_5   
+             Positive =~   LET_2 + LET_4
+              LET_2~~0*LET_2
+' 
+```
+Second order models
+```{r}
+
+second.model = ' Negative =~ LET_1 +  LET_3  + LET_5   
+              Positive =~   LET_2 + LET_4 + LET_6
+              LET =~ NA*Positive + Negative
+'
+
+alternative.model  = 'Negative =~ LET_1 +  LET_3  + LET_5   
+              Positive =~ LET_2 + LET_4 + LET_6
+              LET =~ NA*Positive + Negative
+              LET~~1*LET
+'
+
+```
+Bifactor Models (similar to Models 6, 7 & 8 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+
+bifactor.model = 'Negative =~ LET_1 +  LET_3  + LET_5   
+              Positive =~   LET_2 + LET_4 + LET_6
+              Life Satisfaction =~ LET_1 +  LET_2  + LET_3 + LET_4 + LET_5 + LET_6
+'
+```
+Bifactor only with Negative questions protioned out (like model 7 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+
+bifactor.negative.model = 'Negative =~ LET_1 +  LET_3  + LET_5   
+                        LET =~ LET_1 +  LET_2  + LET_3 + LET_4 + LET_5 + LET_6
+'
+```
+Bifactor only with Positive questions protioned out (like model 8 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+bifactor.positive.model = 'Positive =~   LET_2 + LET_4 + LET_6
+                        LET =~ LET_1 +  LET_2  + LET_3 + LET_4 + LET_5 + LET_6
+'
+```
+Alternative method of writing bifactor model
+```{r}
+bifactor.model1 = 'LET =~ LET_1 +  LET_2  + LET_3 + LET_4 + LET_5 + LET_6
+                Negative =~ LET_1 +  LET_3  + LET_5   
+                Positive =~   LET_2 + LET_4 + LET_6
+                LET ~~ 0*Negative
+                LET ~~ 0*Positive
+                Negative~~0*Positive
+'
+```
+Running the models
+```{r}
+one.fit=cfa(one.factor, data=LET, missing = "fiml", std.lv = T)
+two.fit=cfa(first.model, data=LET, missing = "fiml", std.lv = T)
+two.fitwo6=cfa(firstwo6.model, data=LET, missing = "fiml", std.lv = T)
+inspect(two.fitwo6,"theta")
+inspect(two.fitwo6,"cov.lv")
+eigen(inspect(two.fitwo6, "cov.lv"))$values
+lav_object_post_check(two.fitwo6)
+two.fit=cfa(first.model, data=LET, missing = "fiml", std.lv = T)
+second.fit=cfa(second.model, data=LET, missing = "fiml", std.lv = T)
+alt.fit=cfa(alternative.model, data=LET, missing = "fiml", std.lv = T)
+bifactor.fit=cfa(bifactor.model, data=LET, missing = "fiml", orthogonal = TRUE, std.lv = T)
+bifactor.fit1=cfa(bifactor.model1, data=LET, missing = "fiml", orthogonal = TRUE, std.lv = T)
+bifactor.negative.fit=cfa(bifactor.negative.model, missing = "fiml", data=LET, orthogonal = TRUE, std.lv = T)
+bifactor.positive.fit=cfa(bifactor.positive.model, missing = "fiml", data=LET, orthogonal = TRUE, std.lv = T)
+
+```
+Create pictures of models
+```{r}
+#One Factor
+semPaths(one.fit, whatLabels = "std", layout = "tree", title=T)
+#Two Factors Positive and Nagative
+semPaths(two.fit, whatLabels = "std", layout = "tree")
+semPaths(two.fitwo6, whatLabels = "std", layout = "tree")
+
+#Second order factors
+semPaths(second.fit, whatLabels = "std", layout = "tree")
+semPaths(alt.fit, whatLabels = "std", layout = "tree")
+#Bifactor Models (similar to Models 6, 7 & 8 in Marsh, Scalas & Nagengast, 2010)
+semPaths(bifactor.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor.fit1, whatLabels = "std", layout = "tree")
+#Bifactor only with Negative questions protioned out (like model 7 in Marsh, Scalas & Nagengast, 2010)
+semPaths(bifactor.negative.fit, whatLabels = "std", layout = "tree")
+#Bifactor only with Negative questions protioned out (like model 7 in Marsh, Scalas & Nagengast, 2010)
+semPaths(bifactor.positive.fit, whatLabels = "std", layout = "tree")
+```
+Summaries
+```{r}
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+summary(two.fit, standardized = TRUE, rsquare=TRUE)
+summary(two.fitwo6, standardized = TRUE, rsquare=TRUE)
+
+
+summary(second.fit, standardized = TRUE, rsquare=TRUE)
+summary(alt.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.fit1, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.negative.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.positive.fit, standardized = TRUE, rsquare=TRUE)
+```
+Residual correlations
+```{r}
+correl.1 = residuals(one.fit, type="cor")
+correl.1
+#View(correl.1$cor)
+correl = residuals(two.fit, type="cor")
+correl
+#View(correl$cor)
+correl1 = residuals(second.fit, type="cor")
+correl1
+#View(correl1$cor)
+correl2 = residuals(alt.fit, type="cor")
+correl2
+#View(correl2$cor)
+correl3 = residuals(bifactor.fit, type="cor")
+correl3
+#View(correl3$cor)
+correl4 = residuals(bifactor.fit1, type="cor")
+correl4
+#View(correl4$cor)
+correl5 = residuals(bifactor.negative.fit, type="cor")
+correl5
+#View(correl5$cor)
+correl6 = residuals(bifactor.positive.fit, type="cor")
+correl6
+#View(correl6$cor)
+```
+zscore correlation anything over 1.96 is going to be statistically significant at the .05 level 
+```{r}
+zcorrels10 = residuals(one.fit, type = "standardized")
+zcorrels10$cov
+zcorrels = residuals(two.fit, type = "standardized")
+zcorrels$cov
+#zcorrels1 = residuals(second.fit, type = "standardized")
+#zcorrels1$cov
+#zcorrels2 = residuals(alt.fit, type = "standardized")
+#zcorrels2$cov
+#zcorrels3 = residuals(bifactor.fit, type = "standardized")
+#zcorrels3$cov
+#zcorrels4 = residuals(bifactor1.fit, type = "standardized")
+#zcorrels4$cov
+zcorrels5 = residuals(bifactor.negative.fit, type = "standardized")
+zcorrels5$cov
+zcorrels6 = residuals(bifactor.positive.fit, type = "standardized")
+zcorrels6$cov
+```
+Modification indicies
+```{r}
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(two.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(second.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(alt.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(bifactor.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(bifactor.fit1, sort. = TRUE, minimum.value = 3.84)
+modindices(bifactor.negative.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(bifactor.positive.fit, sort. = TRUE, minimum.value = 3.84)
+```
+Fit Measures
+```{r}
+onefit<-fitmeasures(one.fit, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")) 
+twofit<-fitmeasures(two.fit, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")) 
+twofitwo6<-fitmeasures(two.fitwo6, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")) 
+
+secondfit<-fitmeasures(second.fit, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")) 
+fitmeasures(alt.fit, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")) 
+bifit<-fitmeasures(bifactor.fit, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")) 
+fitmeasures(bifactor.fit1, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")) 
+negbifit<-fitmeasures(bifactor.negative.fit, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")) 
+posbifit<-fitmeasures(bifactor.positive.fit, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")) 
+
+```
+#Tables
+```{r}
+tabel.onefit<-parameterEstimates(one.fit, zstat = F, pvalue = F, ci = F, 
+                   level = 0.95, boot.ci.type = "perc", standardized = T, 
+                   fmi = F, remove.system.eq = TRUE, remove.eq = TRUE, 
+                   remove.ineq = TRUE, remove.def = T, rsquare = FALSE, 
+                   add.attributes = FALSE)
+tabel.onefit<-select(tabel.onefit, "Factor Names" = lhs, Items = rhs, Loadings = std.all)
+tabel.onefit<-tabel.onefit[c(1:6), ]
+#two factor table
+tabel.twofit<-parameterEstimates(two.fit, zstat = F, pvalue = F, ci = F, 
+                   level = 0.95, boot.ci.type = "perc", standardized = T, 
+                   fmi = F, remove.system.eq = TRUE, remove.eq = TRUE, 
+                   remove.ineq = TRUE, remove.def = T, rsquare = FALSE, 
+                   add.attributes = FALSE)
+tabel.twofit<-select(tabel.twofit, "Factor Names" = lhs, Items = rhs, Loadings = std.all)
+tabel.twofit<-tabel.twofit[(1:6), ]
+#Second order table
+tabel.second.fit<-parameterEstimates(second.fit, zstat = F, pvalue = F, ci = F, 
+                   level = 0.95, boot.ci.type = "perc", standardized = T, 
+                   fmi = F, remove.system.eq = TRUE, remove.eq = TRUE, 
+                   remove.ineq = TRUE, remove.def = T, rsquare = FALSE, 
+                   add.attributes = FALSE)
+tabel.second.fit<-select(tabel.second.fit, "Factor Names" = lhs, Items = rhs, Loadings = std.all)
+tabel.second.fit<-tabel.second.fit[c(1:8), ]
+
+#bifactor table
+tabel.bifactor.fit<-parameterEstimates(bifactor.fit, zstat = F, pvalue = F, ci = F, 
+                   level = 0.95, boot.ci.type = "perc", standardized = T, 
+                   fmi = F, remove.system.eq = TRUE, remove.eq = TRUE, 
+                   remove.ineq = TRUE, remove.def = T, rsquare = FALSE, 
+                   add.attributes = FALSE)
+tabel.bifactor.fit<-select(tabel.bifactor.fit, "Factor Names" = lhs, Items = rhs, Loadings = std.all)
+tabel.bifactor.fit<-tabel.bifactor.fit[c(1:12), ]
+
+#bifactor.negative.fit table
+tabel.bifactor.negative.fit<-parameterEstimates(bifactor.negative.fit, zstat = F, pvalue = F, ci = F, 
+                   level = 0.95, boot.ci.type = "perc", standardized = T, 
+                   fmi = F, remove.system.eq = TRUE, remove.eq = TRUE, 
+                   remove.ineq = TRUE, remove.def = T, rsquare = FALSE, 
+                   add.attributes = FALSE)
+tabel.bifactor.negative.fit<-select(tabel.bifactor.negative.fit, "Factor Names" = lhs, Items = rhs, Loadings = std.all)
+tabel.bifactor.negative.fit<-tabel.bifactor.negative.fit[c(1:9), ]
+
+#bifactor.positive.fit table
+tabel.bifactor.positive.fit<-parameterEstimates(bifactor.positive.fit, zstat = F, pvalue = F, ci = F, 
+                   level = 0.95, boot.ci.type = "perc", standardized = T, 
+                   fmi = F, remove.system.eq = TRUE, remove.eq = TRUE, 
+                   remove.ineq = TRUE, remove.def = T, rsquare = FALSE, 
+                   add.attributes = FALSE)
+tabel.bifactor.positive.fit<-select(tabel.bifactor.positive.fit, "Factor Names" = lhs, Items = rhs, Loadings = std.all)
+tabel.bifactor.positive.fit<-tabel.bifactor.positive.fit[c(1:9), ]
+all_fits_table<-rbind(tabel.onefit, tabel.twofit, tabel.onefit, tabel.bifactor.fit, tabel.bifactor.negative.fit, tabel.bifactor.positive.fit)
+#change order of colunms
+all_fits_table$Models      <- ""
+#Reorder the colunms
+all_fits_table <- all_fits_table[c(4,2,1,3)]
+print(xtable(all_fits_table, caption = 'Factor Loadings for Confirmatory Factor Analysis with Lavaan of One, Two, Second Order and Bifactor for LET', table.placement =""))
+
+```
+Creat tables of fit meansure
+```{r}
+namess<-c("Chisq", "DF", "P-Value", "CFI", "TLI", "RMSEA", "RMSEA ci upper", "RMSEA ci lower", "SRMR")
+namess<-as.data.frame(namess)
+onefit1<-data.frame(onefit)
+twofit1<-data.frame(twofit)
+secondfit1<-data.frame(secondfit)
+bifit1<-data.frame(bifit)
+negbifit1<-data.frame(negbifit)
+posbifit1<-data.frame(posbifit)
+all<-bind_cols(namess, onefit1, twofit1, secondfit1, bifit1, negbifit1, posbifit1)
+tableall_fit_measures<-select(all, 'Fit Measures' = namess, 'One Factor Model' =  onefit, 'Two Factor Model' = twofit, 'Second Order Model' = secondfit, 'BiFactor Model' = bifit, 'Negative BiFactor Model' = negbifit, 'Positive BiFactor Model' = posbifit)
+round_df <- function(df, digits) {
+  nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
+
+  df[,nums] <- round(df[,nums], digits = digits)
+
+  (df)
+}
+#Round the numbers
+tableall_fit_measures<-round_df(tableall_fit_measures, digits=2)
+#Transpose the dataframe so that colunms end up being rows
+tableall_fit_measures<-t(tableall_fit_measures)
+tableall_fit_measures<-as.data.frame(tableall_fit_measures)
+#Create table
+xtable(tableall_fit_measures)
+tableall_fit_measures
+
+
+```
+#Create dataset for Target rotation
+```{r}
+LETTR<-select(LET, LET_1  , LET_2 , LET_3, LET_4 ,  LET_5 , LET_6)
+str(LETTR)
+colnames(LETTR) <- c("1","2", "3", "4", "5", "6")
+#Target Roration
+```{r}
+Targ_key <- make.keys(6,list(f1=1:6))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+out_targetQ <- fa(LETTR,1,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA","uniquenesses")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+As two Factor
+```{r}
+data <- read.csv("/Users/levibrackman/Documents/stats_march_2016/allsurveysYT1_Jan2016.csv")
+LETTR2<-select(data, LET_1,	LET_3, LET_5, LET_2,		LET_4, LET_6)
+LETTR2$LET_1  <-  6- LETTR2$LET_1
+LETTR2$LET_3  <-  6- LETTR2$LET_3
+LETTR2$LET_5  <-  6- LETTR2$LET_5
+colnames(LETTR2) <- c("1","2", "3", "4", "5", "6")
+Targ_key <- make.keys(6,list(f1=1:3, f2=4:6))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+#LETTR2_cor <- corFiml(LETTR2)
+out_targetQ <- fa(LETTR2,2,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA","uniquenesses")]
+out_targetQ
+
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+
+

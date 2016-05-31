@@ -1,0 +1,126 @@
+---
+title: "CFA ASDQII"
+author: "Levi Brackman"
+date: "23 July 2015"
+output: html_document
+---
+ASDQII
+Please select from the list below how true or untrue each item is / for you. 
+
+1. I get good grades in ENGLISH LANGUAGE classes.	(English)
+2. Work in ENGLISH LANGUAGE classes is easy for me.	(English)
+3. I learn things quickly in ENGLISH LANGUAGE classes.	P (English)
+4. Compared to others my age I am good at ENGLISH LANGUAGE classes.	(English)
+5. I have always done well in ENGLISH LANGUAGE classes.	P (English)
+
+6. I learn things quickly in MATHEMATICS classes.	(Math)
+7. I have always done well in MATHEMATICS classes.	(Math)
+8. Compared to others my age I am good at MATHEMATICS classes. (Math)	
+9. Work in MATHEMATICS classes is easy for me.	(Math)
+10. I get good grades in MATHEMATICS classes.	(Math)
+
+11. I get good grades in SCIENCE classes.	(Science)
+12. Work in SCIENCE classes is easy for me. (Science)
+13. I learn things quickly in SCIENCE classes.(Science)	
+14. Compared to others my age I am good at SCIENCE classes.	(Science)
+15. I have always done well in SCIENCE classes.	(Science)
+
+16. I have always done well in SCHOOL SUBJECTS classes.	(all subjects)
+17. Compared to others my age I am good at SCHOOL SUBJECTS classes.	(all subjects)
+18. I get good grades in SCHOOL SUBJECTS classes.	(all subjects)
+19. Work in SCHOOL SUBJECTS classes is easy for me.	(all subjects)
+20. I learn things quickly in SCHOOL SUBJECTS classes. (all subjects)
+
+```{r}
+library(lavaan)
+library(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+library(car)
+library(ggplot2)
+library(GGally)
+```
+#loadthedata
+```{r}
+data <- read.csv("~/Psychometric_study_data/allsurveysYT1.csv")
+data<-tbl_df(data)
+ASDQII<-select(data, ASDQII_1, ASDQII_2, ASDQII_3, ASDQII_4, ASDQII_5, ASDQII_6, ASDQII_7, ASDQII_8, ASDQII_9, ASDQII_10, ASDQII_11,ASDQII_12, ASDQII_13, ASDQII_14, ASDQII_15, ASDQII_16, ASDQII_17, ASDQII_18, ASDQII_19, ASDQII_20)
+ASDQII<-tbl_df(ASDQII)
+ASDQII
+
+```
+#create plots
+```{r}
+#ggpairs(ASDQII, columns = 1:15, title="Big 5 Marsh" )
+
+```
+#create the models
+```{r}
+four.model= ' English  =~ ASDQII_1 +  ASDQII_2  + ASDQII_3 + ASDQII_4 + ASDQII_5   
+              Math =~   ASDQII_6 + ASDQII_7 + ASDQII_8 + ASDQII_9  +ASDQII_10       
+              Science =~      ASDQII_11 + ASDQII_12  +ASDQII_13 +  ASDQII_14 + ASDQII_15 
+              All Subjects =~  ASDQII_16 + ASDQII_17 + ASDQII_18 + ASDQII_19 + ASDQII_20' 
+
+one.model= 'ASDQII =~ ASDQII_1 +  ASDQII_2  + ASDQII_3 + ASDQII_4 + ASDQII_5 + ASDQII_6 + ASDQII_7 + ASDQII_8 + ASDQII_9 + ASDQII_10 + ASDQII_11 + ASDQII_12 + ASDQII_13 +  ASDQII_14 + ASDQII_15 + ASDQII_16 + ASDQII_17 + ASDQII_18 + ASDQII_19 + ASDQII_20 '
+```
+#run the models
+```{r}
+four.fit=cfa(four.model, data=ASDQII, missing = "fiml")
+one.fit=cfa(one.model, data=ASDQII, missing = "fiml")
+```
+
+#create pictures
+```{r}
+semPaths(four.fit, whatLabels = "std", layout = "tree")
+semPaths(one.fit, whatLabels = "std", layout = "tree")
+```
+#summaries
+```{r}
+summary(four.fit, standardized = TRUE, rsquare=TRUE)
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+```
+#Residual correlations
+```{r}
+correl = residuals(four.fit, type="cor")
+correl
+View(correl$cor)
+correl1 = residuals(one.fit, type="cor")
+correl1
+View(correl1$cor)
+```
+#zscore correlation anything over 1.96 is going to be statistically significant at the .05 level 
+```{r}
+zcorrels = residuals(four.fit, type = "standardized")
+View(zcorrels$cov)
+zcorrels1 = residuals(one.fit, type = "standardized")
+View(zcorrels1$cov)
+```
+#Modification indicies
+```{r}
+modindices(four.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+```
+#Fit Measures
+```{r}
+fitmeasures(four.fit)
+fitmeasures(one.fit)
+```
+#Create dataset for Target rotation
+```{r}
+ASDQIITR<-select(data, ASDQII_1  , ASDQII_2 , ASDQII_3, ASDQII_4 ,  ASDQII_5 , ASDQII_6 ,ASDQII_7 , ASDQII_8 , ASDQII_9 , ASDQII_10 , ASDQII_11 , ASDQII_12 , ASDQII_13 , ASDQII_14 , ASDQII_15, ASDQII_16, ASDQII_17, ASDQII_18, ASDQII_19, ASDQII_20)
+colnames(ASDQIITR) <- c("1","2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20")
+#Target Roration
+```{r}
+Targ_key <- make.keys(20,list(f1=1:5,f2=6:10, f3=11:15, f4=16:10))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+ASDQIITR_cor<- corFiml(ASDQIITR)
+out_targetQ <- fa(ASDQIITR_cor,4,rotate="TargetQ", n.obs = 670, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA","uniquenesses")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```

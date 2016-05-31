@@ -1,0 +1,440 @@
+
+
+---
+title: "PWB with MI July 14 2015"
+author: "Levi Brackman"
+date: "March 8, 2015"
+output: html_document
+---
+Loading the dataset
+```{r}
+data.test4 <- read.csv("~/Final_Adult_Study_R_Docs/adult_study011615.csv")
+# Load the psych package
+library(psych)
+items <- grep("PWB[0-9]", names(data.test4), value=TRUE)
+scaleKey <- c(-1,-1,-1,-1,-1,1,1,1,-1)
+data.test4[,items] <- apply(data.test4[,items], 2, as.numeric)
+data.test4$meanPWB <- scoreItems(scaleKey, items = data.test4[, items])$score
+library(reshape2); library(car); library(Amelia);library(mitools);library(nlme);library(predictmeans)
+#Remove the meanPWB and ID Group and wave from data.test4 and create a new #dataset with only those variables.
+data <- data.test4[,c("ID", "GROUP", "wave", "meanPWB")]
+#Use dcast to cnage from long-format data to wide format data
+data <- dcast(data, ID + GROUP ~ wave, mean, value.var = "meanPWB")
+# Changing all NaNs to NA
+data[,3:5] <- apply(data[,3:5],2,function(x) recode(x, "NaN = NA") )
+```
+Unsing the mapply function we create a new data set with ID Group baseline meanPWB and wave 2 and 3 of meanPWB. So we have a Baseline, which is Time 1 (placed in column 3 one on top of the other) to compare to both Time 2 and 3 (placed in column 4 one on top of the other).  In the next line of code we then create a separate column called "wave" which calls the first 89 (which compares Time 2 to Baseline) "wave 1" and then the second 89 we call "wave 2" which compares Time 3 to Baseline.  In the third line of code we add names to the new columns of the dataset. 
+```{r}
+data2 <- as.data.frame(mapply(c,data[,1:4], data[,c(1:3,5)]))
+data2$wave <- rep(1:2, each=89)
+names(data2) <- c("ID", "GROUP", "BASELINE", "meanPWB", "WAVE")
+```
+Intention to treat model (ITT) where we keep the cases who dropped out and did not complete the study (http://en.wikipedia.org/wiki/Intention-to-treat_analysis).
+```{r}
+data2[which(data2$GROUP ==2), "GROUP"] <- 1
+```
+#Make GROUP and ID a factor
+```{r}
+data2$GROUP <-as.factor(data2$GROUP)
+data2$ID <-as.factor(data2$ID)
+```
+Imputing missing data 
+```{r}
+MI <- amelia(data2, 50, idvars = c("ID"), ords = "GROUP")
+```
+Creating new dataset with missing data imputed
+```{r}
+data(MI$imputations)
+allimplogreg<-lapply(MI$imputations,function(X) {lme(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = X, method = "ML", na.action = "na.omit")})
+betas<-MIextract(allimplogreg, fun=fixef)
+vars<-MIextract(allimplogreg, fun=vcov)
+summary(MIcombine(betas,vars))
+
+```
+Check results with Imputations using Zelig
+```{r}
+
+library("Zelig")
+zelig.fit <- zelig(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = MI$imputations,  model = "ls", cite = FALSE)
+summary(zelig.fit)
+
+```
+Check assumptions with Random Computations
+```{r}
+data1=MI$imputations[[1]]
+library("Zelig")
+zelig.fitdata1 <- zelig(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = data1,  model = "ls", cite = FALSE)
+summary(zelig.fitdata1)
+
+```
+Describe the meanPWB variable by the GROUP variable
+```{r}
+describeBy(data1[,3:4], group = data1$GROUP)
+```
+Create a plot that visualizes meanPWB variable by the GROUP variable
+```{r}
+library(ggplot2)
+library(influence.ME)
+```
+Take a look at the residuals
+```{r}
+residual <- lm(meanPWB ~ BASELINE, data=data1)$residual
+```
+Plot the residuals to see that they are random
+```{r}
+plot(density(residual))# A density plot
+qqnorm(residual) # A quantile normal plot to checking normality
+qqline(residual)
+```
+Checking the different between intervention and control groups residuals. This allows us to control for individual unsystematic differences.  
+```{r}
+data2$residual <- NA
+sel1 <- which(!is.na(data1$meanPWB)) 
+sel2 <- which(!is.na(data1$BASELINE))
+data1$residual[intersect(sel1,sel2)] <- residual
+qplot(GROUP, meanPWB, data=data1, geom="boxplot")
+```
+Plot of the difference between intervention and control groups.
+```{r}
+qplot(GROUP, residual, data=data1, geom="boxplot")
+```
+Two way repeated measures
+========================================================
+Graphing the Two-Way Interaction. Both meanPWB and the Residuals
+```{r}
+# Load the nlme package
+library(nlme)
+with(data1, boxplot(meanPWB ~ WAVE + GROUP))
+with(data1, boxplot(residual ~ WAVE + GROUP))
+```
+<center><font size="3" color="blue">Linear Mixed-Effects Model</font><center> Comparing Basline to Wave 2 and 3 by Group.
+```{r}             
+fullModeldata1 <- lme(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = data1, method = "ML", na.action = "na.omit")
+```
+#Cooks Distence
+```{r}
+CookD(fullModeldata1)
+```
+#Plot Cook's distance:
+```{r}
+plot(fullModeldata1, which="cook")
+```
+Check results on this random Imputation model
+<center><font size="6" color="green">Results</font><center>
+<center><p><b>Explanation of significance:</b></p></center>
+We asses the significance of our models by comparing them from the baseline model using the anova() function.<br>
+(Intercept): Where everything is 0<br>
+GROUP1: Is there a difference between group. If it is significant than there is a difference and the treatment had an effect.<br> 
+WAVE: Asseses whether the effects gets bigger beteen time 2 and 3 (does not have to be significant)<br>
+BASELINE: Should not be significant. If it is then it shows that there is a difference between groups before the treatment.<br>
+GROUP1:WAVE: If this is significant then it means that the effect was either fleeting or it happened after the treatment i.e. between time 2 and 3. 
+```{r}
+summary(fullModeldata1)
+```
+Another random imputation
+```{r}
+data10=MI$imputations[[10]]
+library("Zelig")
+zelig.fitdata10 <- zelig(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = data10,  model = "ls", cite = FALSE)
+summary(zelig.fitdata10)
+```
+Describe the meanPWB variable by the GROUP variable
+```{r}
+describeBy(data10[,3:4], group = data10$GROUP)
+```
+Create a plot that visualizes meanPWB variable by the GROUP variable
+```{r}
+library(ggplot2)
+library(influence.ME)
+```
+Take a look at the residuals
+```{r}
+residual <- lm(meanPWB ~ BASELINE, data=data10)$residual
+```
+Plot the residuals to see that they are random
+```{r}
+plot(density(residual))# A density plot
+qqnorm(residual) # A quantile normal plot to checking normality
+qqline(residual)
+```
+Checking the different between intervention and control groups residuals. This allows us to control for individual unsystematic differences.  
+```{r}
+data2$residual <- NA
+sel1 <- which(!is.na(data10$meanPWB)) 
+sel2 <- which(!is.na(data10$BASELINE))
+data10$residual[intersect(sel1,sel2)] <- residual
+qplot(GROUP, meanPWB, data=data10, geom="boxplot")
+```
+Plot of the difference between intervention and control groups.
+```{r}
+qplot(GROUP, residual, data=data10, geom="boxplot")
+```
+Two way repeated measures
+========================================================
+Graphing the Two-Way Interaction. Both meanPWB and the Residuals
+```{r}
+# Load the nlme package
+library(nlme)
+with(data10, boxplot(meanPWB ~ WAVE + GROUP))
+with(data10, boxplot(residual ~ WAVE + GROUP))
+```
+<center><font size="3" color="blue">Linear Mixed-Effects Model</font><center> Comparing Basline to Wave 2 and 3 by Group.
+```{r}             
+fullModeldata10 <- lme(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = data10, method = "ML", na.action = "na.omit")
+```
+#Cooks Distence
+```{r}
+CookD(fullModeldata10)
+```
+#Plot Cook's distance:
+```{r}
+plot(fullModeldata10, which="cook")
+```
+Check results on this random Imputation model
+<center><font size="6" color="green">Results</font><center>
+<center><p><b>Explanation of significance:</b></p></center>
+We asses the significance of our models by comparing them from the baseline model using the anova() function.<br>
+(Intercept): Where everything is 0<br>
+GROUP1: Is there a difference between group. If it is significant than there is a difference and the treatment had an effect.<br> 
+WAVE: Asseses whether the effects gets bigger beteen time 2 and 3 (does not have to be significant)<br>
+BASELINE: Should not be significant. If it is then it shows that there is a difference between groups before the treatment.<br>
+GROUP1:WAVE: If this is significant then it means that the effect was either fleeting or it happened after the treatment i.e. between time 2 and 3. 
+```{r}
+summary(fullModeldata10)
+```
+Another random imputation
+```{r}
+
+data15=MI$imputations[[15]]
+library("Zelig")
+zelig.fitdata15 <- zelig(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = data15,  model = "ls", cite = FALSE)
+summary(zelig.fitdata15)
+```
+Describe the meanPWB variable by the GROUP variable
+```{r}
+describeBy(data15[,3:4], group = data15$GROUP)
+```
+Create a plot that visualizes meanPWB variable by the GROUP variable
+```{r}
+library(ggplot2)
+library(influence.ME)
+```
+Take a look at the residuals
+```{r}
+residual <- lm(meanPWB ~ BASELINE, data=data15)$residual
+```
+Plot the residuals to see that they are random
+```{r}
+plot(density(residual))# A density plot
+qqnorm(residual) # A quantile normal plot to checking normality
+qqline(residual)
+```
+Checking the different between intervention and control groups residuals. This allows us to control for individual unsystematic differences.  
+```{r}
+data2$residual <- NA
+sel1 <- which(!is.na(data15$meanPWB)) 
+sel2 <- which(!is.na(data15$BASELINE))
+data15$residual[intersect(sel1,sel2)] <- residual
+qplot(GROUP, meanPWB, data=data15, geom="boxplot")
+```
+Plot of the difference between intervention and control groups.
+```{r}
+qplot(GROUP, residual, data=data15, geom="boxplot")
+```
+Two way repeated measures
+========================================================
+Graphing the Two-Way Interaction. Both meanPWB and the Residuals
+```{r}
+# Load the nlme package
+library(nlme)
+with(data15, boxplot(meanPWB ~ WAVE + GROUP))
+with(data15, boxplot(residual ~ WAVE + GROUP))
+```
+<center><font size="3" color="blue">Linear Mixed-Effects Model</font><center> Comparing Basline to Wave 2 and 3 by Group.
+```{r}             
+fullModeldata15 <- lme(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = data15, method = "ML", na.action = "na.omit")
+```
+#Cooks Distence
+```{r}
+CookD(fullModeldata15)
+```
+#Plot Cook's distance:
+```{r}
+plot(fullModeldata15, which="cook")
+```
+Check results on this random Imputation model
+<center><font size="6" color="green">Results</font><center>
+<center><p><b>Explanation of significance:</b></p></center>
+We asses the significance of our models by comparing them from the baseline model using the anova() function.<br>
+(Intercept): Where everything is 0<br>
+GROUP1: Is there a difference between group. If it is significant than there is a difference and the treatment had an effect.<br> 
+WAVE: Asseses whether the effects gets bigger beteen time 2 and 3 (does not have to be significant)<br>
+BASELINE: Should not be significant. If it is then it shows that there is a difference between groups before the treatment.<br>
+GROUP1:WAVE: If this is significant then it means that the effect was either fleeting or it happened after the treatment i.e. between time 2 and 3. 
+```{r}
+summary(fullModeldata15)
+
+```
+Another random imputation
+```{r}
+
+data25=MI$imputations[[25]]
+
+library("Zelig")
+zelig.fitdata25 <- zelig(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = data25,  model = "ls", cite = FALSE)
+summary(zelig.fitdata25)
+```
+Describe the meanPWB variable by the GROUP variable
+```{r}
+describeBy(data25[,3:4], group = data25$GROUP)
+```
+Create a plot that visualizes meanPWB variable by the GROUP variable
+```{r}
+library(ggplot2)
+library(influence.ME)
+```
+Take a look at the residuals
+```{r}
+residual <- lm(meanPWB ~ BASELINE, data=data25)$residual
+```
+Plot the residuals to see that they are random
+```{r}
+plot(density(residual))# A density plot
+qqnorm(residual) # A quantile normal plot to checking normality
+qqline(residual)
+```
+Checking the different between intervention and control groups residuals. This allows us to control for individual unsystematic differences.  
+```{r}
+data2$residual <- NA
+sel1 <- which(!is.na(data25$meanPWB)) 
+sel2 <- which(!is.na(data25$BASELINE))
+data25$residual[intersect(sel1,sel2)] <- residual
+qplot(GROUP, meanPWB, data=data25, geom="boxplot")
+```
+Plot of the difference between intervention and control groups.
+```{r}
+qplot(GROUP, residual, data=data25, geom="boxplot")
+```
+Two way repeated measures
+========================================================
+Graphing the Two-Way Interaction. Both meanPWB and the Residuals
+```{r}
+# Load the nlme package
+library(nlme)
+with(data25, boxplot(meanPWB ~ WAVE + GROUP))
+with(data25, boxplot(residual ~ WAVE + GROUP))
+```
+<center><font size="3" color="blue">Linear Mixed-Effects Model</font><center> Comparing Basline to Wave 2 and 3 by Group.
+```{r}             
+fullModeldata25 <- lme(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = data25, method = "ML", na.action = "na.omit")
+```
+#Cooks Distence
+```{r}
+CookD(fullModeldata25)
+```
+#Plot Cook's distance:
+```{r}
+plot(fullModeldata25, which="cook")
+```
+Check results on this random Imputation model
+<center><font size="6" color="green">Results</font><center>
+<center><p><b>Explanation of significance:</b></p></center>
+We asses the significance of our models by comparing them from the baseline model using the anova() function.<br>
+(Intercept): Where everything is 0<br>
+GROUP1: Is there a difference between group. If it is significant than there is a difference and the treatment had an effect.<br> 
+WAVE: Asseses whether the effects gets bigger beteen time 2 and 3 (does not have to be significant)<br>
+BASELINE: Should not be significant. If it is then it shows that there is a difference between groups before the treatment.<br>
+GROUP1:WAVE: If this is significant then it means that the effect was either fleeting or it happened after the treatment i.e. between time 2 and 3. 
+```{r}
+summary(fullModeldata25)
+
+```
+Check assumptions on model without any imputations
+```{r}
+
+```
+Describe the meanPWB variable by the GROUP variable
+```{r}
+describeBy(data2[,3:4], group = data2$GROUP)
+```
+Create a plot that visualizes meanPWB variable by the GROUP variable
+```{r}
+library(ggplot2)
+library(influence.ME)
+```
+Take a look at the residuals
+```{r}
+residual <- lm(meanPWB ~ BASELINE, data=data2)$residual
+```
+Plot the residuals to see that they are random
+```{r}
+plot(density(residual))# A density plot
+qqnorm(residual) # A quantile normal plot to checking normality
+qqline(residual)
+```
+Checking the different between intervention and control groups residuals. This allows us to control for individual unsystematic differences.  
+```{r}
+data2$residual <- NA
+sel1 <- which(!is.na(data2$meanPWB)) 
+sel2 <- which(!is.na(data2$BASELINE))
+data2$residual[intersect(sel1,sel2)] <- residual
+qplot(GROUP, meanPWB, data=data2, geom="boxplot")
+```
+Plot of the difference between intervention and control groups.
+```{r}
+qplot(GROUP, residual, data=data2, geom="boxplot")
+```
+Two way repeated measures
+========================================================
+Graphing the Two-Way Interaction. Both meanPWB and the Residuals
+```{r}
+# Load the nlme package
+library(nlme)
+with(data2, boxplot(meanPWB ~ WAVE + GROUP))
+with(data2, boxplot(residual ~ WAVE + GROUP))
+```
+<center><font size="3" color="blue">Linear Mixed-Effects Model</font><center> Comparing Basline to Wave 2 and 3 by Group.
+```{r}             
+fullModel <- lme(meanPWB ~ GROUP * WAVE + BASELINE, random = ~1 | ID, data = data2, method = "ML", na.action = "na.omit")
+```
+#Cooks Distence
+```{r}
+CookD(fullModel)
+```
+#Plot Cook's distance:
+```{r}
+plot(fullModel, which="cook")
+```
+Results on Model with data that contains no imputations
+<center><font size="6" color="green">Results</font><center>
+<center><p><b>Explanation of significance:</b></p></center>
+We asses the significance of our models by comparing them from the baseline model using the anova() function.<br>
+(Intercept): Where everything is 0<br>
+GROUP1: Is there a difference between group. If it is significant than there is a difference and the treatment had an effect.<br> 
+WAVE: Asseses whether the effects gets bigger beteen time 2 and 3 (does not have to be significant)<br>
+BASELINE: Should not be significant. If it is then it shows that there is a difference between groups before the treatment.<br>
+GROUP1:WAVE: If this is significant then it means that the effect was either fleeting or it happened after the treatment i.e. between time 2 and 3. 
+```{r}
+summary(fullModel)
+```
+```
+Table with P-value
+```{r, results = 'asis', echo=FALSE, message=FALSE, warning=FALSE}
+library(knitr)
+out <- summary(fullModel)$tTable
+kable(out, format = "markdown", padding = 2)
+```
+
+
+```
+Table with confidence intervals
+```{r, results = 'asis', echo=FALSE, message=FALSE, warning=FALSE}
+library(knitr)
+out <- intervals(fullModel)$fixed
+kable(out[,c(2,1,3)], format = "markdown", padding = 2)
+
+
+
+
+
+

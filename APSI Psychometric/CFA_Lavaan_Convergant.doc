@@ -1,0 +1,666 @@
+{\rtf1\ansi\ansicpg0{\fonttbl{\f0\froman\fcharset0 Times New Roman;}{\f1\fnil\fcharset0 Helvetica;}{\f2\fnil\fcharset0 Helvetica;}{\f3\fnil\fcharset0 Helvetica;}{\f4\froman\fcharset0 Times New Roman;}}{\colortbl ;\red0 \green0 \blue0;\red255 \green255 \blue255;}{\stylesheet{\sqformat\spriority1 Normal}{\s1\f4\fs20\sbasedon0\sqformat\spriority1 Body Text}{\s2\sbasedon0\sqformat\spriority1 List Paragraph}{\s3\sbasedon0\sqformat\spriority1 Table Paragraph}}\jexpand\dntblnsbdb\viewkind1\paperw12240\paperh15840\margl1720\margr1720\margt1500\margb280\sectd\sbknone
+{\shp{\*\shpinst
+\shpleft6668\shptop4836\shpright6728\shpbottom4856
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid454\shpz0
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6668\shptop5075\shpright6728\shpbottom5095
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid455\shpz1
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6668\shptop5314\shpright6728\shpbottom5334
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid456\shpz2
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6668\shptop5553\shpright6728\shpbottom5573
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid457\shpz3
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6668\shptop5792\shpright6728\shpbottom5812
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid458\shpz4
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6668\shptop6031\shpright6728\shpbottom6051
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid459\shpz5
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6663\shptop6749\shpright6723\shpbottom6769
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid460\shpz6
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6663\shptop6988\shpright6723\shpbottom7008
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid461\shpz7
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6663\shptop7227\shpright6723\shpbottom7247
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid462\shpz8
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6663\shptop7466\shpright6723\shpbottom7486
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid463\shpz9
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6663\shptop7705\shpright6723\shpbottom7725
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid464\shpz10
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6663\shptop7944\shpright6723\shpbottom7964
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid465\shpz11
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6663\shptop8183\shpright6723\shpbottom8203
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid466\shpz12
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6663\shptop8422\shpright6723\shpbottom8442
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid467\shpz13
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6663\shptop8662\shpright6723\shpbottom8682
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid468\shpz14
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+
+{\shp{\*\shpinst
+\shpleft6663\shptop8901\shpright6723\shpbottom8921
+\shpfhdr0\shpwr3\shpwrk0\shpfblwtxt1\shplid469\shpz15
+\shpbxpage\shpbypage{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}
+{\sp{\sn shapeType}{\sv 0}}
+{\sp{\sn rotation}{\sv 0}}
+{\sp{\sn geoRight}{\sv 60}}
+{\sp{\sn geoBottom}{\sv 20}}
+{\sp{\sn shapePath}{\sv 4}}
+{\sp{\sn pVerticies}{\sv 8;2;(0,0);(59,0)}}
+{\sp{\sn pSegmentInfo}{\sv 2;5;16384;45824;1;45824;32768}}
+{\sp{\sn fFillOK}{\sv 1}}
+{\sp{\sn fFilled}{\sv 0}}
+{\sp{\sn lineWidth}{\sv 5054}}
+{\sp{\sn lineColor}{\sv 0}}
+{\sp{\sn fLine}{\sv 1}}{\sp{\sn lineType}{\sv 0}}
+{\sp{\sn posrelh}{\sv 1}}
+{\sp{\sn posrelv}{\sv 1}}
+{\sp{\sn fArrowheadsOK}{\sv 1}}
+{\sp{\sn fBehindDocument}{\sv 1}}
+}}
+\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f0\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\sb5\f0\fs14\b0\i0\par
+\trowd\irow0\trgaph0\trrh-247\trql\trleft1472
+\clvertalt\clbrdrt\brdrs\brdrcf1\brdrw8\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrs\brdrcf1\brdrw8\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrs\brdrcf1\brdrw8\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrs\brdrcf1\brdrw8\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrs\brdrcf1\brdrw8\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrs\brdrcf1\brdrw8\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrs\brdrcf1\brdrw8\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrs\brdrcf1\brdrw8\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrs\brdrcf1\brdrw8\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrs\brdrcf1\brdrw8\cltxlrtb\cellx7313
+\pard\plain\intbl\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-210{\f4\fs20\b0\expnd-1\expndtw-3\charscalex110 F\expnd-1\expndtw-4 ac\expnd-1\expndtw-3 t\expnd-1\expndtw-4 or\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-210{\f4\fs20\b0\expnd0\expndtw0\charscalex105 op\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-210{\f4\fs20\b0\expnd-1\expndtw-4\charscalex105 Ve\expnd-1\expndtw-3 r\expnd-1\expndtw-4 i\expnd-1\expndtw-3 ab\expnd-1\expndtw-4 le\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-210{\f4\fs20\b0\expnd0\expndtw0\charscalex105 Loadings}\cell\row
+\trowd\irow1\trgaph0\trrh-237\trql\trleft1472
+\clvertalt\clbrdrt\brdrs\brdrcf1\brdrw8\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrs\brdrcf1\brdrw8\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrs\brdrcf1\brdrw8\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrs\brdrcf1\brdrw8\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrs\brdrcf1\brdrw8\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li219\sl-211{\f4\fs20\b0\expnd0\expndtw0\charscalex100 1}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-211{\f4\fs20\b0\expnd0\expndtw-2\charscalex105 F\expnd-1\expndtw-3 eeli\expnd0\expndtw-2 ngPurp\expnd-1\expndtw-3 oseNow\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-211{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-211{\f4\fs20\b0\expnd0\expndtw0\charscalex105 APSI\expnd5\expndtw23  \expnd0\expndtw0 1\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-211{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.87}\cell\row
+\trowd\irow2\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li219\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 2}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex105 F\expnd-1\expndtw-3 eeli\expnd0\expndtw-2 ngPurp\expnd-1\expndtw-3 oseNow\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 APSI\expnd5\expndtw23  \expnd0\expndtw0 2\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.80}\cell\row
+\trowd\irow3\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li219\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 3}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex105 F\expnd-1\expndtw-3 eeli\expnd0\expndtw-2 ngPurp\expnd-1\expndtw-3 oseNow\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 APSI\expnd5\expndtw23  \expnd0\expndtw0 5\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.69}\cell\row
+\trowd\irow4\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li219\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 4}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex110 Futur\expnd-1\expndtw-3 egoals}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 APSI\expnd5\expndtw23  \expnd0\expndtw0 4\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.84}\cell\row
+\trowd\irow5\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li219\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 5}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex110 Futur\expnd-1\expndtw-3 egoals}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 APSI\expnd5\expndtw23  \expnd0\expndtw0 7\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.79}\cell\row
+\trowd\irow6\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li219\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 6}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex110 Futur\expnd-1\expndtw-3 egoals}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 APSI\expnd5\expndtw23  \expnd0\expndtw0 8\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.82}\cell\row
+\trowd\irow7\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li219\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 7}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex110 Purpose\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex105 F\expnd-1\expndtw-3 eeli\expnd0\expndtw-2 ngPurp\expnd-1\expndtw-3 oseNow\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.99}\cell\row
+\trowd\irow8\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li219\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 8}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex110 Purpose\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex110 Futur\expnd-1\expndtw-3 egoals}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.92}\cell\row
+\trowd\irow9\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li219\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 9}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 MLQP\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQ\expnd7\expndtw34  \expnd0\expndtw0 1\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.79}\cell\row
+\trowd\irow10\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 10}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 MLQP\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQ\expnd7\expndtw34  \expnd0\expndtw0 4\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.81}\cell\row
+\trowd\irow11\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 11}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 MLQP\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQ\expnd7\expndtw34  \expnd0\expndtw0 5\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.76}\cell\row
+\trowd\irow12\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 12}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 MLQP\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQ\expnd7\expndtw34  \expnd0\expndtw0 6\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.81}\cell\row
+\trowd\irow13\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 13}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 MLQP\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQ\expnd7\expndtw34  \expnd0\expndtw0 9\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li477\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 -0.38}\cell\row
+\trowd\irow14\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 14}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQS}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQ\expnd7\expndtw34  \expnd0\expndtw0 2\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.80}\cell\row
+\trowd\irow15\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 15}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQS}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQ\expnd7\expndtw34  \expnd0\expndtw0 3\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.75}\cell\row
+\trowd\irow16\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 16}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQS}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQ\expnd7\expndtw34  \expnd0\expndtw0 7\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.74}\cell\row
+\trowd\irow17\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 17}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQS}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQ\expnd7\expndtw34  \expnd0\expndtw0 8\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.74}\cell\row
+\trowd\irow18\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 18}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQS}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex140 =\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQ\expnd7\expndtw33  \expnd0\expndtw0 10\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.80}\cell\row
+\trowd\irow19\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 35}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex105 F\expnd-1\expndtw-3 eeli\expnd0\expndtw-2 ngPurp\expnd-1\expndtw-3 oseNow\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex150 \'98\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex105 F\expnd-1\expndtw-3 eeli\expnd0\expndtw-2 ngPurp\expnd-1\expndtw-3 oseNow\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.02}\cell\row
+\trowd\irow20\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 36}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex110 Futur\expnd-1\expndtw-3 egoals}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex150 \'98\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw-2\charscalex110 Futur\expnd-1\expndtw-3 egoals}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.16}\cell\row
+\trowd\irow21\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 37}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex110 Purpose\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex150 \'98\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex110 Purpose\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 1.00}\cell\row
+\trowd\irow22\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 38}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 MLQP\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex150 \'98\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 MLQP\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 1.00}\cell\row
+\trowd\irow23\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 39}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQS}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex150 \'98\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQS}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 1.00}\cell\row
+\trowd\irow24\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 40}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex110 Purpose\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex150 \'98\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 MLQP\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.69}\cell\row
+\trowd\irow25\trgaph0\trrh-239\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrnone\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 41}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex110 Purpose\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex150 \'98\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQS}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.15}\cell\row
+\trowd\irow26\trgaph0\trrh-249\trql\trleft1472
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrs\brdrcf1\brdrw8\cltxlrtb\cellx1910
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrs\brdrcf1\brdrw8\cltxlrtb\cellx3856
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrs\brdrcf1\brdrw8\cltxlrtb\cellx4349
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrs\brdrcf1\brdrw8\cltxlrtb\cellx6295
+\clvertalt\clbrdrt\brdrnone\clbrdrl\brdrnone\clbrdrr\brdrnone\clbrdrb\brdrs\brdrcf1\brdrw8\cltxlrtb\cellx7313
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 42}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex105 MLQP\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex150 \'98\'98\expnd0\expndtw0\charscalex100}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li119\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 MLQS}\cell
+\pard\plain\intbl\s3\nooverflow\nocwrap\li543\sl-213{\f4\fs20\b0\expnd0\expndtw0\charscalex100 0.16}\cell\row\pard\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\sb8\f0\fs8\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\li955\ri968\sl249\slmult1\sb62\f4\fs20\b0\expnd-1\expndtw-4\charscalex105 Tab\expnd-1\expndtw-5 le\expnd5\expndtw26  \expnd0\expndtw0 8: \expnd1\expndtw5  \expnd-1\expndtw-3 Factor\expnd5\expndtw27  \expnd0\expndtw0 Loadings\expnd5\expndtw27  \expnd0\expndtw0 for\expnd5\expndtw27  \expnd0\expndtw-2 Conv\expnd-1\expndtw-3 e\expnd0\expndtw-2 rgant\expnd5\expndtw27  \expnd0\expndtw0 Analysis\expnd5\expndtw27  \expnd0\expndtw0 of\expnd5\expndtw27  \expnd0\expndtw0 APSI\expnd5\expndtw27  \expnd0\expndtw0 with\expnd5\expndtw27  \expnd0\expndtw-2 M\expnd0\expndtw-1 LQ\expnd0\expndtw-2 -\expnd0\expndtw-1 Pr\expnd0\expndtw-2 ese\expnd0\expndtw-1 nt\f4\expnd5\expndtw23\charscalex139  \expnd0\expndtw0\charscalex105 and\expnd4\expndtw20  \expnd0\expndtw0 MLQ\expnd4\expndtw20  \expnd0\expndtw-2 Se\expnd0\expndtw-1 ar\expnd0\expndtw-2 c\expnd0\expndtw-1 h\expnd0\expndtw-2 i\expnd0\expndtw-1 n\expnd0\expndtw-2 g\expnd4\expndtw20  \expnd0\expndtw0 using\expnd4\expndtw20  \expnd-1\expndtw-3 Lavaan\expnd0\expndtw0\charscalex100\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f4\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f4\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f4\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f4\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f4\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f4\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f4\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f4\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\f4\fs20\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\sl240\slmult1\sb9\f4\fs21\b0\i0\par\pard\plain\s1\nooverflow\nocwrap\ri13\qc\sl240\slmult1\f4\fs20\b0\expnd0\expndtw0\charscalex100 4\par}

@@ -1,0 +1,299 @@
+---
+title: "EFA CFA TR APSI YOUTH"
+author: "Levi Brackman"
+date: "26 January 2016"
+output: html_document
+---
+1.	I have a definite sense of purpose in life.
+2.	I have a firm sense of who I am.
+3.	I have a set of basic beliefs and values that guide my actions and decisions.
+4.	I know what I want out of life.
+5.	I have a clear set of personal values or moral standards.
+6.	I don't know where I fit in the world.
+7.	I have specific personal goals for the future.
+8.	I have a clear sense of who I want to be when I am an adult.
+
+```{r}
+
+##load packages
+library(psych)
+library(GPArotation)
+library(plyr)
+library(dplyr)
+library(lavaan)
+library(semPlot)
+# data preparation
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+APSI<-select(data,  APSI_1,  APSI_2,  APSI_3,  APSI_4,  APSI_5,  APSI_6, APSI_7,  APSI_8)
+APSI$APSI_6  <-  6- APSI$APSI_6
+APSI<- data.frame(apply(APSI,2, as.numeric))
+str(APSI)
+colnames(APSI) <- c("1","2", "3", "4", "5", "6", "7", "8")
+ APSI<- APSI[complete.cases(APSI[,]),]
+
+```
+##EFA
+##number of factors
+##parallal analysis and scree plot
+```{r}
+parallel<-fa.parallel(APSI, fm="ml",fa="fa")
+#one factors are greater than one Eigenvalue scree plot says there are two factors. Paralel analysis suggests 4 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=1, over .7=0
+```
+#doing aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+```{r}
+princomp(na.omit(APSI), cor = TRUE)
+parallel2<-princomp(na.omit(APSI), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+```
+#simple structure
+```{r}
+twofactor<-fa(APSI, nfactors=2, rotate="oblimin", fm="ml")
+twofactor#not a good fit
+1-((twofactor$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+
+threefactor<-fa(APSI, nfactors=3, rotate="oblimin", fm="ml")
+threefactor#Still not a great fit. 1, 2, 4, 7, 8 are one factor 3 and 5 seem to be thir own factors and 6 crossloads on all factors. 
+1-((threefactor$STATISTIC - threefactor$dof)/(threefactor$null.chisq- threefactor$null.dof))
+
+fourfactor<-fa(APSI, nfactors=4, rotate="oblimin", fm="ml")
+fourfactor#An over fit
+1-((fourfactor$STATISTIC - fourfactor$dof)/(fourfactor$null.chisq- fourfactor$null.dof))
+
+fa2latex(fa(APSI,2, rotate="oblimin", fm="ml"),heading="Table 2. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation 
+of APSI")
+fa2latex(fa(APSI,3, rotate="oblimin", fm="ml"),heading="Table 3. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation 
+of APSI")
+fa2latex(fa(APSI,4, rotate="oblimin", fm="ml"),heading="Table 4. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation 
+of APSI")
+
+```
+#question 1,4,7,8 seem to talk about purpose. so try as one factr
+```{r}
+ APSI12478<-select(APSI, 1, 2, 4,7,8)
+ APSI12478<-tbl_df(APSI12478)
+  APSI12478
+twofactorAPSI12478<-fa(APSI12478, nfactors=1, rotate="varimax", fm="ml")
+twofactorAPSI12478#The TLI is good but the RMSEA is a poor fit
+fa2latex(fa(APSI12478,1, rotate="oblimin", fm="ml"),heading="Table 5. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation
+of APSI")
+#CFI
+1-((twofactorAPSI12478$STATISTIC - twofactorAPSI12478$dof)/(twofactorAPSI12478$null.chisq- twofactorAPSI12478$null.dof))
+
+```
+#question 1,4,7,8 seem to talk about purpose. so try as one factr
+```{r}
+ APSI124578<-select(APSI, 1, 2, 4,5, 7,8)
+APSI124578<-tbl_df(APSI124578)
+APSI124578
+twofactorAPSI124578<-fa(APSI124578, nfactors=1, rotate="varimax", fm="ml")
+twofactorAPSI124578#The TLI is good but the RMSEA is a poor fit
+fa2latex(fa(APSI124578,1, rotate="oblimin", fm="ml"),heading="Table 5. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation
+of APSI")
+#CFI
+1-((twofactorAPSI124578$STATISTIC - twofactorAPSI124578$dof)/(twofactorAPSI124578$null.chisq- twofactorAPSI124578$null.dof))
+
+```
+#drop question 2 and only uuse question 1,4,7,8 seem to talk about purpose. so try as one factr
+```{r}
+ APSI1478<-select(APSI, 1, 4,7,8)
+ APSI1478<-tbl_df(APSI1478)
+  APSI1478
+twofactorAPSI1478<-fa(APSI1478, nfactors=1, rotate="varimax", fm="ml")
+fa2latex(fa(APSI1478,1, rotate="oblimin", fm="ml"),heading="Table 6. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation
+of APSI")
+twofactorAPSI1478#clearly shows that this is all one factor. Droping 2 makes it a much better fit.
+#CFI
+1-((twofactorAPSI1478$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+```
+#question 6 is negative but talks about fit in the world, question 2 talks about know "who I am" see if fits into one factor
+```{r}
+ APSI26<-select(APSI, 3, 5,6)
+ APSI26<-tbl_df(APSI26)
+ APSI26
+twofactorAPSI26<-fa(APSI26, nfactors=3, rotate="varimax", fm="ml")
+fa2latex(fa(APSI26,3, rotate="oblimin", fm="ml"),heading="Table 7. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation
+of APSI")
+twofactorAPSI26#seems to be a good fit
+#CFI
+1-((twofactorAPSI26$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+```
+#question three and five talk about morals and values and could be one factor
+```{r}
+ APSI35<-select(APSI, 3,5)
+ APSI35<-tbl_df(APSI35)
+ APSI35
+twofactorAPSI35<-fa(APSI35, nfactors=1, rotate="varimax", fm="ml")
+fa2latex(fa(APSI35,1, rotate="oblimin", fm="ml"),heading="Table 8. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation
+of APSI")
+twofactorAPSI35#seems to load well on one factor
+#CFI
+1-((twofactorAPSI35$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+
+#What are the factors
+#Factor 1 (questions 1, 4, 7, 8) is purpose
+#Factor 2 (questions 3,5) is moral values
+#Factor 3 (questions 2,6) fit in the world, knowledge of who I am
+```
+#Finding Alpha
+```{r}
+alpha(APSI, na.rm = TRUE, check.keys=TRUE)
+```
+#Create dataset for Target rotation
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+ APSI<-select(data,  APSI_1, APSI_2, APSI_4, APSI_7,  APSI_8,    APSI_5, APSI_3,  APSI_6)
+APSI$APSI_6  <-  6- APSI$APSI_6
+APSI<- data.frame(apply(APSI,2, as.numeric))
+
+```
+Load packedges
+```{r}
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+colnames(APSI) <- c("1","2", "3", "4", "5", "6", "7", "8")
+```
+Trying to see whether we can make this into two factors
+```{r}
+Targ_key <- make.keys(8,list(f1=1:5,f2=6:8))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+APSI_cor <- corFiml(APSI)
+APSI_cor
+out_targetQ <- fa(APSI_cor,2,rotate="TargetQ",n.obs = 807,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+fa2latex(fa(APSI_cor,2,rotate="TargetQ",n.obs = 807,Target=Targ_key), heading="Table 9. Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI")
+out_targetQ#get a heywood case. really poor fit
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+```
+#Create dataset for Target rotation
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+APSI<-select(data,  APSI_1, APSI_2, APSI_4, APSI_7,  APSI_8,    APSI_5, APSI_3,  APSI_6)
+APSI$APSI_6  <-  6- APSI$APSI_6
+APSI<- data.frame(apply(APSI,2, as.numeric))
+colnames(APSI) <- c("1","2", "3", "4", "5", "6", "7","8")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be MLQ
+Targ_key <- make.keys(8,list(f1=1:6,f2=7:8))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+APSI_cor <- corFiml(APSI)
+APSI_cor
+out_targetQ <- fa(APSI_cor,2,rotate="TargetQ",n.obs = 807,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]#many cross loadings
+fa2latex(fa(APSI_cor,2,rotate="TargetQ",n.obs = 807,Target=Targ_key), heading="Table 10. Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI")
+out_targetQ#still not a great fit
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+```
+#Create dataset for Target rotation droping question 3 that talks about having belifes and values and loads on all factors
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+APSI<-select(data,  APSI_1, APSI_2, APSI_4, APSI_7,  APSI_8,  APSI_5, APSI_3,  APSI_6)
+APSI$APSI_6  <-  6- APSI$APSI_6
+APSI<- data.frame(apply(APSI,2, as.numeric))
+colnames(APSI) <- c("1","2", "3", "4", "5", "6", "7", "8")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+Targ_key <- make.keys(8,list(f1=1:6,f2=7, f3=8))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+APSI_cor <- corFiml(APSI)
+out_targetQ <- fa(APSI_cor,3,rotate="TargetQ",n.obs = 807,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+fa2latex(fa(APSI_cor,3,rotate="TargetQ",n.obs = 807,Target=Targ_key), heading="Table 11. Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI")
+out_targetQ#its a good fit but the second factor does not load at all. 1, 4, 7, 8 work well as one factor 3, 5 and 6 are problematic. 
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+#Create dataset for Target rotation as one factor
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+APSI<-select(data,  APSI_1, APSI_2, APSI_3, APSI_4, APSI_5, APSI_6, APSI_7, APSI_8)
+APSI$APSI_6  <-  6- APSI$APSI_6
+APSI<- data.frame(apply(APSI,2, as.numeric))
+colnames(APSI) <- c("1","2", "3", "4", "5", "6", "7", "8")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+Targ_key <- make.keys(8,list(f1=1:8))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+APSI_cor <- corFiml(APSI)
+out_targetQ <- fa(APSI_cor,1,rotate="TargetQ",n.obs = 807,Target=Targ_key) #TargetT for orthogonal rotation
+fa2latex(fa(APSI_cor,1,rotate="TargetQ",n.obs = 807,Target=Targ_key), heading="Table 1. Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI")
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ#its a good fit but the second factor does not load at all. 1, 4, 7, 8 work well as one factor 3, 5 and 6 are problematic. 
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+Lavaan for one factor model
+```{r}
+```
+#create the models
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+APSI<-select(data,  APSI_1, APSI_2, APSI_3, APSI_4, APSI_5, APSI_6, APSI_7, APSI_8)
+one.model= ' Factor1  =~ APSI_1 + APSI_2 + APSI_3 + APSI_4 + APSI_5 + APSI_6 + APSI_7 + APSI_8'
+one.fit=cfa(one.model, data=APSI, missing = "fiml")
+semPaths(one.fit, whatLabels = "std", layout = "tree")
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+correl1 = residuals(one.fit, type="cor")
+correl1
+View(correl1$cor)
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(one.fit) #Models as a single purpose factor
+
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+APSI<-select(data,  APSI_1, APSI_2, APSI_3, APSI_4, APSI_5, APSI_6, APSI_7, APSI_8)
+one.model= ' Factor1  =~ APSI_1 + APSI_2 + APSI_4 + APSI_5 + APSI_7 + APSI_8
+Factor 2 =~ APSI_3  
+Factor 3 =~ APSI_6'
+one.fit=cfa(one.model, data=APSI, missing = "fiml")
+semPaths(one.fit, whatLabels = "std", layout = "tree")
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+correl1 = residuals(one.fit, type="cor")
+correl1
+View(correl1$cor)
+correl2 = residuals(one.fit, type="standardized")
+correl2$cov
+View(correl2$cov)
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+summary(one.fit)
+fitmeasures(one.fit) #Models as a single purpose factor
+inspect(one.fit,what="std")
+fitted(one.fit)
+cov2cor(inspect(one.fit, "coefficients")$psi) 
+ #Models two factors:Positive and Negative  
+```
+Misc code for exportign tabel
+```{r}
+#fa.results(out_targetQ)
+#xtable(out_targetQ)
+
+#source("http://bioconductor.org/biocLite.R")
+#biocLite(c("graph", "RBGL", "Rgraphviz"))
+#library(Rgraphviz)
+#library(schoRsch)
+#library(xtable)
+#library(knitr)
+#library(devtools)
+
+#fa2latex(fa(APSI,1,rotate="oblimin", fm="ml"),heading="Table 1. Factor analysis OF APSI as One Factor")
+
+

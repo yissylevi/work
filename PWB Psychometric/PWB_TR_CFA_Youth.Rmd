@@ -1,0 +1,310 @@
+---
+title: "PWB CFA TR Youth"
+author: "Levi Brackman"
+date: "28 July 2015"
+output: html_document
+---
+
+1.	I live one day at a time and don't really think about the future. (rs)
+2.	I tend to focus on the present, because the future always brings me problems. (rs)
+3.	My daily activities often seem trivial and unimportant to me. (rs)
+4.	I don't have a good sense of what it is that I am trying to accomplish in my life. (rs)
+5.	I used to set goals for myself, but that now seems a waste of time. (rs)
+6.	I enjoy making plans for the future and working to make them a reality. 
+7.	I am an active person in carrying out the plans I set for myself. 
+8.	Some people wander aimlessly through life, but I am not one of them. 
+9.	I sometimes feel as if I've done all there is to do in life. (rs)
+
+---
+
+```{r}
+library(lavaan)
+library(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+library(car)
+library(ggplot2)
+library(GGally)
+```
+#loadthedata
+```{r}
+setwd("/Users/levibrackman/Documents/stats_march_2016/")
+data <- read.csv("allsurveysYT1_Jan2016.csv", header=T)
+data<-tbl_df(data)
+PWB<-select(data, PWB_1, PWB_2, PWB_3, PWB_4, PWB_5, PWB_6,PWB_7, PWB_8, PWB_9)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+PWB<-tbl_df(PWB)
+PWB
+
+```
+#create plots
+```{r}
+#ggpairs(PWB, columns = 1:15, title="Big 5 Marsh" )
+
+```
+#create the models
+```{r}
+two.model= ' Factor1  =~ PWB_1 +  PWB_3  + PWB_4 + PWB_5 + PWB_6 + PWB_9   
+              Factor2 =~   PWB_2+ PWB_7 + PWB_8
+'  #Models two factors:Positive and Negative     
+
+three.model= ' F1  =~ PWB_1 +  PWB_3  + PWB_5 + PWB_6   
+                F2 =~    PWB_7 + PWB_8 
+                F3 =~ PWB_2 + PWB_9 + PWB_4'
+
+#Models three factors based on EFA 
+
+one.model= 'PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9' #Models as a single purpose factor
+```
+Second order models
+```{r}
+
+second.model = '  F1  =~ PWB_1 +  PWB_3  + PWB_5 + PWB_6   
+                F2 =~    PWB_7 + PWB_8 
+                F3 =~ PWB_2 + PWB_9 + PWB_4
+                HO =~ F1+F2+F3'
+                F3 ~~ 0*F3'
+ #Second order models as Purpose being the higher factor made up of Purpose and Positive
+second.modelWOF2 = '  F1  =~ PWB_1 +  PWB_3  + PWB_5 + PWB_6   
+                F3 =~ PWB_2 + PWB_9 + PWB_4
+                HO =~ F1+F3
+                F1 ~~ 0*F1
+' #Second order models as Purpose being the higher factor made up of Purpose and Positive
+```
+Bifactor (like model 7 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+
+bifactor.negative.model = 'Negative =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_9  
+                                     PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9 
+'#Models bifactor as the negatively worded item as a factor uncorolated with the main factor
+
+bifactor.model1 = 'PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9
+                F1  =~ PWB_1 +  PWB_3  + PWB_5 + PWB_6   
+                F2 =~    PWB_7 + PWB_8 
+                F3 =~ PWB_2 + PWB_9 + PWB_4
+                F1 ~~ 0*F1
+'#Models bifactor with Positive and Purpose as factors uncorolated with the main factor
+
+bifactor.model2 = 'PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9
+                F1  =~ PWB_1 +  PWB_3  + PWB_5 + PWB_6   
+                F2 =~   PWB_4 + PWB_7 + PWB_8 
+                F3 =~ PWB_2 + PWB_9 
+                PWB ~~ 0*F1
+                PWB ~~ 0*F2
+                PWB ~~ 0*F3
+                F1~~0*F2
+                F1~~0*F3
+                F2~~0*F3
+'#Models bifactor with Positive and Purpose as factors uncorolated with the main factor
+
+```
+#run the models
+```{r}
+three.fit=cfa(three.model, data=PWB, missing = "fiml", std.lv = T)
+one.fit=cfa(one.model, data=PWB, missing = "fiml", std.lv = T)
+second.fit=cfa(second.model, data=PWB, missing = "fiml", std.lv = T)
+inspect(second.fit,"cov.lv")
+eigen(inspect(second.fit, "cov.lv"))$values
+inspect(second.fit, "theta")
+second.fitWOF2=cfa(second.modelWOF2, data=PWB, missing = "fiml", std.lv = F)
+bifactor1.fit=cfa(bifactor.model1, data=PWB, missing = "fiml", std.lv = T)
+bifactor2.fit=cfa(bifactor.model2, data=PWB, missing = "fiml", std.lv = T)
+bifactor.negative.fit=cfa(bifactor.negative.model, data=PWB, missing = "fiml", std.lv = T)
+```
+
+#create pictures
+```{r}
+semPaths(two.fit, whatLabels = "std", layout = "tree")
+semPaths(three.fit, whatLabels = "std", layout = "tree")
+semPaths(second.fit, whatLabels = "std", layout = "tree")
+semPaths(second.fitWOF2, whatLabels = "std", layout = "tree")
+
+semPaths(bifactor1.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor2.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor.negative.fit, whatLabels = "std", layout = "tree")
+```
+#summaries
+```{r}
+summary(two.fit, standardized = TRUE, rsquare=TRUE)
+summary(three.fit, standardized = TRUE, rsquare=TRUE)
+summary(second.fit, standardized = TRUE, rsquare=TRUE)
+summary(second.fitWOF2, standardized = TRUE, rsquare=TRUE)
+
+summary(bifactor1.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor2.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.negative.fit, standardized = TRUE, rsquare=TRUE)
+```
+#Residual correlations
+```{r}
+correl = residuals(two.fit, type="cor")
+correl
+View(correl$cor)
+correl1 = residuals(three.fit, type="normalized")
+correl1
+View(correl1$cor)
+correl0 = residuals(second.fit, type="standardized")
+correl0
+correl4 = residuals(second.fitWOF2, type="standardized")
+correl4
+#over 1.96 is statistically significant
+View(correl0$cor)
+correl4 = residuals(bifactor1.fit, type="cor")
+correl4
+View(correl4$cor)
+correl5 = residuals(bifactor2.fit, type="cor")
+correl5
+correl3 = residuals(bifactor.negative.fit, type="cor")
+correl3
+View(correl3$cor)
+```
+#Modification indicies
+```{r}
+modindices(two.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(three.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(bifactor1.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(second.fit, sort. = TRUE, minimum.value = 3.84)
+
+#modindices(bifactor.negative.fit, sort. = TRUE, minimum.value = 3.84)
+```
+#Fit Measures
+```{r}
+#fitmeasures(two.fit)#Models three  
+threefactorfit<-fitmeasures(three.fit,  c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")) 
+threefactorfit 
+secondorderfit<-fitmeasures(second.fit,  c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"))
+secondorderfit
+#Second order models as Purpose being the higher factor made up of Purpose and Positive
+fitmeasures(second.fitWOF2)#Second order models as Purpose being the higher factor made up of Purpose and Positive
+
+fitmeasures(bifactor1.fit)#Models bifactor with Positive and Purpose as factors uncorolated with the main factor
+fitmeasures(bifactor2.fit)#Models bifactor with Positive and Purpose as factors uncorolated with the main factor
+fitmeasures(bifactor.negative.fit)#Models bifactor as the negatively worded item as a factor uncorolated with the main factor
+```
+#Tables
+```{r}
+tabel.threefit<-parameterEstimates(three.fit, zstat = F, pvalue = F, ci = F, 
+                   level = 0.95, boot.ci.type = "perc", standardized = T, 
+                   fmi = F, remove.system.eq = TRUE, remove.eq = TRUE, 
+                   remove.ineq = TRUE, remove.def = T, rsquare = FALSE, 
+                   add.attributes = FALSE)
+tabel.threefit<-select(tabel.threefit, "Factor Names" = lhs, Items = rhs, Loadings = std.all)
+tabel.threefit<-tabel.threefit[c(1:9), ]
+#second order table
+tabel.secondorderfit<-parameterEstimates(second.fit, zstat = F, pvalue = F, ci = F, 
+                   level = 0.95, boot.ci.type = "perc", standardized = T, 
+                   fmi = F, remove.system.eq = TRUE, remove.eq = TRUE, 
+                   remove.ineq = TRUE, remove.def = T, rsquare = FALSE, 
+                   add.attributes = FALSE)
+tabel.secondorderfit<-select(tabel.secondorderfit, "Factor Names" = lhs, Items = rhs, Loadings = std.all)
+tabel.secondorderfit<-tabel.secondorderfit[(1:12), ]
+
+all_fits_table<-rbind(tabel.threefit, tabel.secondorderfit)
+#change order of colunms
+all_fits_table$Models      <- ""
+all_fits_table <- all_fits_table[c(4,2,1,3)]
+print(xtable(all_fits_table, caption = 'Factor Loadings for Confirmatory Factor Analysis with Lavaan of Three Factor and Second Order for PWB', table.placement =""))
+
+```
+Creat tables of fit meansure
+```{r}
+namess<-c("Chisq", "DF", "P-Value", "CFI", "TLI", "RMSEA", "RMSEA ci upper", "RMSEA ci lower", "SRMR")
+namess<-as.data.frame(namess)
+threefactorfit<-data.frame(threefactorfit)
+secondorderfit<-data.frame(secondorderfit)
+all<-bind_cols(namess, threefactorfit, secondorderfit)
+require(dplyr)
+tableall_fit_measures<-select(all, 'Fit Measures' = namess, 'Three Factor Model' =  threefactorfit, 'Second Order Model' = secondorderfit)
+round_df <- function(df, digits) {
+  nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
+
+  df[,nums] <- round(df[,nums], digits = digits)
+
+  (df)
+}
+#Round the numbers
+tableall_fit_measures<-round_df(tableall_fit_measures, digits=3)
+#Transpose the dataframe so that colunms end up being rows
+tableall_fit_measures<-t(tableall_fit_measures)
+tableall_fit_measures<-as.data.frame(tableall_fit_measures)
+#Create table
+require(xtable)
+xtable(tableall_fit_measures)
+tableall_fit_measures
+
+
+
+```
+#Create dataset for Target rotation
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+PWBTR<-select(all_surveys, PWB_1, PWB_2, PWB_3,PWB_4, PWB_5,PWB_6,PWB_9, PWB_8,PWB_7)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+PWBTR<- data.frame(apply(PWBTR,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+PWBTR<-tbl_df(PWBTR)
+PWBTR
+str(PWBTR)
+colnames(PWBTR) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(9,list(f1=1:6,f2=7:9))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWBTR_cor <- corFiml(PWBTR) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWBTR_cor,2,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+```
+#Target toration as three factors - works well as three factors but with cross loadings
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+PWBTR<-select(all_surveys, PWB_1, PWB_3, PWB_5,PWB_6, PWB_4,PWB_7,PWB_8, PWB_2,PWB_9)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+PWBTR<- data.frame(apply(PWBTR,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+PWBTR<-tbl_df(PWBTR)
+PWBTR
+str(PWBTR)
+colnames(PWBTR) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(9,list(f1=1:4,f2=5:7, f3=8:9))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWBTR_cor <- corFiml(PWBTR) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWBTR_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+
+

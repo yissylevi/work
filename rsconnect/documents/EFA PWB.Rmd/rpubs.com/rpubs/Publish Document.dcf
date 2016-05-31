@@ -1,0 +1,7 @@
+name: Publish Document
+account: rpubs
+server: rpubs.com
+bundleId:
+        https://api.rpubs.com/api/v1/document/97533/ec4a9d4149684603abb7a41b9a103abe
+url: http://rpubs.com/levibrackman/97533
+when: 1437974285.14546

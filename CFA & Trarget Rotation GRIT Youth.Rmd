@@ -1,0 +1,139 @@
+---
+title: "GRIT CFA & TR Youth"
+author: "Levi Brackman"
+date: "28 July 2015"
+output: html_document
+---
+```{r}
+```{r}
+library(lavaan)
+library(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+library(car)
+library(ggplot2)
+library(GGally)
+```
+#loadthedata
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+all_surveys<-tbl_df(all_surveys)
+all_surveys
+GRIT<-select(all_surveys, GRIT_4, GRIT_5, GRIT_6, GRIT_7, GRIT_8, GRIT_9, GRIT_10, GRIT_11)
+GRIT<- data.frame(apply(GRIT,2, as.numeric))
+GRIT<-tbl_df(GRIT)
+GRIT
+```
+#Create the Models#
+As only one factor
+```{r}
+one.factor = 'GRIT =~ GRIT_4 + GRIT_5 + GRIT_6 + GRIT_7 + GRIT_8 + GRIT_9 + GRIT_10 + GRIT_11
+' 
+```
+Two Factor, Positive and Nagative Model
+```{r}
+first.model= ' Consistency =~ GRIT_4 + GRIT_5 + GRIT_6 + GRIT_7  
+             Preserverence =~   GRIT_8 + GRIT_9 + GRIT_10 + GRIT_11
+' 
+```
+
+Bifactor Models (similar to Models 6, 7 & 8 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+
+bifactor.model = 'GRIT =~ GRIT_4 + GRIT_5 + GRIT_6 + GRIT_7 + GRIT_8 + GRIT_9 + GRIT_10 + GRIT_11
+                Consistency =~ GRIT_4 + GRIT_5 + GRIT_6 + GRIT_7  
+             Preserverence =~   GRIT_8 + GRIT_9 + GRIT_10 + GRIT_11
+                GRIT ~~ 0*Consistency
+                GRIT ~~ 0*Preserverence
+                Consistency~~0*Preserverence
+'
+```
+Running the models
+```{r}
+one.fit=cfa(one.factor, data=GRIT, missing = "fiml", std.lv = T)
+two.fit=cfa(first.model, data=GRIT, missing = "fiml", std.lv = T)
+bifactor.fit=cfa(bifactor.model, data=GRIT, missing = "fiml", orthogonal = TRUE, std.lv = T)
+
+```
+Create pictures of models
+```{r}
+#One Factor
+semPaths(one.fit, whatLabels = "std", layout = "tree", title=T)
+#Two Factors Positive and Nagative
+semPaths(two.fit, whatLabels = "std", layout = "tree")
+#Bifactor Models (similar to Models 6, 7 & 8 in Marsh, Scalas & Nagengast, 2010)
+semPaths(bifactor.fit, whatLabels = "std", layout = "tree")
+
+```
+Summaries
+```{r}
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+summary(two.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.fit, standardized = TRUE, rsquare=TRUE)
+```
+Residual correlations
+```{r}
+correl.1 = residuals(one.fit, type="cor")
+correl.1
+#View(correl.1$cor)
+correl = residuals(two.fit, type="cor")
+correl
+correl3 = residuals(bifactor.fit, type="cor")
+correl3
+```
+zscore correlation anything over 1.96 is going to be statistically significant at the .05 level 
+```{r}
+zcorrels10 = residuals(one.fit, type = "standardized")
+zcorrels10$cov
+zcorrels = residuals(two.fit, type = "standardized")
+zcorrels$cov
+zcorrels5 = residuals(bifactor.fit, type = "standardized")
+zcorrels5$cov
+```
+Modification indicies
+```{r}
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(two.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(bifactor.fit, sort. = TRUE, minimum.value = 3.84)
+
+```
+Fit Measures
+```{r}
+fitmeasures(one.fit)
+fitmeasures(two.fit)
+fitmeasures(bifactor.fit)
+```
+```
+Two factors Consitency and preseverence
+
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+all_surveys<-tbl_df(all_surveys)
+all_surveys
+GRIT<-select(all_surveys, GRIT_4, GRIT_5, GRIT_6, GRIT_7, GRIT_8, GRIT_9, GRIT_10, GRIT_11)
+GRIT<- data.frame(apply(GRIT,2, as.numeric))
+GRIT<-tbl_df(GRIT)
+GRIT
+```
+
+Target Rotation
+
+```{r, echo=FALSE}
+colnames(GRIT) <- c("1","2", "3", "4", "5", "6", "7", "8")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be GRIT
+Targ_key <- make.keys(8,list(f1=1:4,f2=5:8))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+out_targetQ <- fa(GRIT,2,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+
+

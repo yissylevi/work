@@ -1,0 +1,283 @@
+---
+title: "EFA CFA & TR PWB Youth"
+author: "Levi Brackman"
+date: "25 January 2016"
+output: html_document
+---
+1.	I live one day at a time and don't really think about the future. (rs)
+2.	I tend to focus on the present, because the future always brings me problems. (rs)
+3.	My daily activities often seem trivial and unimportant to me. (rs)
+4.	I don't have a good sense of what it is that I am trying to accomplish in my life. (rs)
+5.	I used to set goals for myself, but that now seems a waste of time. (rs)
+6.	I enjoy making plans for the future and working to make them a reality. 
+7.	I am an active person in carrying out the plans I set for myself. 
+8.	Some people wander aimlessly through life, but I am not one of them. 
+9.	I sometimes feel as if I’ve done all there is to do in life. (rs)
+
+
+```{r}
+
+##load packages
+library(psych)
+library(GPArotation)
+library(plyr)
+library(dplyr)
+
+# data preparation
+setwd("/Users/levibrackman/Documents/stats_march_2016/")
+data <- read.csv("allsurveysYT1_Jan2016.csv", header=T)
+PWB<-select(data,  PWB_1,  PWB_2,  PWB_3,  PWB_4,  PWB_5,  PWB_6, PWB_7,  PWB_8,  PWB_9)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+ PWB<- data.frame(apply(PWB,2, as.numeric))
+ PWB<-tbl_df(PWB)
+ PWB
+str(PWB)
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+ PWB<- PWB[complete.cases(PWB[,]),]
+
+#testing cronbach alpha in R
+alpha(PWB, title=NULL, max=10,na.rm = TRUE, check.keys=TRUE,n.iter=1,delete=TRUE)
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(PWB, fm="ml",fa="fa")
+#two factors are greater than one Eigenvalue scree plot says there are two factors. Paralel analysis suggests 4 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=2, over .7=2
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(PWB), cor = TRUE)
+parallel2<-princomp(na.omit(PWB), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(PWB, nfactors=2, rotate="oblimin", fm="ml")
+twofactor
+#create table
+Two_factor_Fits<-c(twofactor$STATISTIC, twofactor$PVAL, twofactor$dof, 1-((twofactor$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof)), twofactor$TLI, twofactor$RMSEA, twofactor$rms)
+Two_factor_Fits<-as.data.frame(Two_factor_Fits)
+require(reshape)
+Two_factor_Fits <- melt(Two_factor_Fits, id.vars="Two_factor_Fits")
+
+1-((twofactor$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+fa2latex(fa(PWB,2, rotate="oblimin", fm="ml"),heading="Table 1. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation of PWB-P")
+
+threefactor<-fa(PWB, nfactors=3, rotate="oblimin", fm="ml")
+#Creat Table
+#Put all the fit measures together
+Three_factor_Fits<-c(threefactor$STATISTIC, threefactor$PVAL, threefactor$dof, 1-((threefactor$STATISTIC - threefactor$dof)/(threefactor$null.chisq- threefactor$null.dof)), threefactor$TLI, threefactor$RMSEA, threefactor$rms)
+#Make it as a dataframe
+Three_factor_Fits<-as.data.frame(Three_factor_Fits)
+require(reshape)
+#Put into colunms
+Three_factor_Fits <- melt(Three_factor_Fits, id.vars="Three_factor_Fits")
+#CFI
+1-((threefactor$STATISTIC - threefactor$dof)/(threefactor$null.chisq- threefactor$null.dof))
+
+fa2latex(fa(PWB,3, rotate="oblimin", fm="ml"),heading="Table 3. Three Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation of PWB-P")
+fourfactor<-fa(PWB, nfactors=4, rotate="oblimin", fm="ml")
+fourfactor
+#question 1,3,5,6,9 seems to be one factor and all talk about plans or lack of plans
+ PWBWO15<-select(PWB,  1,3,4,5,6,9)
+ PWBWO15<-tbl_df(PWBWO15)
+ PWBWO15
+twofactorWO15<-fa(PWBWO15, nfactors=1, rotate="oblimin", fm="ml")
+twofactorWO15
+#CFI, should be slightly higher than the TLI
+1-((twofactorWO15$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+#question 7,8 seems to be one factor and all talk about being active or wondering aimlessly
+ PWB78<-select(PWB,  7,8)
+ PWB78<-tbl_df(PWB78)
+ PWB78
+twofactor78<-fa(PWB78, nfactors=1, rotate="oblimin", fm="ml")
+twofactor78
+#CFI, should be slightly higher than the TLI
+1-((twofactorWO15$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+#question 2,8 seems to be one factor 
+ PWB29<-select(PWB, 2,8)
+ PWB29<-tbl_df(PWB29)
+ PWB29
+twofactor29<-fa(PWB29, nfactors=1, rotate="oblimin", fm="ml")
+twofactor29
+#CFI, should be slightly higher than the TLI
+1-((twofactor29$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+
+##reliability
+#alpha(PWB[,c(1,2,3,4,5,6,7,8,9)])
+#alpha(PWB[,c(5,9,10,14)])
+#What are the factors
+#Factor 1 is positive emotions
+#Factor 2 is negative emotions
+
+#Create dataset for Target rotation
+```{r}
+all_surveys<-read.csv("allsurveysYT1_Jan2016.csv", header=T)
+PWB<-select(all_surveys, PWB_1, PWB_2, PWB_3,PWB_4, PWB_5,PWB_6, PWB_7, PWB_8, PWB_9)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+PWB<- data.frame(apply(PWB,2, as.numeric))
+
+```{r}
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+PWB<-tbl_df(PWB)
+PWB
+str(PWB)
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(9,list(f1=1:9))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWB_cor <- corFiml(PWB) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWB_cor,1,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+
+One_factor_Fits<-c(out_targetQ$STATISTIC, out_targetQ$PVAL, out_targetQ$dof, 1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof)), out_targetQ$TLI, out_targetQ$RMSEA, out_targetQ$rms)
+One_factor_Fits<-as.data.frame(One_factor_Fits)
+One_factor_Fits <- melt(One_factor_Fits, id.vars="One_factor_Fits")
+
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+
+#try something else 1,3,5,6 as factor one. 7 and 8 as factor 2. 2,4,9 as factor 3.
+```{r}
+all_surveys<-read.csv("allsurveysYT1_Jan2016.csv", header=T)
+PWB<-select(all_surveys, PWB_1, PWB_3, PWB_5,PWB_6, PWB_7,PWB_8, PWB_2, PWB_4, PWB_9)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+PWB<- data.frame(apply(PWB,2, as.numeric))
+Targ_key1 <- make.keys(9,list(f1=1:4,f2=5:6, f3=7:9))
+Targ_key1 <- scrub(Targ_key1,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key1 <- list(Targ_key1)
+PWB_cor1 <- corFiml(PWB) # convert the raw data to correlation matrix uisng FIML
+out_targetQ1 <- fa(PWB_cor,3,rotate="TargetQ",n.obs = 1288,Target=Targ_key1) #TargetT for orthogonal rotation
+out_targetQ1[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ1
+#Create Table
+ThreeTR_factor_Fits<-c(out_targetQ1$STATISTIC, out_targetQ1$PVAL, out_targetQ1$dof, 1-((out_targetQ1$STATISTIC - out_targetQ1$dof)/(out_targetQ1$null.chisq- out_targetQ1$null.dof)), out_targetQ1$TLI, out_targetQ1$RMSEA, out_targetQ1$rms)
+ThreeTR_factor_Fits<-as.data.frame(ThreeTR_factor_Fits)
+ThreeTR_factor_Fits <- melt(ThreeTR_factor_Fits, id.vars="ThreeTR_factor_Fits")
+#Put all tables together
+#Create List of names
+namess<-c("Chisq", "P-Value", "DF", "CFI", "TLI", "RMSEA", "RMSEA ci upper", "RMSEA ci lower", "Confidence", "SRMR")
+#Bind all colunms together
+fitstable<-cbind(namess, One_factor_Fits, Two_factor_Fits, Three_factor_Fits, ThreeTR_factor_Fits)
+fitstable<-select(fitstable, 'Models' = namess, 'One Factor' =  One_factor_Fits, 'Two Factors' = Two_factor_Fits, 'Three Factors' = Three_factor_Fits, 'Three Factors TR' = ThreeTR_factor_Fits)
+fitstable<-fitstable[-9, ]
+#Function to round number in dataframe
+round_df <- function(df, digits) {
+  nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
+
+  df[,nums] <- round(df[,nums], digits = digits)
+
+  (df)
+}
+#Round the numbers
+fitstable<-round_df(fitstable, digits=3)
+#Transpose the dataframe so that colunms end up being rows
+fitstableT<-t(fitstable)
+fitstableT<-as.data.frame(fitstableT)
+#Create table
+require(xtable)
+xtable(fitstableT)
+
+fa2latex(fa(PWB_cor,3,rotate="TargetQ", n.obs = 1288, Target=Targ_key), heading="Factor Loadings for Tarket Rotation, Three Factors")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+Droping question 4 because it loads on all of the factors. Much better fit to the data
+```{r}
+all_surveys<-read.csv("allsurveysYT1_Jan2016.csv", header=T)
+PWB<-select(all_surveys, PWB_1, PWB_3, PWB_5,PWB_6, PWB_7,PWB_8, PWB_2, PWB_9)
+PWB<- data.frame(apply(PWB,2, as.numeric))
+PWB<-tbl_df(PWB)
+PWB
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7", "8")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(8,list(f1=1:4,f2=5:7, f3=8))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWB_cor <- corFiml(PWB) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWB_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+```
+Droping question 1 as well because it also loads on all of the factors. Much better fit to the data
+```{r}
+all_surveys<-read.csv("allsurveysYT1_Jan2016.csv", header=T)
+PWB<-select(all_surveys, PWB_3, PWB_5,PWB_6, PWB_8,PWB_7, PWB_2, PWB_9)
+PWB<- data.frame(apply(PWB,2, as.numeric))
+PWB<-tbl_df(PWB)
+PWB
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(7,list(f1=1:3,f2=4:5, f3=6:7))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWB_cor <- corFiml(PWB) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWB_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+Adding a 4th factor with questions 1 and 4
+```{r}
+all_surveys<-read.csv("allsurveysT1.csv")
+PWB<-select(all_surveys, PWB_3, PWB_5,PWB_6, PWB_8,PWB_7, PWB_2, PWB_9, PWB_1, PWB_4)
+PWB<- data.frame(apply(PWB,2, as.numeric))
+PWB<-tbl_df(PWB)
+PWB
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(9,list(f1=1:3,f2=4:5, f3=6:7, f4=8:9))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWB_cor <- corFiml(PWB) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWB_cor,4,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+
+
+

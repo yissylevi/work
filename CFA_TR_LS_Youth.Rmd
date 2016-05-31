@@ -1,0 +1,115 @@
+---
+title: "LS CFA TR Youth"
+author: "Levi Brackman"
+date: "28 July 2015"
+output: html_document
+---
+1.	In most ways my life is close to my ideal. 
+2.	The conditions of my life are excellent. 
+3.	I am satisfied with my life. 
+4.	So far I have gotten the important things I want in life. 
+5.	If I could live my life over, I would change almost nothing. 
+---
+
+```{r}
+library(lavaan)
+library(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+library(car)
+library(ggplot2)
+library(GGally)
+```
+#loadthedata
+```{r}
+data <- read.csv("~/Psychometric_study_data/allsurveysYT1.csv")
+data<-tbl_df(data)
+LS<-select(data, LS_1,	LS_2,	LS_3,	LS_4,	LS_5)
+
+LS<-tbl_df(LS)
+LS
+```
+
+#Create the Models#
+As only one factor
+```{r}
+one.factor = 'LS =~ LS_1 +  LS_2  + LS_3  + LS_4 + LS_5  
+' 
+```
+Two Factor - diffecult to justify from the theoretical standpoint but will try to see the fit anyway
+```{r}
+first.model= ' F1 =~ LS_1 +  LS_2     
+             F2 =~   LS_3 + LS_4 + LS_5  
+' 
+
+```
+Running the models
+```{r}
+one.fit=cfa(one.factor, data=LS, missing = "fiml", std.lv = T)
+two.fit=cfa(first.model, data=LS, missing = "fiml", std.lv = T)
+```
+Create pictures of models
+```{r}
+#One Factor
+semPaths(one.fit, whatLabels = "std", layout = "tree", title=T)
+#Two Factors 
+semPaths(two.fit, whatLabels = "std", layout = "tree")
+
+```
+Summaries
+```{r}
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+summary(two.fit, standardized = TRUE, rsquare=TRUE)
+
+```
+Residual correlations
+```{r}
+correl.1 = residuals(one.fit, type="cor")
+correl.1
+#View(correl.1$cor)
+correl = residuals(two.fit, type="cor")
+correl
+#View(correl$cor)
+
+```
+zscore correlation anything over 1.96 is going to be statistically significant at the .05 level 
+```{r}
+zcorrels10 = residuals(one.fit, type = "standardized")
+zcorrels10$cov
+zcorrels = residuals(two.fit, type = "standardized")
+zcorrels$cov
+
+```
+Modification indicies
+```{r}
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(two.fit, sort. = TRUE, minimum.value = 3.84)
+
+```
+Fit Measures
+```{r}
+fitmeasures(one.fit)
+fitmeasures(two.fit)
+```
+#Create dataset for Target rotation
+```{r}
+LSTR<-select(data, LS_1,	LS_2,	LS_3,	LS_4,	LS_5)
+
+colnames( LSTR) <- c("1","2", "3", "4", "5")
+ LSTR<-tbl_df( LSTR)
+ LSTR
+#Target Roration
+```{r}
+Targ_key <- make.keys(5,list(f1=1:5))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+LSTR_cor <- corFiml(LSTR) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(LSTR_cor,1,rotate="TargetQ", n.obs = 772, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA","uniquenesses")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```

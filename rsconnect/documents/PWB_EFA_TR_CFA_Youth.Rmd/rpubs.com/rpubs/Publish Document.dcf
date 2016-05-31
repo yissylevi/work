@@ -1,0 +1,7 @@
+name: Publish Document
+account: rpubs
+server: rpubs.com
+bundleId:
+        https://api.rpubs.com/api/v1/document/146627/c7f0a08305f5480e8a27c227960b0246
+url: http://rpubs.com/levibrackman/146627/edit
+when: 1453686939.72662

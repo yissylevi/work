@@ -1,0 +1,338 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWB, 2, rotate = "oblimin", fm = "ml") % Called in the psych package  Table 1. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r }
+ \multicolumn{ 5 }{l}{ Table 1. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   ML1  &  ML2  &  h2  &  u2  &  com \cr 
+  \hline 
+PWB\_1   &  \bf{ 0.68}  &  -0.16  &  0.46  &  0.54  &  1.11 \cr 
+ PWB\_2   &  \bf{ 0.50}  &   0.08  &  0.27  &  0.73  &  1.06 \cr 
+ PWB\_3   &  \bf{ 0.77}  &  -0.03  &  0.59  &  0.41  &  1.00 \cr 
+ PWB\_4   &  \bf{ 0.49}  &   0.28  &  0.36  &  0.64  &  1.58 \cr 
+ PWB\_5   &  \bf{-0.78}  &   0.00  &  0.61  &  0.39  &  1.00 \cr 
+ PWB\_6   &  \bf{ 0.47}  &   0.25  &  0.32  &  0.68  &  1.51 \cr 
+ PWB\_7   &  -0.03  &  \bf{ 0.87}  &  0.74  &  0.26  &  1.00 \cr 
+ PWB\_8   &   0.06  &  \bf{ 0.60}  &  0.38  &  0.62  &  1.02 \cr 
+ PWB\_9   &  \bf{ 0.43}  &   0.03  &  0.19  &  0.81  &  1.01 \cr 
+\hline \cr SS loadings & 2.61 &  1.32 &  \cr  
+\cr 
+            \hline \cr 
+ML1   & 1.00 & 0.15 \cr 
+ ML2   & 0.15 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWB, 3, rotate = "oblimin", fm = "ml") % Called in the psych package  Table 2. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r r }
+ \multicolumn{ 6 }{l}{ Table 2. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   ML1  &  ML2  &  ML3  &  h2  &  u2  &  com \cr 
+  \hline 
+PWB\_1   &  \bf{ 0.52}  &  -0.18  &   0.26  &  0.47  &  0.53  &  1.77 \cr 
+ PWB\_2   &   0.00  &   0.04  &  \bf{ 0.85}  &  0.73  &  0.27  &  1.01 \cr 
+ PWB\_3   &  \bf{ 0.78}  &  -0.05  &   0.02  &  0.61  &  0.39  &  1.01 \cr 
+ PWB\_4   &  \bf{ 0.35}  &   0.26  &   0.23  &  0.36  &  0.64  &  2.64 \cr 
+ PWB\_5   &  \bf{-0.79}  &   0.01  &  -0.02  &  0.64  &  0.36  &  1.00 \cr 
+ PWB\_6   &  \bf{ 0.60}  &   0.25  &  -0.15  &  0.39  &  0.61  &  1.48 \cr 
+ PWB\_7   &  -0.04  &  \bf{ 0.85}  &   0.04  &  0.73  &  0.27  &  1.01 \cr 
+ PWB\_8   &   0.07  &  \bf{ 0.61}  &   0.01  &  0.39  &  0.61  &  1.03 \cr 
+ PWB\_9   &   0.20  &   0.01  &  \bf{ 0.35}  &  0.24  &  0.76  &  1.59 \cr 
+\hline \cr SS loadings & 2.15 &  1.29 &  1.12 &  \cr  
+\cr 
+            \hline \cr 
+ML1   & 1.00 & 0.15 & 0.50 \cr 
+ ML2   & 0.15 & 1.00 & 0.11 \cr 
+ ML3   & 0.50 & 0.11 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWB, 4, rotate = "oblimin", fm = "ml") % Called in the psych package  Table 3. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r r r }
+ \multicolumn{ 7 }{l}{ Table 3. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   ML1  &  ML2  &  ML3  &  ML4  &  h2  &  u2  &  com \cr 
+  \hline 
+PWB\_1   &   0.13  &  -0.21  &  \bf{ 0.50}  &  \bf{ 0.35}  &  0.58  &  0.42  &  2.32 \cr 
+ PWB\_2   &  -0.01  &   0.08  &  \bf{ 0.77}  &  -0.05  &  0.59  &  0.41  &  1.03 \cr 
+ PWB\_3   &  \bf{ 0.84}  &  -0.06  &  -0.04  &   0.03  &  0.69  &  0.31  &  1.01 \cr 
+ PWB\_4   &  \bf{ 0.49}  &   0.29  &   0.17  &  -0.17  &  0.44  &  0.56  &  2.18 \cr 
+ PWB\_5   &  \bf{-0.61}  &   0.02  &  -0.11  &  -0.17  &  0.59  &  0.41  &  1.23 \cr 
+ PWB\_6   &   0.17  &   0.24  &  -0.02  &  \bf{ 0.60}  &  0.59  &  0.41  &  1.50 \cr 
+ PWB\_7   &  -0.04  &  \bf{ 0.81}  &   0.02  &   0.04  &  0.66  &  0.34  &  1.01 \cr 
+ PWB\_8   &   0.03  &  \bf{ 0.63}  &   0.00  &   0.07  &  0.42  &  0.58  &  1.03 \cr 
+ PWB\_9   &   0.25  &   0.03  &  \bf{ 0.37}  &  -0.15  &  0.28  &  0.72  &  2.16 \cr 
+\hline \cr SS loadings & 1.68 &  1.27 &  1.2 &  0.67 &  \cr  
+\cr 
+            \hline \cr 
+ML1   & 1.00 & 0.14 & 0.61 & 0.48 \cr 
+ ML2   & 0.14 & 1.00 & 0.12 & 0.09 \cr 
+ ML3   & 0.61 & 0.12 & 1.00 & 0.19 \cr 
+ ML4   & 0.48 & 0.09 & 0.19 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWBWO15, 3, rotate = "oblimin", fm = "ml") % Called in the psych package  Table 4. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r r }
+ \multicolumn{ 6 }{l}{ Table 4. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   ML2  &  ML1  &  ML3  &  h2  &  u2  &  com \cr 
+  \hline 
+PWB\_1   &  \bf{ 0.62}  &   0.07  &  -0.19  &  0.43  &  0.57  &  1.21 \cr 
+ PWB\_3   &  \bf{ 0.78}  &   0.00  &   0.14  &  0.64  &  0.36  &  1.06 \cr 
+ PWB\_4   &  \bf{ 0.45}  &   0.10  &   0.25  &  0.33  &  0.67  &  1.69 \cr 
+ PWB\_5   &  \bf{-0.79}  &  -0.03  &   0.03  &  0.63  &  0.37  &  1.00 \cr 
+ PWB\_6   &  \bf{ 0.60}  &  -0.11  &  -0.11  &  0.32  &  0.68  &  1.13 \cr 
+ PWB\_9   &   0.00  &  \bf{ 1.00}  &   0.00  &  1.00  &  0.00  &  1.00 \cr 
+\hline \cr SS loadings & 2.18 &  1.04 &  0.13 &  \cr  
+\cr 
+            \hline \cr 
+ML2   & 1.00 & 0.38 & 0.09 \cr 
+ ML1   & 0.38 & 1.00 & 0.11 \cr 
+ ML3   & 0.09 & 0.11 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWB78, 1, rotate = "oblimin", fm = "ml") % Called in the psych package  Table 5. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r }
+ \multicolumn{ 4 }{l}{ Table 5. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   ML1  &  ML1.1  &  ML1.2  &  com \cr 
+  \hline 
+PWB\_7   &  \bf{0.72}  &  0.52  &  0.48  &  1 \cr 
+ PWB\_8   &  \bf{0.72}  &  0.52  &  0.48  &  1 \cr 
+\hline \cr SS loadings & 1.04 &  \cr  
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWB29, 1, rotate = "oblimin", fm = "ml") % Called in the psych package  Table 4. Factor Loadings for Exploratory Factor Analysis PWB 
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWB29, 1, rotate = "oblimin", fm = "ml") % Called in the psych package  Table 6. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r }
+ \multicolumn{ 4 }{l}{ Table 6. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   ML1  &  ML1.1  &  ML1.2  &  com \cr 
+  \hline 
+PWB\_2   &  \bf{0.34}  &  0.12  &  0.88  &  1 \cr 
+ PWB\_8   &  \bf{0.34}  &  0.12  &  0.88  &  1 \cr 
+\hline \cr SS loadings & 0.23 &  \cr  
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWBTR_cor, 2, rotate = "TargetQ", n.obs = 816, Target = Targ_key) % Called in the psych package  Table 7. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r }
+ \multicolumn{ 5 }{l}{ Table 7. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   MR1  &  MR2  &  h2  &  u2  &  com \cr 
+  \hline 
+1   &  \bf{ 0.69}  &   0.20  &  0.46  &  0.54  &  1.17 \cr 
+ 2   &  \bf{ 0.51}  &  -0.06  &  0.27  &  0.73  &  1.02 \cr 
+ 3   &  \bf{ 0.78}  &   0.07  &  0.59  &  0.41  &  1.02 \cr 
+ 4   &  \bf{ 0.50}  &  -0.25  &  0.36  &  0.64  &  1.48 \cr 
+ 5   &  \bf{ 0.79}  &   0.04  &  0.61  &  0.39  &  1.00 \cr 
+ 6   &  \bf{-0.48}  &   0.22  &  0.32  &  0.68  &  1.41 \cr 
+ 7   &  \bf{ 0.44}  &  -0.01  &  0.19  &  0.81  &  1.00 \cr 
+ 8   &  -0.07  &  \bf{ 0.62}  &  0.40  &  0.60  &  1.02 \cr 
+ 9   &   0.02  &  \bf{ 0.84}  &  0.71  &  0.29  &  1.00 \cr 
+\hline \cr SS loadings & 2.65 &  1.27 &  \cr  
+\cr 
+            \hline \cr 
+MR1   &  1.00 & -0.19 \cr 
+ MR2   & -0.19 &  1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWBTR_cor, 3, rotate = "TargetQ", n.obs = 816, Target = Targ_key) % Called in the psych package  Table 8. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r r }
+ \multicolumn{ 6 }{l}{ Table 8. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   MR1  &  MR2  &  MR3  &  h2  &  u2  &  com \cr 
+  \hline 
+1   &  \bf{ 0.53}  &   0.18  &   0.24  &  0.48  &  0.52  &  1.66 \cr 
+ 2   &  \bf{ 0.76}  &   0.07  &   0.03  &  0.60  &  0.40  &  1.02 \cr 
+ 3   &  \bf{ 0.79}  &   0.04  &   0.02  &  0.63  &  0.37  &  1.01 \cr 
+ 4   &  \bf{-0.71}  &   0.21  &   0.27  &  0.44  &  0.56  &  1.49 \cr 
+ 5   &   0.04  &  \bf{ 0.82}  &  -0.04  &  0.67  &  0.33  &  1.01 \cr 
+ 6   &   0.27  &  -0.29  &  \bf{ 0.31}  &  0.38  &  0.62  &  2.97 \cr 
+ 7   &  -0.06  &  \bf{ 0.63}  &   0.00  &  0.42  &  0.58  &  1.02 \cr 
+ 8   &   0.01  &  -0.12  &  \bf{ 0.71}  &  0.54  &  0.46  &  1.06 \cr 
+ 9   &   0.09  &  -0.05  &  \bf{ 0.48}  &  0.29  &  0.71  &  1.09 \cr 
+\hline \cr SS loadings & 2.14 &  1.27 &  1.03 &  \cr  
+\cr 
+            \hline \cr 
+MR1   &  1.00 & -0.19 &  0.59 \cr 
+ MR2   & -0.19 &  1.00 & -0.03 \cr 
+ MR3   &  0.59 & -0.03 &  1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table}
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWB_cor, 3, rotate = "TargetQ", n.obs = 816, Target = Targ_key) % Called in the psych package  Table 9. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r r }
+ \multicolumn{ 6 }{l}{ Table 9. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   MR1  &  MR2  &  MR3  &  h2  &  u2  &  com \cr 
+  \hline 
+1   &  \bf{ 0.58}  &   0.18  &   0.22  &  0.48  &  0.52  &  1.47 \cr 
+ 2   &  \bf{ 0.78}  &   0.07  &   0.02  &  0.60  &  0.40  &  1.02 \cr 
+ 3   &  \bf{ 0.80}  &   0.04  &   0.01  &  0.63  &  0.37  &  1.01 \cr 
+ 4   &  \bf{-0.64}  &   0.21  &   0.26  &  0.44  &  0.56  &  1.54 \cr 
+ 5   &   0.10  &  \bf{ 0.84}  &  -0.02  &  0.67  &  0.33  &  1.03 \cr 
+ 6   &  -0.01  &  \bf{ 0.64}  &   0.01  &  0.42  &  0.58  &  1.00 \cr 
+ 7   &   0.13  &  -0.14  &  \bf{ 0.64}  &  0.54  &  0.46  &  1.18 \cr 
+ 8   &  \bf{ 0.31}  &  -0.30  &   0.27  &  0.38  &  0.62  &  2.97 \cr 
+ 9   &   0.17  &  -0.06  &  \bf{ 0.43}  &  0.29  &  0.71  &  1.36 \cr 
+\hline \cr SS loadings & 2.25 &  1.31 &  0.89 &  \cr  
+\cr 
+            \hline \cr 
+MR1   &  1.00 & -0.27 &  0.45 \cr 
+ MR2   & -0.27 &  1.00 & -0.02 \cr 
+ MR3   &  0.45 & -0.02 &  1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWB_cor, 3, rotate = "TargetQ", n.obs = 816, Target = Targ_key) % Called in the psych package  Table 10. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r r }
+ \multicolumn{ 6 }{l}{ Table 10. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   MR1  &  MR2  &  MR3  &  h2  &  u2  &  com \cr 
+  \hline 
+1   &  \bf{ 0.54}  &   0.17  &   0.24  &  0.48  &  0.52  &  1.59 \cr 
+ 2   &  \bf{ 0.76}  &   0.05  &   0.03  &  0.60  &  0.40  &  1.01 \cr 
+ 3   &  \bf{ 0.79}  &   0.02  &   0.01  &  0.63  &  0.37  &  1.00 \cr 
+ 4   &  \bf{-0.68}  &   0.23  &   0.27  &  0.44  &  0.56  &  1.56 \cr 
+ 5   &   0.09  &  \bf{ 0.83}  &  -0.03  &  0.67  &  0.33  &  1.03 \cr 
+ 6   &  -0.02  &  \bf{ 0.64}  &   0.00  &  0.42  &  0.58  &  1.00 \cr 
+ 7   &   0.26  &  -0.30  &   0.30  &  0.38  &  0.62  &  2.95 \cr 
+ 8   &   0.02  &  -0.13  &  \bf{ 0.70}  &  0.54  &  0.46  &  1.07 \cr 
+ 9   &   0.09  &  -0.06  &  \bf{ 0.47}  &  0.29  &  0.71  &  1.11 \cr 
+\hline \cr SS loadings & 2.12 &  1.32 &  1.01 &  \cr  
+\cr 
+            \hline \cr 
+MR1   &  1.00 & -0.23 &  0.58 \cr 
+ MR2   & -0.23 &  1.00 & -0.06 \cr 
+ MR3   &  0.58 & -0.06 &  1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWB_cor, 3, rotate = "TargetQ", n.obs = 816, Target = Targ_key) % Called in the psych package  Table 11. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r r }
+ \multicolumn{ 6 }{l}{ Table 11. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   MR2  &  MR1  &  MR3  &  h2  &  u2  &  com \cr 
+  \hline 
+X1   &   0.04  &  \bf{ 0.72}  &   0.21  &  0.60  &  0.40  &  1.18 \cr 
+ X2   &  -0.01  &  \bf{ 0.72}  &   0.21  &  0.65  &  0.35  &  1.17 \cr 
+ X3   &  \bf{ 0.42}  &  \bf{-0.38}  &   0.14  &  0.44  &  0.56  &  2.20 \cr 
+ X4   &  \bf{ 0.76}  &   0.29  &  -0.01  &  0.45  &  0.55  &  1.29 \cr 
+ X5   &  \bf{ 0.91}  &  \bf{ 0.42}  &   0.02  &  0.61  &  0.39  &  1.41 \cr 
+ X6   &   0.02  &   0.20  &  \bf{ 0.55}  &  0.38  &  0.62  &  1.26 \cr 
+ X7   &   0.12  &   0.18  &  \bf{ 0.62}  &  0.40  &  0.60  &  1.25 \cr 
+\hline \cr SS loadings & 1.3 &  1.39 &  0.84 &  \cr  
+\cr 
+            \hline \cr 
+MR2   &  1.00 & -0.50 & -0.39 \cr 
+ MR1   & -0.50 &  1.00 &  0.23 \cr 
+ MR3   & -0.39 &  0.23 &  1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(PWB_cor, 3, rotate = "TargetQ", n.obs = 816, Target = Targ_key) % Called in the psych package  Table 12. Factor Loadings for Exploratory Factor Analysis PWB 
+\begin{table}[htdp]\caption{fa2latex}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r r }
+ \multicolumn{ 6 }{l}{ Table 12. Factor Loadings for Exploratory Factor Analysis PWB } \cr 
+ \hline Variable  &   MR1  &  MR2  &  MR3  &  h2  &  u2  &  com \cr 
+  \hline 
+1   &  \bf{ 0.53}  &   0.17  &   0.25  &  0.49  &  0.51  &  1.66 \cr 
+ 2   &  \bf{ 0.77}  &   0.06  &   0.00  &  0.58  &  0.42  &  1.01 \cr 
+ 3   &  \bf{ 0.80}  &   0.02  &   0.00  &  0.64  &  0.36  &  1.00 \cr 
+ 4   &  \bf{-0.64}  &   0.25  &   0.18  &  0.42  &  0.58  &  1.46 \cr 
+ 5   &   0.04  &  \bf{ 0.83}  &  -0.08  &  0.68  &  0.32  &  1.02 \cr 
+ 6   &  -0.07  &  \bf{ 0.63}  &  -0.03  &  0.41  &  0.59  &  1.03 \cr 
+ 7   &  -0.01  &  -0.09  &  \bf{ 0.84}  &  0.70  &  0.30  &  1.03 \cr 
+ 8   &   0.18  &  -0.02  &  \bf{ 0.37}  &  0.24  &  0.76  &  1.45 \cr 
+\hline \cr SS loadings & 2 &  1.18 &  0.98 &  \cr  
+\cr 
+            \hline \cr 
+MR1   &  1.00 & -0.13 &  0.54 \cr 
+ MR2   & -0.13 &  1.00 & -0.01 \cr 
+ MR3   &  0.54 & -0.01 &  1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+\end{document}

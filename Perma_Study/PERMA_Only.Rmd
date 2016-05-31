@@ -1,0 +1,183 @@
+---
+title: "PERMA CFA Youth"
+author: "Levi Brackman"
+date: "December 4th 2015"
+output: html_document
+---
+
+##Analysis with only the five PERMA constructs
+
+From Julie Butler and Peggy Kerns PERMA & EPOCH
+
+* 514 of these cases onl answered 17 of the questions done on an online study using Qualtrics participents
+* 239 answered all 23 questions from students at tow sydney schools one private and one public
+* Below is two analysis one with complete cases and one with all the data and therefore imputed
+
+#Items
+
+1. In general, to what extent do you lead a purposeful and meaningful life? (only in 239 of the questions)
+2. How much of the time do you feel you are making progress towards accomplishing your goals? (only in 239 of the questions)
+3. How often do you become absorbed in what you are doing? (only in 239 of the questions)
+4. In general, how would you say your health is? (only in 239 of the questions)
+5. In general, how often do you feel joyful?
+6. To what extent do you receive help and support from others when you need it?
+7. In general, how often do you feel anxious
+8. How often do you achieve the important goals you have set for yourself?
+9. In general, to what extent do you feel that what you do in your life is valuable and worthwhile?
+10. In general, how often do you feel positive?
+11. In general, to what extent do you feel excited and interested in things?
+12. How lonely do you feel in your daily life?
+13. How satisfied are you with your current physical health? (only in 239 of the questions)
+14. In general, how often do you feel angry?
+15. To what extent have you been feeling loved?
+16. How often are you able to handle your responsibilities?
+17. To what extent do you generally feel you have a sense of direction in your life?
+18. Compared to others of your same age and sex, how is your health? (only in 239 of the questions)
+19. How satisfied are you with your personal relationships?
+20. In general, how often do you feel sad?
+21. How often do you lose track of time while doing something you enjoy?
+22. In general, to what extent do you feel contented?
+23. Taking all things together, how happy would you say you are?
+
+```{r}
+library(lavaan)
+require(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+```
+Loadthedata
+```{r}
+data <- read.csv("~/Git/stats/Perma_Study/PERMAfinal.csv")
+```
+Create Dataset with Coplete Cases
+```{r}
+data1 <- na.omit(data)
+```
+Create the model with 9 factors as the instrument was designed
+```{r}
+five.model= 'Acomplishment =~ PERMA_A1_1 + PERMA_A2_1 + PERMA_A3_1    
+              Engagement =~ PERMA_E1_1 + PERMA_E2_1 + PERMA_E3_1   
+              Positive Emotion =~ PERMA_P1_1 + PERMA_P2 + PERMA_P3_1 
+              Relationship =~ PERMA_R1_1 + PERMA_R2_1 + PERMA_R3_1   
+              Meaning =~ PERMA_M1_1 + PERMA_M2_1 + PERMA_M3_1'
+
+```
+Run the model with all data
+```{r}
+five.fit=cfa(five.model, data=data, missing="fiml")
+```
+Run the model with complete cases
+```{r}
+five.fit1=cfa(five.model, data=data1, missing = "fiml")
+```
+Create pictures with all data
+```{r}
+semPaths(five.fit, whatLabels = "std", layout = "tree")
+```
+Create pictures with all complet cases
+```{r}
+semPaths(five.fit1, whatLabels = "std", layout = "tree")
+```
+Summarie with all data
+```{r}
+summary(five.fit, standardized = TRUE, rsquare=TRUE)
+```
+Summarie with complete cases
+```{r}
+summary(five.fit1, standardized = TRUE, rsquare=TRUE)
+```
+Residual correlations with all data
+```{r}
+correl = residuals(five.fit, type="cor")
+correl
+```
+Residual correlations with complete cases
+```{r}
+correl1 = residuals(five.fit1, type="cor")
+correl1
+```
+Zscore correlation for all data anything over 1.96 is going to be statistically significant at the .05 level 
+```{r}
+zcorrels = residuals(five.fit, type = "standardized")
+```
+Zscore correlation for complete cases anything over 1.96 is going to be statistically significant at the .05 level 
+```{r}
+zcorrels1 = residuals(five.fit1, type = "standardized")
+```
+Modification indicies for all data
+```{r}
+modindices(five.fit, sort. = TRUE, minimum.value = 3.84)
+```
+Modification indicies for complet cases
+```{r}
+modindices(five.fit1, sort. = TRUE, minimum.value = 3.84)
+```
+Fit Measures for all data
+```{r}
+fitmeasures(five.fit)
+```
+Fit Measures for complate cases
+```{r}
+fitmeasures(five.fit1)
+```
+Create dataset for Target rotation for all data
+```{r}
+PermaTR<-select(data, PERMA_P1_1,  PERMA_P2,  PERMA_P3_1, PERMA_E1_1, PERMA_E2_1, PERMA_E3_1, PERMA_R1_1,  PERMA_R2_1,   PERMA_R3_1, PERMA_M1_1, PERMA_M2_1,  PERMA_M3_1, PERMA_A1_1, PERMA_A2_1, PERMA_A3_1)
+colnames(PermaTR) <- c("1","2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15")
+PermaTR<-tbl_df(PermaTR)
+PermaTR
+```
+Target Rotation for all 753 cases
+```{r}
+Targ_key <- make.keys(15,list(f1=1:3,f2=4:6, f3=7:9, f4=10:12, f5=13:15))
+```
+fix the 0s, allow the NAs to be estimated
+```{r}
+Targ_key <- scrub(Targ_key,isvalue=1)  
+Targ_key <- list(Targ_key)
+```
+convert the raw data to correlation matrix uisng FIML
+```{r}
+Perma_cor <- corFiml(PermaTR) 
+```
+TargetT for orthogonal rotation
+```{r}
+out_targetQ <- fa(Perma_cor,5,rotate="TargetQ", n.obs = 753, Target=Targ_key) 
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA","uniquenesses")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+Complete 239 cases
+```{r}
+PermaTR<-select(data1, PERMA_P1_1,  PERMA_P2,  PERMA_P3_1, PERMA_E1_1, PERMA_E2_1, PERMA_E3_1, PERMA_R1_1,  PERMA_R2_1,   PERMA_R3_1, PERMA_M1_1, PERMA_M2_1,  PERMA_M3_1, PERMA_A1_1, PERMA_A2_1, PERMA_A3_1)
+colnames(PermaTR) <- c("1","2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15")
+PermaTR<-tbl_df(PermaTR)
+PermaTR
+```
+#Target Roratation for complete cases
+```{r}
+Targ_key <- make.keys(15,list(f1=1:3,f2=4:6, f3=7:9, f4=10:12, f5=13:15))
+```
+fix the 0s, allow the NAs to be estimated
+```{r}
+Targ_key <- scrub(Targ_key,isvalue=1)  
+Targ_key <- list(Targ_key)
+```
+convert the raw data to correlation matrix uisng FIML
+```{r}
+Perma_cor <- corFiml(PermaTR)
+```
+TargetT for orthogonal rotation
+```{r}
+out_targetQ <- fa(Perma_cor,5,rotate="TargetQ", n.obs = 239, Target=Targ_key)
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA","uniquenesses")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```

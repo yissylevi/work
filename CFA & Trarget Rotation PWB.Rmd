@@ -1,0 +1,221 @@
+---
+title: "CFA & Trarget Rotation PWB"
+author: "Levi Brackman"
+date: "26 Jan 2016"
+output: html_document
+---
+
+1.	I live one day at a time and don't really think about the future. (rs)
+2.	I tend to focus on the present, because the future always brings me problems. (rs)
+3.	My daily activities often seem trivial and unimportant to me. (rs)
+4.	I don't have a good sense of what it is that I am trying to accomplish in my life. (rs)
+5.	I used to set goals for myself, but that now seems a waste of time. (rs)
+6.	I enjoy making plans for the future and working to make them a reality. 
+7.	I am an active person in carrying out the plans I set for myself. 
+8.	Some people wander aimlessly through life, but I am not one of them. 
+9.	I sometimes feel as if I've done all there is to do in life. (rs)
+
+---
+
+```{r}
+library(lavaan)
+library(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+library(car)
+library(ggplot2)
+library(GGally)
+```
+#loadthedata
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+data<-tbl_df(data)
+PWB<-select(data, PWB_1, PWB_2, PWB_3, PWB_4, PWB_5, PWB_6,PWB_7, PWB_8, PWB_9)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+PWB<-tbl_df(PWB)
+PWB
+
+```
+#create plots
+```{r}
+#ggpairs(PWB, columns = 1:15, title="Big 5 Marsh" )
+
+```
+#create the models
+```{r}
+two.model= ' Factor1  =~ PWB_1 +  PWB_3  + PWB_4 + PWB_5 + PWB_6 + PWB_9   
+              Factor2 =~   PWB_2+ PWB_7 + PWB_8
+'  #Models two factors:Positive and Negative     
+              
+
+one.model= 'PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9' #Models as a single purpose factor
+```
+Second order models
+```{r}
+
+second.model = ' Purpose  =~ PWB_1 +  PWB_3  + PWB_4 + PWB_5 + PWB_6 + PWB_9  
+              Positive =~   PWB_2+ PWB_7 + PWB_8
+              PWB =~ NA*Purpose + Positive
+            
+' #Second order models as Purpose being the higher factor made up of Purpose and Positive
+
+```
+Bifactor (like model 7 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+
+bifactor.negative.model = 'Negative =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_9  
+                                     PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9 
+'#Models bifactor as the negatively worded item as a factor uncorolated with the main factor
+
+bifactor.model1 = 'PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9
+                Negative  =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_9   
+              Positive =~   PWB_6 + PWB_7 + PWB_8
+                PWB ~~ 0*Negative
+                PWB ~~ 0*Positive
+                Negative~~0*Positive
+#Add to model to constrain variable to stay positive
+PWB_2 ~~ a*PWB_2
+a > 0
+
+'#Models bifactor with Positive and Purpose as factors uncorolated with the main factor
+
+```
+#run the models
+```{r}
+two.fit=cfa(two.model, data=PWB)
+one.fit=cfa(one.model, data=PWB)
+second.fit=cfa(second.model, data=PWB)
+bifactor1.fit=cfa(bifactor.model1, data=PWB)
+bifactor.negative.fit=cfa(bifactor.negative.model, data=PWB)
+```
+
+#create pictures
+```{r}
+semPaths(two.fit, whatLabels = "std", layout = "tree")
+semPaths(one.fit, whatLabels = "std", layout = "tree")
+semPaths(second.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor1.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor.negative.fit, whatLabels = "std", layout = "tree")
+```
+#summaries
+```{r}
+summary(two.fit, standardized = TRUE, rsquare=TRUE)
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+summary(second.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor1.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.negative.fit, standardized = TRUE, rsquare=TRUE)
+```
+#Residual correlations
+```{r}
+correl = residuals(two.fit, type="cor")
+correl
+View(correl$cor)
+correl1 = residuals(one.fit, type="cor")
+correl1
+View(correl1$cor)
+correl0 = residuals(second.fit, type="cor")
+correl0
+View(correl0$cor)
+correl4 = residuals(bifactor1.fit, type="cor")
+correl4
+View(correl4$cor)
+correl3 = residuals(bifactor.negative.fit, type="cor")
+correl3
+View(correl3$cor)
+```
+#zscore correlation anything over 1.96 is going to be statistically significant at the .05 level 
+```{r}
+zcorrels = residuals(two.fit, type = "standardized")
+View(zcorrels$cov)
+zcorrels1 = residuals(one.fit, type = "standardized")
+View(zcorrels1$cov)
+zcorrel0 = residuals(second.fit, type="cor")
+zcorrel0
+View(zcorrel0$cor)
+zcorrel3 = residuals(bifactor.negative.fit, type="cor")
+zcorrel3
+View(zcorrel3$cor)
+zcorrel4 = residuals(bifactor1.fit, type="cor")
+zcorrel4
+View(zcorrel4$cor)
+```
+#Modification indicies
+```{r}
+modindices(two.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(bifactor1.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(bifactor.negative.fit, sort. = TRUE, minimum.value = 3.84)
+```
+#Fit Measures
+```{r}
+fitmeasures(two.fit)#Models two factors:Positive and Negative for Purpose  
+fitmeasures(one.fit) #Models as a single purpose factor
+fitmeasures(second.fit)#Second order models as Purpose being the higher factor made up of Purpose and Positive
+fitmeasures(bifactor1.fit)#Models bifactor with Positive and Purpose as factors uncorolated with the main factor
+fitmeasures(bifactor.negative.fit)#Models bifactor as the negatively worded item as a factor uncorolated with the main factor
+```
+#Create dataset for Target rotation
+```{r}
+all_surveys<-read.csv("allsurveys.csv")
+PWB<-select(all_surveys, PWB_1, PWB_4,PWB_5,PWB_6,PWB_9,PWB_2,PWB_3,PWB_7,PWB_8,PWB_10)
+PWB<- data.frame(apply(PWB,2, as.numeric))
+
+```{r}
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+PWB<-tbl_df(PWB)
+PWB$PWB_9  <-  8- PWB$PWB_9
+PWB
+str(PWB)
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7", "8", "9", "10")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(10,list(f1=1:5,f2=6:10))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+out_targetQ <- fa(PWB,2,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+---
+Droping PWB_9 which is a reversed scoded question
+
+#Create dataset for Target rotation
+```{r}
+all_surveys<-read.csv("allsurveysYT1_Jan2016.csv")
+PWB<-select(all_surveys, PWB_1, PWB_3,PWB_4, PWB_5,PWB_6,PWB_9, PWB_8,PWB_7)
+PWB<- data.frame(apply(PWB,2, as.numeric))
+
+```{r}
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+PWB<-tbl_df(PWB)
+PWB
+str(PWB)
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7", "8")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(8,list(f1=1:6,f2=7:8))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+out_targetQ <- fa(PWB,2,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+

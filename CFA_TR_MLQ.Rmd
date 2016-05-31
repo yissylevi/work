@@ -1,0 +1,361 @@
+---
+title: "CFA & Trarget Rotation MLQ"
+author: "Levi Brackman"
+date: "23 July 2015"
+output: html_document
+---
+
+1.	I understand my life's meaning. 
+2.	I am looking for something that makes my life feel meaningful. 
+3.	I am always looking to find my life's purpose. 
+4.	My life has a clear sense of purpose. 
+5.	I have a good sense of what makes my life meaningful. 
+6.	I have discovered a satisfying life purpose. 
+7.	I am always searching for something that makes my life feel significant. 
+8.	I am seeking a purpose or mission for my life. 
+9.	My life has no clear purpose. (reverse coded)
+10.	I am searching for meaning in my life. 
+
+---
+
+```{r}
+library(lavaan)
+library(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+library(car)
+library(ggplot2)
+library(GGally)
+```
+#loadthedata
+```{r}
+data <- read.csv("~/Documents/stats_march_2016/allsurveysYT1_Jan2016.csv", header=T)
+data<-tbl_df(data)
+MLQ<-select(data, MLQ_1, MLQ_2, MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_9, MLQ_10)
+MLQ$MLQ_9  <-  8- MLQ$MLQ_9
+MLQ<-tbl_df(MLQ)
+MLQ
+
+```
+#create plots
+```{r}
+ggpairs(MLQ, columns = 1:10, title="MLQ" )
+
+```
+#create the models
+```{r}
+two.model= ' Purpose  =~ MLQ_1 +  MLQ_4  + MLQ_5 + MLQ_6 + MLQ_9'   
+              Searching =~   MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8  +MLQ_10'  #Models two factors:Purpose and Seraching for Purpose     
+              
+
+one.model= 'MLQ =~ MLQ_1 +  MLQ_2  + MLQ_3 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_7 + MLQ_8 + MLQ_9 + MLQ_10' #Models as a single purpose factor
+```
+Second order models
+```{r}
+
+second.model = ' Purpose  =~ MLQ_1 +  MLQ_4  + MLQ_5 + MLQ_6 + MLQ_9   
+              Searching =~   MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8  +MLQ_10
+              MLQ =~ p1*Purpose + p1*Searching
+             # MLQ ~~ 1*MLQ
+' #Second order models as Purpose being the higher factor made up of Purpose and Searching
+
+```
+Bifactor Models (similar to Models 6, 7 & 8 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+
+bifactor.model = 'Purpose  =~ MLQ_1 +  MLQ_4  + MLQ_5 + MLQ_6 + MLQ_9   
+              Searching =~   MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8  +MLQ_10
+              MLQ =~ MLQ_1 +  MLQ_2  + MLQ_3 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_7 + MLQ_8 + MLQ_9 + MLQ_10
+'#Models bifactor with Searching and Purpose as factors corolated with the main factor
+
+bifactor.modelWO9 = 'Purpose  =~ MLQ_1 +  MLQ_4  + MLQ_5 + MLQ_6  
+              Searching =~   MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8  +MLQ_10
+              MLQ =~ MLQ_1 +  MLQ_2  + MLQ_3 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_7 + MLQ_8 + MLQ_10
+'#Models bifactor with Searching and Purpose as factors corolated with the main factor leaving negatively worded questions out
+```
+Bifactor (like model 7 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+
+bifactor.negative.model = 'Negative =~ MLQ_9  
+                                     MLQ =~ MLQ_1 +  MLQ_2  + MLQ_3 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_7 + MLQ_8 + MLQ_9 + MLQ_10
+'#Models bifactor as the negatively worded item as a factor uncorolated with the main factor
+
+bifactor.model1 = 'MLQ =~ MLQ_1 +  MLQ_2  + MLQ_3 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_7 + MLQ_8 + MLQ_9 + MLQ_10
+                Purpose  =~ MLQ_1 +  MLQ_4  + MLQ_5 + MLQ_6 + MLQ_9    
+              Searching =~   MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8  +MLQ_10
+                MLQ ~~ 0*Purpose
+                MLQ ~~ 0*Searching
+                Purpose~~0*Searching
+'#Models bifactor with Searching and Purpose as factors uncorolated with the main factor
+bifactor.model1WO9 = 'MLQ =~ MLQ_1 +  MLQ_2  + MLQ_3 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_7 + MLQ_8 + MLQ_10
+                Purpose  =~ MLQ_1 +  MLQ_4  + MLQ_5 + MLQ_6    
+              Searching =~   MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8  +MLQ_10
+                MLQ ~~ 0*Purpose
+                MLQ ~~ 0*Searching
+                Purpose~~0*Searching
+                '
+
+#Meaning and Purpose model
+meaning_purpose.model= ' Purpose  =~ MLQ_1 + MLQ_5   
+            Meaning =~ MLQ_4 + MLQ_6 + MLQ_9' 
+
+#Models two factors:Purpose and Seraching for Purpose     
+              
+#Models bifactor with Searching and Purpose as factors uncorolated with the main factor leaving negatively worded questions out
+```
+#run the models
+```{r}
+
+meaning_purpose.fit=cfa(meaning_purpose.model, data=MLQ)
+two.fit=cfa(two.model, data=MLQ)
+one.fit=cfa(one.model, data=MLQ)
+second.fit=cfa(second.model, data=MLQ)
+bifactor.fit=cfa(bifactor.model, data=MLQ)
+bifactor1.fit=cfa(bifactor.model1, data=MLQ)
+bifactorWO9.fit=cfa(bifactor.modelWO9, data=MLQ)
+bifactor1WO9.fit=cfa(bifactor.model1WO9, data=MLQ)
+bifactor.negative.fit=cfa(bifactor.negative.model, data=MLQ)
+```
+
+#create pictures
+```{r}
+semPaths(meaning_purpose.fit, whatLabels = "std", layout = "tree")
+semPaths(two.fit, whatLabels = "std", layout = "tree")
+semPaths(one.fit, whatLabels = "std", layout = "tree")
+semPaths(second.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor1.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactorWO9.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor1WO9.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor.negative.fit, whatLabels = "std", layout = "tree")
+```
+#summaries
+```{r}
+
+summary(meaning_purpose.fit, standardized = TRUE, rsquare=TRUE)
+summary(two.fit, standardized = TRUE, rsquare=TRUE)
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+summary(second.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor1.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactorWO9.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor1WO9.fit, standardized = TRUE, rsquare=TRUE)
+summary(bifactor.negative.fit, standardized = TRUE, rsquare=TRUE)
+```
+#Residual correlations
+```{r}
+correlMP = residuals(meaning_purpose.fit, type="cor")
+correlMP
+correl = residuals(two.fit, type="cor")
+correl
+#View(correl$cor)
+correl1 = residuals(one.fit, type="cor")
+correl1
+#View(correl1$cor)
+correl0 = residuals(second.fit, type="cor")
+correl0
+#View(correl0$cor)
+correl2 = residuals(bifactor.fit, type="cor")
+correl2
+#View(correl2$cor)
+correl4 = residuals(bifactor1.fit, type="cor")
+correl4
+#View(correl4$cor)
+correl5 = residuals(bifactorWO9.fit, type="cor")
+correl5
+#View(correl5$cor)
+correl6 = residuals(bifactor1WO9.fit, type="cor")
+correl6
+#View(correl6$cor)
+correl3 = residuals(bifactor.negative.fit, type="cor")
+correl3
+#View(correl3$cor)
+```
+#zscore correlation anything over 1.96 is going to be statistically significant at the .05 level 
+```{r}
+zcorrelsMP = residuals(meaning_purpose.fit, type = "standardized")
+zcorrelsMP
+zcorrels = residuals(two.fit, type = "standardized")
+zcorrels
+#View(zcorrels$cov)
+zcorrels1 = residuals(one.fit, type = "standardized")
+#View(zcorrels1$cov)
+zcorrel0 = residuals(second.fit, type="cor")
+zcorrel0
+#View(zcorrel0$cor)
+zcorrel2 = residuals(bifactor.fit, type="cor")
+zcorrel2
+#View(zcorrel2$cor)
+zcorrel5 = residuals(bifactorWO9.fit, type="cor")
+zcorrel5
+#View(zcorrel5$cor)
+correl6 = residuals(bifactor1WO9.fit, type="cor")
+correl6
+#View(correl6$cor)
+zcorrel3 = residuals(bifactor.negative.fit, type="cor")
+zcorrel3
+#View(zcorrel3$cor)
+zcorrel4 = residuals(bifactor1.fit, type="cor")
+zcorrel4
+#View(zcorrel4$cor)
+```
+#Modification indicies
+```{r}
+modindices(meaning_purpose.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(two.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(second.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(bifactor.fit, sort. = TRUE, minimum.value = 3.84)
+modindices(bifactor1WO9.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(bifactor.fitWO9, sort. = TRUE, minimum.value = 3.84)
+modindices(bifactor1.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(bifactor.negative.fit, sort. = TRUE, minimum.value = 3.84)
+```
+#Fit Measures
+```{r}
+
+fitmeasures(meaning_purpose.fit)[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'srmr', 'tli')]#Models purpose and meaning
+
+fitmeasures(two.fit)[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'srmr', 'tli')]#Models two factors:Purpose and Seraching for Purpose  
+fitmeasures(one.fit)[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'srmr', 'tli')] #Models as a single purpose factor
+fitmeasures(second.fit)[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'srmr', 'tli')]#Second order models as Purpose being the higher factor made up of Purpose and Searching
+fitmeasures(bifactor.fit)[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'srmr', 'tli')]#Models bifactor with Searching and Purpose as factors corolated with the main factor
+fitmeasures(bifactor1.fit)[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'srmr', 'tli')]#Models bifactor with Searching and Purpose as factors uncorolated with the main factor
+#fitmeasures(bifactorWO9.fit)#Models bifactor with Searching and Purpose as factors corolated with the main factor leaving negatively worded questions out
+fitmeasures(bifactor1WO9.fit)[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'srmr', 'tli')]#Models bifactor with Searching and Purpose as factors uncorolated with the main factor leaving negatively worded questions out
+fitmeasures(bifactor.negative.fit)[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'srmr', 'tli')]#Models bifactor as the negatively worded item as a factor uncorolated with the main factor
+```
+#Create dataset for Target rotation
+```{r}
+all_surveys <- read.csv("/Users/levibrackman/Git/stats/allsurveysYT1_Jan2016.csv")
+MLQ<-select(all_surveys, MLQ_1, MLQ_4,MLQ_5,MLQ_6,MLQ_9,MLQ_2,MLQ_3,MLQ_7,MLQ_8,MLQ_10)
+MLQ<- data.frame(apply(MLQ,2, as.numeric))
+
+```{r}
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+MLQ<-tbl_df(MLQ)
+MLQ$MLQ_9  <-  8- MLQ$MLQ_9
+MLQ
+str(MLQ)
+colnames(MLQ) <- c("1","2", "3", "4", "5", "6", "7", "8", "9", "10")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be MLQ
+Targ_key <- make.keys(10,list(f1=1:5,f2=6:10))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+out_targetQ <- fa(MLQ,2,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA", "SRMR")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+---
+Droping MLQ_9 which is a reversed scoded question
+
+#Create dataset for Target rotation
+```{r}
+all_surveys<-read.csv("allsurveys.csv")
+MLQ<-select(all_surveys, MLQ_1, MLQ_4,MLQ_5,MLQ_6,MLQ_2,MLQ_3,MLQ_7,MLQ_8,MLQ_10)
+MLQ<- data.frame(apply(MLQ,2, as.numeric))
+
+```{r}
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+MLQ<-tbl_df(MLQ)
+MLQ
+str(MLQ)
+colnames(MLQ) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be MLQ
+Targ_key <- make.keys(9,list(f1=1:4,f2=6:9))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+out_targetQ <- fa(MLQ,2,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+#Target Rotation - meaning- Purpose
+all_surveys <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+MLQ<-select(all_surveys, MLQ_1, MLQ_5,MLQ_4,MLQ_6, MLQ_9)
+MLQ<- data.frame(apply(MLQ,2, as.numeric))
+
+MLQ<-tbl_df(MLQ)
+MLQ
+str(MLQ)
+colnames(MLQ) <- c("1", "2", "3", "4", "5")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be MLQ
+#require(psych)
+Targ_key <- make.keys(5,list(f1=1:2,f2=3:5))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+require(GPArotation)
+out_targetQ <- fa(MLQ,2,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+#Droping question 9
+MLQ<-select(all_surveys, MLQ_1, MLQ_5,MLQ_4,MLQ_6)
+MLQ<- data.frame(apply(MLQ,2, as.numeric))
+
+MLQ<-tbl_df(MLQ)
+MLQ
+str(MLQ)
+colnames(MLQ) <- c("1", "2", "3", "4")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be MLQ
+#require(psych)
+Targ_key <- make.keys(4,list(f1=1:2,f2=3:4))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+require(GPArotation)
+out_targetQ <- fa(MLQ,2,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+#Target Rotation - meaning- Purpose (searching)
+all_surveys <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+MLQ<-select(all_surveys, MLQ_2,MLQ_10,MLQ_3, MLQ_8)
+MLQ<- data.frame(apply(MLQ,2, as.numeric))
+
+MLQ<-tbl_df(MLQ)
+MLQ
+str(MLQ)
+colnames(MLQ) <- c("1", "2", "3", "4")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be MLQ
+#require(psych)
+Targ_key <- make.keys(4,list(f1=1:2,f2=3:4))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+require(GPArotation)
+out_targetQ <- fa(MLQ,2,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+
+

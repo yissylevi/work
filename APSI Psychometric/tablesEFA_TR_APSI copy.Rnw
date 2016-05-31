@@ -1,0 +1,318 @@
+\documentclass{article}
+
+\begin{document}
+
+
+\begin{table}[htpb]\caption{Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation of APSI}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r }
+ \multicolumn{ 4 }{l}{} \cr 
+ \hline Variable  &   ML1  &  ML1.1  &  ML1.2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{0.83}  &  0.69  &  0.31  &  1 \cr 
+ APSI\_2   &  \bf{0.77}  &  0.59  &  0.41  &  1 \cr 
+ APSI\_3   &  0.29  &  0.09  &  0.91  &  1 \cr 
+ APSI\_4   &  \bf{0.82}  &  0.67  &  0.33  &  1 \cr 
+ APSI\_5   &  \bf{0.69}  &  0.47  &  0.53  &  1 \cr 
+ APSI\_6   &  0.04  &  0.00  &  1.00  &  1 \cr 
+ APSI\_7   &  \bf{0.77}  &  0.60  &  0.40  &  1 \cr 
+ APSI\_8   &  \bf{0.81}  &  0.65  &  0.35  &  1 \cr 
+\hline \cr SS loadings & 3.77 &  \cr  
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+
+\begin{table}[htpb]\caption{Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation  of APSI}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r }
+ \multicolumn{ 5 }{l}{ } \cr 
+ \hline Variable  &   ML2  &  ML1  &  h2  &  u2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{0.84}  &  -0.03  &  0.69  &  0.31  &  1.00 \cr 
+ APSI\_2   &  \bf{0.77}  &   0.01  &  0.59  &  0.41  &  1.00 \cr 
+ APSI\_3   &  0.00  &  \bf{ 1.00}  &  1.00  &  0.00  &  1.00 \cr 
+ APSI\_4   &  \bf{0.83}  &  -0.02  &  0.67  &  0.33  &  1.00 \cr 
+ APSI\_5   &  \bf{0.63}  &   0.19  &  0.51  &  0.49  &  1.19 \cr 
+ APSI\_6   &  0.13  &  -0.29  &  0.08  &  0.92  &  1.39 \cr 
+ APSI\_7   &  \bf{0.76}  &   0.03  &  0.60  &  0.40  &  1.00 \cr 
+ APSI\_8   &  \bf{0.82}  &  -0.05  &  0.66  &  0.34  &  1.01 \cr 
+\hline \cr SS loadings & 3.67 &  1.13 &  \cr  
+\cr 
+            \hline \cr 
+ML2   & 1.00 & 0.28 \cr 
+ ML1   & 0.28 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+ 
+\begin{table}[htpb]\caption{Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation  of APSI }
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r r }
+ \multicolumn{ 6 }{l}{} \cr 
+ \hline Variable  &   ML3  &  ML1  &  ML2  &  h2  &  u2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{ 0.77}  &  -0.03  &   0.09  &  0.68  &  0.32  &  1.03 \cr 
+ APSI\_2   &  \bf{ 0.65}  &   0.00  &   0.17  &  0.58  &  0.42  &  1.13 \cr 
+ APSI\_3   &   0.00  &  \bf{ 0.99}  &   0.02  &  1.00  &  0.00  &  1.00 \cr 
+ APSI\_4   &  \bf{ 0.86}  &   0.00  &  -0.04  &  0.69  &  0.31  &  1.00 \cr 
+ APSI\_5   &   0.03  &   0.03  &  \bf{ 0.96}  &  0.98  &  0.02  &  1.00 \cr 
+ APSI\_6   &  -0.09  &  \bf{-0.35}  &  \bf{ 0.33}  &  0.14  &  0.86  &  2.14 \cr 
+ APSI\_7   &  \bf{ 0.79}  &   0.06  &  -0.04  &  0.62  &  0.38  &  1.02 \cr 
+ APSI\_8   &  \bf{ 0.85}  &  -0.03  &  -0.04  &  0.67  &  0.33  &  1.01 \cr 
+\hline \cr SS loadings & 3.16 &  1.09 &  1.1 &  \cr  
+\cr 
+            \hline \cr 
+ML3   & 1.00 & 0.26 & 0.65 \cr 
+ ML1   & 0.26 & 1.00 & 0.33 \cr 
+ ML2   & 0.65 & 0.33 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+
+\begin{table}[htpb]\caption{Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation  of APSI}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r r r }
+ \multicolumn{ 7 }{l}{} \cr 
+ \hline Variable  &   ML2  &  ML4  &  ML1  &  ML3  &  h2  &  u2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{0.31}  &  \bf{ 0.59}  &  -0.02  &  -0.04  &  0.71  &  0.29  &  1.52 \cr 
+ APSI\_2   &  0.04  &  \bf{ 0.80}  &  -0.05  &  -0.01  &  0.69  &  0.31  &  1.01 \cr 
+ APSI\_3   &  0.05  &   0.01  &  -0.12  &  \bf{ 0.70}  &  0.56  &  0.44  &  1.07 \cr 
+ APSI\_4   &  \bf{0.67}  &   0.20  &  -0.04  &  -0.03  &  0.69  &  0.31  &  1.20 \cr 
+ APSI\_5   &  0.03  &  \bf{ 0.58}  &   0.18  &  \bf{ 0.34}  &  0.64  &  0.36  &  1.84 \cr 
+ APSI\_6   &  0.01  &  -0.01  &  \bf{ 0.99}  &  -0.03  &  1.00  &  0.00  &  1.00 \cr 
+ APSI\_7   &  \bf{0.89}  &  -0.10  &   0.03  &   0.08  &  0.70  &  0.30  &  1.04 \cr 
+ APSI\_8   &  \bf{0.65}  &   0.21  &   0.00  &  -0.05  &  0.67  &  0.33  &  1.22 \cr 
+\hline \cr SS loadings & 2.11 &  1.81 &  1.04 &  0.69 &  \cr  
+\cr 
+            \hline \cr 
+ML2   &  1.00 &  0.80 &  0.05 &  0.29 \cr 
+ ML4   &  0.80 &  1.00 &  0.06 &  0.31 \cr 
+ ML1   &  0.05 &  0.06 &  1.00 & -0.17 \cr 
+ ML3   &  0.29 &  0.31 & -0.17 &  1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+
+\begin{table}[htpb]\caption{Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation of APSI - 1 Factor without 3 and 6}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r }
+ \multicolumn{ 4 }{l}{} \cr 
+ \hline Variable  &   ML1  &  ML1.1  &  ML1.2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{0.83}  &  0.69  &  0.31  &  1 \cr 
+ APSI\_2   &  \bf{0.77}  &  0.59  &  0.41  &  1 \cr 
+ APSI\_4   &  \bf{0.82}  &  0.67  &  0.33  &  1 \cr 
+ APSI\_5   &  \bf{0.68}  &  0.46  &  0.54  &  1 \cr 
+ APSI\_7   &  \bf{0.77}  &  0.60  &  0.40  &  1 \cr 
+ APSI\_8   &  \bf{0.81}  &  0.65  &  0.35  &  1 \cr 
+\hline \cr SS loadings & 3.67 &  \cr  
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+ 
+\begin{table}[htpb]\caption{Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation of APSI - 2 Factor without 3 and 6}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r }
+ \multicolumn{ 5 }{l}{} \cr 
+ \hline Variable  &   ML2  &  ML1  &  h2  &  u2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{0.84}  &  -0.03  &  0.69  &  0.31  &  1.00 \cr 
+ APSI\_2   &  \bf{0.77}  &   0.01  &  0.59  &  0.41  &  1.00 \cr 
+ APSI\_3   &  0.00  &  \bf{ 1.00}  &  1.00  &  0.00  &  1.00 \cr 
+ APSI\_4   &  \bf{0.83}  &  -0.02  &  0.67  &  0.33  &  1.00 \cr 
+ APSI\_5   &  \bf{0.63}  &   0.19  &  0.51  &  0.49  &  1.19 \cr 
+ APSI\_6   &  0.13  &  -0.29  &  0.08  &  0.92  &  1.39 \cr 
+ APSI\_7   &  \bf{0.76}  &   0.03  &  0.60  &  0.40  &  1.00 \cr 
+ APSI\_8   &  \bf{0.82}  &  -0.05  &  0.66  &  0.34  &  1.01 \cr 
+\hline \cr SS loadings & 3.67 &  1.13 &  \cr  
+\cr 
+            \hline \cr 
+ML2   & 1.00 & 0.28 \cr 
+ ML1   & 0.28 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+ 
+% Called in the psych package  fa2latex % Called in the psych package  fa(APSI_cor1, 2, rotate = "TargetQ", n.obs = 1288, Target = Targ_key1) % Called in the psych package  Table 7. Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI - 2 Factors, 1: 1, 2, 4, 7, 8. 2: 5, 3, 6 
+\begin{table}[htpb]\caption{Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI - 2 Factors, 1: 1, 2, 4, 7, 8. 2: 5, 3, 6}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r }
+ \multicolumn{ 5 }{l}{ } \cr 
+ \hline Variable  &   MR1  &  MR2  &  h2  &  u2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{ 0.83}  &  0.01  &  0.69  &  0.31  &  1.00 \cr 
+APSI\_2  &  \bf{ 0.75}  &  0.05  &  0.59  &  0.41  &  1.01 \cr 
+APSI\_4   &  \bf{ 0.81}  &  0.02  &  0.67  &  0.33  &  1.00 \cr 
+APSI\_7   &  \bf{ 0.74}  &  0.08  &  0.60  &  0.40  &  1.02 \cr 
+APSI\_8   &  \bf{ 0.81}  &  0.00  &  0.66  &  0.34  &  1.00 \cr 
+APSI\_5   &  \bf{ 0.60}  &  0.24  &  0.50  &  0.50  &  1.30 \cr 
+APSI\_3   &  -0.09  &  \bf{1.02}  &  1.00  &  0.00  &  1.02 \cr 
+APSI\_6   &  -0.16  &  0.29  &  0.08  &  0.92  &  1.53 \cr 
+\hline \cr SS loadings & 3.56 &  1.24 &  \cr  
+\cr 
+            \hline \cr 
+MR1   & 1.00 & 0.32 \cr 
+ MR2   & 0.32 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(APSI_cor2, 2, rotate = "TargetQ", n.obs = 1288, Target = Targ_key2) % Called in the psych package  Table 8. Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI  2 Factors, 1: 1, 2, 4, 7, 8, 5. 2: 3, 6 
+\begin{table}[htpb]\caption{Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI  2 Factors, 1: 1, 2, 4, 7, 8, 5. 2: 3, 6}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r }
+ \multicolumn{ 5 }{l}{ } \cr 
+ \hline Variable  &   MR1  &  MR2  &  h2  &  u2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{ 0.84}  &  -0.05  &  0.69  &  0.31  &  1.01 \cr 
+APSI\_2   &  \bf{ 0.77}  &  -0.01  &  0.59  &  0.41  &  1.00 \cr 
+APSI\_4   &  \bf{ 0.83}  &  -0.04  &  0.67  &  0.33  &  1.00 \cr 
+APSI\_7   &  \bf{ 0.77}  &   0.02  &  0.60  &  0.40  &  1.00 \cr 
+APSI\_8   &  \bf{ 0.83}  &  -0.06  &  0.66  &  0.34  &  1.01 \cr 
+APSI\_5   &  \bf{ 0.64}  &   0.18  &  0.50  &  0.50  &  1.16 \cr 
+APSI\_3   &   0.05  &  \bf{ 0.98}  &  1.00  &  0.00  &  1.00 \cr 
+APSI\_6   &  -0.12  &   0.29  &  0.08  &  0.92  &  1.33 \cr 
+\hline \cr SS loadings & 3.7 &  1.1 &  \cr  
+\cr 
+            \hline \cr 
+MR1   & 1.00 & 0.26 \cr 
+ MR2   & 0.26 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(APSI_cor3, 2, rotate = "TargetQ", n.obs = 1288, Target = Targ_key3) % Called in the psych package  Table 9. Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI  2 Factors, 1: 1, 2, 4, 5, 7, 8. 2: 6 
+\begin{table}[htpb]\caption{Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI  2 Factors, 1: 1, 2, 4, 5, 7, 8. 2: 6}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r }
+ \multicolumn{ 5 }{l}{} \cr 
+ \hline Variable  &   MR1  &  MR2  &  h2  &  u2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{ 0.83}  &   0.11  &  0.71  &  0.29  &  1.03 \cr 
+APSI\_2   &  \bf{ 0.79}  &   0.29  &  0.71  &  0.29  &  1.26 \cr 
+APSI\_4   &  \bf{ 0.82}  &  -0.14  &  0.69  &  0.31  &  1.06 \cr 
+APSI\_5   &  \bf{ 0.68}  &   0.16  &  0.49  &  0.51  &  1.11 \cr 
+APSI\_7   &  \bf{ 0.78}  &  -0.27  &  0.68  &  0.32  &  1.23 \cr 
+APSI\_8   &  \bf{ 0.81}  &  -0.13  &  0.67  &  0.33  &  1.05 \cr 
+APSI\_6   &  -0.04  &   0.02  &  0.00  &  1.00  &  1.36 \cr 
+\hline \cr SS loadings & 3.72 &  0.23 &  \cr  
+\cr 
+            \hline \cr 
+MR1   & 1.00 & 0.00 \cr 
+ MR2   & 0.00 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(APSI_cor4, 1, rotate = "TargetQ", n.obs = 1288, Target = Targ_key4) % Called in the psych package  Table 10. Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI  1 Factor, 1: 1, 2, 3, 4, 5, 6, 7, 8 
+\begin{table}[htpb]\caption{Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI  1 Factor, 1: 1, 2, 3, 4, 5, 6, 7, 8}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r }
+ \multicolumn{ 4 }{l}{ } \cr 
+ \hline Variable  &   MR1  &  MR1.1  &  MR1.2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{ 0.83}  &  0.69  &  0.31  &  1 \cr 
+APSI\_2   &  \bf{ 0.77}  &  0.59  &  0.41  &  1 \cr 
+APSI\_3   &   0.29  &  0.09  &  0.91  &  1 \cr 
+APSI\_4   &  \bf{ 0.82}  &  0.67  &  0.33  &  1 \cr 
+APSI\_5   &  \bf{ 0.69}  &  0.47  &  0.53  &  1 \cr 
+APSI\_6   &  -0.04  &  0.00  &  1.00  &  1 \cr 
+APSI\_7   &  \bf{ 0.77}  &  0.60  &  0.40  &  1 \cr 
+APSI\_8   &  \bf{ 0.81}  &  0.65  &  0.35  &  1 \cr 
+\hline \cr SS loadings & 3.77 &  \cr  
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(APSI_cor5, 1, rotate = "TargetQ", n.obs = 1288, Target = Targ_key5) % Called in the psych package  Table 11. Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI, 1 Factor, 1: 1, 2, 4, 5, 7, 8 
+\begin{table}[htpb]\caption{Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI, 1 Factor, 1: 1, 2, 4, 5, 7, 8}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r }
+ \multicolumn{ 4 }{l}{ } \cr 
+ \hline Variable  &   MR1  &  MR1.1  &  MR1.2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{0.83}  &  0.69  &  0.31  &  1 \cr 
+APSI\_2   &  \bf{0.77}  &  0.59  &  0.41  &  1 \cr 
+APSI\_4   &  \bf{0.82}  &  0.67  &  0.33  &  1 \cr 
+APSI\_5   &  \bf{0.68}  &  0.46  &  0.54  &  1 \cr 
+APSI\_7   &  \bf{0.77}  &  0.60  &  0.40  &  1 \cr 
+APSI\_8   &  \bf{0.81}  &  0.65  &  0.35  &  1 \cr 
+\hline \cr SS loadings & 3.67 &  \cr  
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+% Called in the psych package  fa2latex % Called in the psych package  fa(APSI_cor6, 1, rotate = "TargetQ", n.obs = 1288, Target = Targ_key6) % Called in the psych package  Table 12. Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI,  2 Factors, 1: 1, 2, 5. 2: 4, 7, 8 
+\begin{table}[htpb]\caption{Factor Loadings for Confirmatory Factor Analysis with Target Rotation of APSI,  2 Factors, 1: 1, 2, 5. 2: 4, 7, 8}
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r }
+ \multicolumn{ 4 }{l}{} \cr 
+ \hline Variable  &   MR1  &  MR1.1  &  MR1.2  &  com \cr 
+  \hline 
+APSI\_1   &  \bf{0.83}  &  0.69  &  0.31  &  1 \cr 
+APSI\_2   &  \bf{0.77}  &  0.59  &  0.41  &  1 \cr 
+APSI\_5   &  \bf{0.68}  &  0.46  &  0.54  &  1 \cr 
+APSI\_4   &  \bf{0.82}  &  0.67  &  0.33  &  1 \cr 
+APSI\_7   &  \bf{0.77}  &  0.60  &  0.40  &  1 \cr 
+APSI\_8   &  \bf{0.81}  &  0.65  &  0.35  &  1 \cr 
+\hline \cr SS loadings & 3.67 &  \cr  
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+ 
+\end{document}

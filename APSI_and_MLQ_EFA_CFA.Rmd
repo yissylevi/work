@@ -1,0 +1,268 @@
+---
+title: "MLQ and APSI EFA and CFA"
+author: "Levi Brackman"
+date: "March 16, 2016"
+output: html_document
+---
+
+```{r}
+##load packages
+library(psych)
+library(GPArotation)
+library(plyr)
+library(dplyr)
+library(lavaan)
+library(semPlot)
+# data preparation
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+purposescales<-select(data, APSI_1, APSI_2,  APSI_4,  APSI_5, APSI_7, APSI_8,MLQ_1, MLQ_4, MLQ_5, MLQ_6, MLQ_9)
+
+
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+
+allpurpose_cor <- corFiml(purposescales)#uses FIML for missing data
+purposescales<- purposescales[complete.cases(purposescales[,]),]
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(allpurpose_cor, n.obs=1288, fm="ml")
+#three factors are greater than one Eigenvalue scree plot says there are three factors. 
+#Paralel analysis suggests 6 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=3, over .7=4
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(allpurpose_cor), cor = TRUE)
+parallel2<-princomp(na.omit(allpurpose_cor), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+onefactor<-fa(allpurpose_cor, nfactors=1, rotate="oblimin", fm="ml")
+onefactor
+#CFI
+1-((twofactor$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+fa2latex(fa(allpurpose_cor,2,n.obs=1288, rotate="oblimin", fm="ml"),heading="2f")
+fa2latex(fa(allpurpose_cor,3,n.obs=1288, rotate="oblimin", fm="ml"),heading="3f")
+fa2latex(fa(allpurpose_cor,4,n.obs=1288, rotate="oblimin", fm="ml"),heading="4f")
+fa2latex(fa(allpurpose_cor,5,n.obs=1288, rotate="oblimin", fm="ml"),heading="5f")
+fa2latex(fa(allpurpose_cor,6,n.obs=1288, rotate="oblimin", fm="ml"),heading="6f")
+
+
+```
+twofactor<-fa(allpurpose_cor, nfactors=2, n.obs=1288,  rotate="oblimin", fm="ml")
+twofactor
+#CFI
+1-((twofactor$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+
+
+
+```
+Now let's do a CFE
+```{r}
+onefactor.model = 'Purpose =~ APSI_1 + APSI_2 + APSI_4 + APSI_5 + APSI_7 + APSI_8 + MLQ_1 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_9'
+             
+                
+onefactor.fit=cfa(onefactor.model, data=purposescales, missing = "fiml")
+semPaths(onefactor.fit, whatLabels = "std", layout = "tree")
+summary(onefactor.fit, standardized = TRUE, rsquare=TRUE)
+modindices(onefactor.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(onefactor.fit)
+```
+Now let's do a CFE with MLQ and APSI as two factors.
+```{r}
+
+twofactor.model = 'APSI =~ APSI_1 + APSI_2 + APSI_4 + APSI_5 + APSI_7 + APSI_8
+MLQ=~MLQ_1 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_9'
+             
+                
+twofactor.fit=cfa(twofactor.model, data=purposescales, missing = "fiml")
+semPaths(twofactor.fit, whatLabels = "std", layout = "tree")
+summary(twofactor.fit, standardized = TRUE, rsquare=TRUE)
+modindices(twofactor.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(twofactor.fit)
+```
+```
+Now let's do a CFE with MLQ and APSI as a bi-factor - fit does not get much better.
+```{r}
+
+bifactor.model = 'APSI =~ APSI_1 + APSI_2 + APSI_4 + APSI_5 + APSI_7 + APSI_8
+MLQ=~MLQ_1 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_9
+                           Purpose =~ APSI + MLQ'
+
+             
+                
+bifactor.fit=cfa(bifactor.model, data=purposescales, missing = "fiml", std.lv = T)
+semPaths(bifactor.fit, whatLabels = "std", layout = "tree")
+summary(bifactor.fit, standardized = TRUE, rsquare=TRUE)
+modindices(bifactor.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(bifactor.fit)
+```
+Target Rotation ONE FACTOR
+```{r}
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10", "11")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(11,list(f1=1:11))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,1,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+Target Rotation Two factors
+```{r}
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(11,list(f1=1:5,f2=6:11))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,2,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+```
+Droping LQ 9 (negative worded question)
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+purposescales1<-select(data, APSI_1, APSI_2,  APSI_4,  APSI_5, APSI_7, APSI_8,MLQ_1, MLQ_4, MLQ_5, MLQ_6)
+purposescales1<-tbl_df(purposescales1)
+str(purposescales1)
+colnames(purposescales1) <- c("1","2","3","4","5","6","7","8","9","10")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal #rotation based on what paper says facotrs should be purposescales
+Targ_key <- make.keys(10,list(f1=1:10))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales1)
+out_targetQ <- fa(purposescales_cor,1,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+```
+Now let's look at this as a bifactor model
+```{r}
+
+bifactor.model = 'Definate =~ APSI_2 + APSI_4 +  PWB_8 + APSI_7 + APSI_8 +  APSI_5 +  APSI_1 + LET_2
+                Tend   =~ PWB_2 + PWB_9 + PWB_3 + PWB_5 + LET_1 + APSI_6
+              MLQP =~ MLQ_4 + MLQ_5 + MLQ_6 + MLQ_1
+              MLQS =~ MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10
+                Definate ~~ 0*Tend
+                Definate ~~ 0*MLQP
+                Definate~~0*MLQS
+                MLQP~~0*Tend
+                MLQP~~0*MLQS
+                MLQS~~0*Tend'
+                
+bifactor.fit=cfa(bifactor.model, data=all_surveys, missing = "fiml", std.lv = T)
+semPaths(bifactor.fit, whatLabels = "std", layout = "tree")
+summary(bifactor.fit, standardized = TRUE, rsquare=TRUE)
+modindices(bifactor.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(bifactor.fit)
+
+bifactor1.model = 'Definate =~ APSI_2 + APSI_4 +  PWB_8 + APSI_7 + APSI_8 +  APSI_5 +  APSI_1 + LET_2
+                Tend   =~ PWB_2 + PWB_9 + PWB_3 + PWB_5 + LET_1 + APSI_6
+              MLQP =~ MLQ_4 + MLQ_5 + MLQ_6 + MLQ_1
+              MLQS =~ MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10
+              Purpose =~ APSI_2 + APSI_4 +  PWB_8 + APSI_7 + APSI_8 +  APSI_5 +  APSI_1 + LET_2 + PWB_2 + PWB_9 + PWB_3 + PWB_5 + LET_1 + APSI_6 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_1 + MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10'
+              
+              bifactor1.fit=cfa(bifactor1.model, data=all_surveys, missing = "fiml", std.lv = T)
+semPaths(bifactor1.fit, whatLabels = "std", layout = "tree")
+summary(bifactor1.fit, standardized = TRUE, rsquare=TRUE)
+###modindices(bifactor1.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(bifactor1.fit)
+```
+see whether purpose scales corrolate with ADSQII
+```{r}
+
+Corrolation = 'Definate =~ APSI_2 + APSI_4 +  PWB_8 + APSI_7 + APSI_8 +  APSI_5 +  APSI_1 + LET_2
+                Tend   =~ PWB_2 + PWB_9 + PWB_3 + PWB_5 + LET_1 + APSI_6
+              MLQP =~ MLQ_4 + MLQ_5 + MLQ_6 + MLQ_1
+              MLQS =~ MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10
+              English =~ ASDQII_1 + ASDQII_2 + ASDQII_3 + ASDQII_4 + ASDQII_5 
+              Math =~ ASDQII_6 + ASDQII_7 + ASDQII_8 + ASDQII_9 + ASDQII_10              
+              Science =~ ASDQII_11 + ASDQII_12 + ASDQII_13 + ASDQII_14 + ASDQII_15
+              General =~ ASDQII_16 + ASDQII_17 + ASDQII_18 + ASDQII_19 + ASDQII_20'
+                  corrolation.fit=cfa(Corrolation, data=all_surveys, missing = "fiml", std.lv = T)
+semPaths(corrolation.fit, whatLabels = "std", layout = "tree")
+summary(corrolation.fit, standardized = TRUE, rsquare=TRUE)
+modindices(corrolation.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(corrolation.fit)
+corolations<-(corrolation.fit)
+fitted<-fitted(corrolation.fit)
+```
+See is APSI_6 (I don;t know where I fit in the world) is corrolated with APSI_2 and APSI_4 (3.	I have a firm sense of who I am. 
+	I know what I want out of life.) -- it is not.
+```{r}
+cor(all_surveys$APSI_4, all_surveys$APSI_2, use  = "complete.obs")
+?cor
+with(all_surveys, cor(APSI_6, APSI_4))
+```
+Corrorlations
+```{r}
+
+second.corrolation = '  F1  =~ PWB_1 + PWB_3 + APSI_6 + LET_1 + LET_3 + LET_5 
+                F2 =~   PWB_7 + PWB_8 +  APSI_2 + APSI_4 + APSI_7 + APSI_8
+               MLQP =~ MLQ_4 + MLQ_5 + MLQ_6 + MLQ_1
+              MLQS =~ MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10
+              English =~ ASDQII_1 + ASDQII_2 + ASDQII_3 + ASDQII_4 + ASDQII_5 
+              Math =~ ASDQII_6 + ASDQII_7 + ASDQII_8 + ASDQII_9 + ASDQII_10              
+              Science =~ ASDQII_11 + ASDQII_12 + ASDQII_13 + ASDQII_14 + ASDQII_15
+              General =~ ASDQII_16 + ASDQII_17 + ASDQII_18 + ASDQII_19 + ASDQII_20'
+
+                 second.fit=cfa(second.corrolation, data=all_surveys, missing = "fiml", std.lv = T)
+semPaths(second.fit, whatLabels = "std", layout = "tree")
+summary(second.fit, standardized = TRUE, rsquare=TRUE)
+modindices(second.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(second.fit)
+corolations<-(second.fit)
+fitted<-fitted(second.fit)
+
+# Control for negative items
+
+PWB_1, PWB_3, PWB_5, APSI_1, APSI_2,  APSI_4,  APSI_5,  APSI_6, APSI_7, APSI_8,  LET_3, LET_5, MLQ_1, MLQ_2, MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_10
+
+bifactor.model = 'F1 =~ APSI_1 + APSI_2 +  APSI_4 +  APSI_5 + APSI_7 + APSI_8 + MLQ_4 + MLQ_6
+                F2  =~ PWB_1 + PWB_3 + PWB_5 + APSI_6 + LET_3 + LET_5
+              F3 =~ MLQ_2, MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10
+              PWB_1 ~~ PWB_3 + PWB_5 + APSI_6 + LET_3 + LET_5
+              PWB_3 ~~ PWB_5 + APSI_6 + LET_3 + LET_5
+              PWB_5 ~~ APSI_6 + LET_3 + LET_5
+              APSI_6 ~~ LET_3 + LET_5
+              LET_3 ~~ LET_5'
+              
+bifactor.fit=cfa(bifactor.model, data=all_surveys, missing = "fiml", std.lv = T)
+semPaths(bifactor.fit, whatLabels = "std", layout = "tree")
+summary(bifactor.fit, standardized = TRUE, rsquare=TRUE)
+modindices(bifactor.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(bifactor.fit)
+
+ 

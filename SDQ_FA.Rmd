@@ -1,0 +1,110 @@
+---
+title: "EFA SDQ"
+author: "Levi Brackman"
+date: "23 July 2015"
+output: html_document
+---
+
+
+```{r}
+
+##load packages
+library(psych)
+library(GPArotation)
+library(plyr)
+library(dplyr)
+
+# data preparation
+data <- read.csv("~/Psychometric_study_data/allsurveysYT1.csv")
+SDQI<-select(data, SDQI_1, SDQI_2, SDQI_3, SDQI_4, SDQI_5, SDQI_6,SDQI_7, SDQI_8, SDQI_9, SDQI_9.1)
+names(SDQI)[10] <- "SDQI_10"
+SDQI$SDQI_2  <-  9- SDQI$SDQI_2
+SDQI$SDQI_5  <-  9- SDQI$SDQI_5
+SDQI<- data.frame(apply(SDQI,2, as.numeric))
+SDQI<-tbl_df(SDQI)
+SDQI
+str(SDQI)
+colnames(SDQI) <- c("1","2", "3", "4", "5", "6", "7", "8", "9", "10")
+SDQI<-SDQI[complete.cases(SDQI[,]),]
+
+
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(SDQI, fm="ml",fa="fa")
+#two factors are greater than one Eigenvalue scree plot says there are two factors. Paralel analysis suggests 4 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=2, over .7=2
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(SDQI), cor = TRUE)
+parallel2<-princomp(na.omit(SDQI), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(SDQI, nfactors=2, rotate="oblimin", fm="ml")
+twofactor
+#question 5 6 8 9 are loading on both. so remove 5 6 8 9
+SDQIWO5689<-select(SDQI, 1,2, 3, 4, 7, 10)
+SDQIWO5689<-tbl_df(SDQIWO5689)
+SDQIWO5689
+twofactorSDQIWO5689<-fa(SDQIWO5689, nfactors=2, rotate="varimax", fm="ml")
+twofactorSDQIWO5689
+
+#question 7 is loading on both. so remove 7
+SDQIWO5689<-select(SDQI, 1,2, 3, 4, 7)
+SDQIWO5689<-tbl_df(SDQIWO5689)
+SDQIWO5689
+twofactorSDQIWO5689<-fa(SDQIWO5689, nfactors=2, rotate="varimax", fm="ml")
+twofactorSDQIWO5689
+#CFI, should be slightly higher than the TLI
+1-((twofactor$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+##reliability
+alpha(SDQI[,c(1,2,3,4,6,7,8,11,12,13,16,17)])
+alpha(SDQI[,c(5,9,10,14)])
+#What are the factors
+#Factor 1 is positive emotions
+#Factor 2 is negative emotions
+
+##Try with three factors
+#simple structure
+threefactor<-fa(SDQI, nfactors=3, rotate="oblimin", fm="ml")
+threefactor
+#question 15 is loading on both. so remove 15
+SDQIWO15<-select(SDQI, SDQI_1:SDQI_14, SDQI_16, SDQI_17)
+SDQIWO15<-tbl_df(SDQIWO15)
+SDQIWO15
+twofactorWO15<-fa(SDQIWO15, nfactors=2, rotate="oblimin", fm="ml")
+twofactorWO15
+#CFI, should be slightly higher than the TLI
+1-((twofactor$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+##reliability
+alpha(SDQI[,c(1,2,3,4,6,7,8,11,12,13,16,17)])
+alpha(SDQI[,c(5,9,10,14)])
+#What are the factors
+#Factor 1 is positive emotions
+#Factor 2 is negative emotions
+library(lavaan)
+SDQI.model <- 'Student  =~ SDQI_2 + SDQI_3 + SDQI_4
+              Teacher  =~ SDQI_6 +  SDQI_8 + SDQI_10
+
+'
+
+fit <- cfa(SDQI.model, data = SDQI)
+summary(fit, fit.measures = TRUE, standardized=T)
+modindices(fit)
+
+library(lavaan)
+library(semPlot)
+SDQI.model <- 'Factor  =~ SDQI_2 + SDQI_3 + SDQI_4 +SDQI_6 + SDQI_8 + SDQI_10
+             
+
+'
+
+fit <- cfa(SDQI.model, data = SDQI)
+semPaths(fit, whatLabels="std", layout="tree")
+summary(fit, fit.measures = TRUE, standardized=T)
+modindices(fit)
+
+```

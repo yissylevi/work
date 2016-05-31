@@ -1,0 +1,72 @@
+---
+title: "RES TR Youth"
+author: "Levi Brackman"
+date: "28 July 2015"
+output: html_document
+---
+
+RESILIENCE Items taken from what Herb Marsh has identified as working as part of PERMA.
+
+
+1.	How quickly do you feel you return to normal after setbacks in your life
+2.	How much time does it generally take you to get back to normal when things go wrong in your life
+3.	Do you in general quickly get over and recover from significant life difficulties
+
+RES.1  , RES.2  , RES.3
+
+
+Two factors Consitency and preseverence
+
+```{r}
+library(lavaan)
+library(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+library(car)
+library(ggplot2)
+library(GGally)
+all_surveys<-read.csv("allsurveysYT1.csv")
+all_surveys<-tbl_df(all_surveys)
+all_surveys
+RES<-select(all_surveys, RES.1  , RES.2  , RES.3)
+RES<- data.frame(apply(RES,2, as.numeric))
+RES<-tbl_df(RES)
+RES
+```
+One factor Model
+```{r}
+
+one.factor = 'RES =~ RES.1 + RES.2 + RES.3 
+' 
+one.fit=cfa(one.factor, data=RES, missing = "fiml", std.lv = T)
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+correl.1 = residuals(one.fit, type="cor")
+correl.1
+modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(one.fit)
+
+```
+
+```
+
+Target Rotation
+
+```{r, echo=FALSE}
+colnames(RES) <- c("1","2", "3")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be RES
+Targ_key <- make.keys(3,list(f1=1:3))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+RES_cor <- corFiml(RES) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(RES_cor,1,rotate="TargetQ",n.obs = 1160,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+

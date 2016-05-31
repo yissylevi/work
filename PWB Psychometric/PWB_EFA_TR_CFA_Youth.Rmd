@@ -1,0 +1,458 @@
+---
+title: "PWB CFA TR Youth"
+author: "Levi Brackman"
+date: "26 January 2016"
+output: html_document
+---
+
+1.	I live one day at a time and don't really think about the future. (rs)
+2.	I tend to focus on the present, because the future always brings me problems. (rs)
+3.	My daily activities often seem trivial and unimportant to me. (rs)
+4.	I don't have a good sense of what it is that I am trying to accomplish in my life. (rs)
+5.	I used to set goals for myself, but that now seems a waste of time. (rs)
+6.	I enjoy making plans for the future and working to make them a reality. 
+7.	I am an active person in carrying out the plans I set for myself. 
+8.	Some people wander aimlessly through life, but I am not one of them. 
+9.	I sometimes feel as if I've done all there is to do in life. (rs)
+
+---
+
+```{r}
+library(lavaan)
+library(semPlot)
+library(dplyr)
+library(GPArotation)
+library(psych)
+library(car)
+library(ggplot2)
+library(GGally)
+library(xtable) 
+```
+# data preparation
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+ PWB<-select(data,  PWB_1,  PWB_2,  PWB_3,  PWB_4,  PWB_5,  PWB_6, PWB_7,  PWB_8,  PWB_9)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+ PWB<- data.frame(apply(PWB,2, as.numeric))
+str(PWB)
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+ PWB<- PWB[complete.cases(PWB[,]),]
+```
+##EFA
+##number of factors
+##parallal analysis and scree plot
+```{r}
+parallel<-fa.parallel(PWB, fm="ml",fa="fa")
+#two factors are greater than one Eigenvalue scree plot says there are two factors. Paralel analysis suggests 4 factors
+```
+#eigenvalues (kaiser)
+```{r}
+parallel$fa.values
+#over 1=2, over .7=2
+```
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis. 
+```{r}
+princomp(na.omit(PWB), cor = TRUE)
+parallel2<-princomp(na.omit(PWB), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+```
+#simple structure
+```{r}
+twofactor<-fa(PWB, nfactors=2, rotate="oblimin", fm="ml")
+twofactor
+1-((twofactor$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+fa2latex(fa(PWB,2,rotate="oblimin", fm="ml"), heading="Table 1. Factor Loadings for Exploratory Factor Analysis PWB")
+threefactor<-fa(PWB, nfactors=3, rotate="oblimin", fm="ml")
+threefactor
+1-((threefactor$STATISTIC - threefactor$dof)/(threefactor$null.chisq- threefactor$null.dof))
+fa2latex(fa(PWB,3,rotate="oblimin", fm="ml"), heading="Table 2. Factor Loadings for Exploratory Factor Analysis PWB")
+fourfactor<-fa(PWB, nfactors=4, rotate="oblimin", fm="ml")
+fourfactor
+1-((fourfactor$STATISTIC - fourfactor$dof)/(fourfactor$null.chisq- fourfactor$null.dof))
+fa2latex(fa(PWB,4,rotate="oblimin", fm="ml"), heading="Table 3. Factor Loadings for Exploratory Factor Analysis PWB")
+```
+#question 1,3,5,6,9 seems to be one factor and all talk about plans or lack of plans
+```{r}
+ PWBWO15<-select(PWB,  1,3,5,6,9)
+ PWBWO15<-tbl_df(PWBWO15)
+ PWBWO15
+twofactorWO15<-fa(PWBWO15, nfactors=1, rotate="oblimin", fm="ml")
+twofactorWO15
+fa2latex(fa(PWBWO15,3,rotate="oblimin", fm="ml"), heading="Table 4. Factor Loadings for Exploratory Factor Analysis PWB")
+
+```
+#CFI, should be slightly higher than the TLI
+```{r}
+1-((twofactorWO15$STATISTIC - twofactorWO15$dof)/(twofactorWO15$null.chisq- twofactorWO15$null.dof))
+```
+#question 7,8 seems to be one factor and all talk about being active or wondering aimlessly
+```{r}
+ PWB78<-select(PWB,  7,8)
+ PWB78<-tbl_df(PWB78)
+ PWB78
+twofactor78<-fa(PWB78, nfactors=1, rotate="oblimin", fm="ml")
+twofactor78
+fa2latex(fa(PWB78,1,rotate="oblimin", fm="ml"), heading="Table 5. Factor Loadings for Exploratory Factor Analysis PWB")
+
+```
+#CFI, should be slightly higher than the TLI
+```{r}
+1-((twofactor78$STATISTIC - twofactor78$dof)/(twofactor78$null.chisq- twofactor78$null.dof))
+```
+#question 2,8 seems to be one factor 
+```{r}
+ PWB29<-select(PWB, 2,8)
+ PWB29<-tbl_df(PWB29)
+ PWB29
+twofactor29<-fa(PWB29, nfactors=1, rotate="oblimin", fm="ml")
+twofactor29
+fa2latex(fa(PWB29,1,rotate="oblimin", fm="ml"), heading="Table 6. Factor Loadings for Exploratory Factor Analysis PWB")
+
+```
+#CFI, should be slightly higher than the TLI
+```{r}
+1-((twofactor29$STATISTIC - twofactor29$dof)/(twofactor29$null.chisq- twofactor29$null.dof))
+```
+#Finding Alpha
+```{r}
+#alpha(PWB, na.rm = TRUE, check.keys=TRUE)
+```
+#CFA in Lavaan
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+data<-tbl_df(data)
+PWB<-select(data, PWB_1, PWB_2, PWB_3, PWB_4, PWB_5, PWB_6,PWB_7, PWB_8, PWB_9)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+PWB<-tbl_df(PWB)
+PWB
+
+```
+#create plots
+```{r}
+#ggpairs(PWB, columns = 1:15, title="Big 5 Marsh" )
+
+```
+#create the models
+```{r}
+two.model= ' Factor1  =~ PWB_1 +  PWB_3  + PWB_4 + PWB_5 + PWB_6 + PWB_9   
+              Factor2 =~   PWB_2+ PWB_7 + PWB_8
+'  #Models two factors:Positive and Negative     
+              
+
+one.model= 'PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9' #Models as a single purpose factor
+```
+Second order models
+```{r}
+
+second.model = '  Negative  =~  PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_9 
+                Positive =~   PWB_6 + PWB_7 + PWB_8
+                Purpose =~ Negative + Positive 
+' #Second order models as Purpose being the higher factor made up of Purpose and Positive
+
+```
+Bifactor (like model 7 in Marsh, Scalas & Nagengast, 2010)
+```{r}
+
+bifactor.negative.model = 'Negative =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_9  
+                                     PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9 
+'
+#Models bifactor as the negatively worded item as a factor uncorolated with the main factor
+
+
+bifactor.model1 = 'PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9
+                Negative  =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_9   
+              Positive =~   PWB_6 + PWB_7 + PWB_8
+                PWB ~~ 0*Negative
+                PWB ~~ 0*Positive
+                Negative~~0*Positive
+'#Models bifactor with Positive and Purpose as factors uncorolated with the main factor
+
+bifactor.model2 = 'PWB =~ PWB_1 +  PWB_2  + PWB_3 + PWB_4 + PWB_5 + PWB_6 + PWB_7 + PWB_8 + PWB_9
+                F1  =~ PWB_1 +  PWB_3  + PWB_5 + PWB_6   
+                F2 =~   PWB_4 + PWB_7 + PWB_8 
+                F3 =~ PWB_2 + PWB_9 
+                PWB ~~ 0*F1
+                PWB ~~ 0*F2
+                PWB ~~ 0*F3
+                F1~~0*F2
+                F1~~0*F3
+                F2~~0*F3
+'#Models bifactor with Positive and Purpose as factors uncorolated with the main factor
+
+```
+#run the models
+```{r}
+two.fit=cfa(two.model, data=PWB, missing = "fiml", std.lv = T)
+one.fit=cfa(one.model, data=PWB, missing = "fiml", std.lv = T)
+second.fit=cfa(second.model, data=PWB, missing = "fiml", std.lv = T)
+bifactor1.fit=cfa(bifactor.model1, data=PWB, missing = "fiml", std.lv = T)
+bifactor2.fit=cfa(bifactor.model2, data=PWB, missing = "fiml", std.lv = T)
+bifactorneg.fit = cfa(bifactor.negative.model, data=PWB, missing = "fiml", std.lv = T)
+bifactor.negative.fit=cfa(bifactor.negative.model, data=PWB, missing = "fiml", std.lv = T)
+```
+
+#create pictures
+```{r}
+semPaths(two.fit, whatLabels = "std", layout = "tree")
+semPaths(two.fit, intercepts = FALSE, residual = FALSE, layout = "tree2", sizeMan = 4, font = 3,
+         sizeLat=4.3, bifactor = "Purpose",edge.color="black", nCharNodes = 6, mar = c(3, 1,3, 1))
+semPaths(one.fit, whatLabels = "std", layout = "tree")
+semPaths(one.fit, intercepts = FALSE, residual = FALSE, layout = "tree2", sizeMan = 4, font = 3,
+         sizeLat=4.3, bifactor = "Purpose",edge.color="black", nCharNodes = 6, mar = c(3, 1,3, 1))
+semPaths(second.fit, whatLabels = "std", layout = "tree")
+semPaths(second.fit, intercepts = FALSE, residual = FALSE, layout = "tree2", sizeMan = 4, font = 3,
+         sizeLat=4.3, bifactor = "Purpose",edge.color="black", nCharNodes = 6, mar = c(3, 1,3, 1))
+semPaths(bifactor1.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor1.fit, intercepts = FALSE, residual = FALSE, layout = "tree2", sizeMan = 5, font = 3,
+         sizeLat=4.3, bifactor = "Purpose",edge.color="black", nCharNodes = 6, mar = c(3, 1,3, 1))
+semPaths(bifactor2.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactor2.fit, intercepts = FALSE, residual = FALSE, layout = "tree2", sizeMan = 4, font = 3,
+         sizeLat=4.3, bifactor = "Purpose",edge.color="black", nCharNodes = 6, mar = c(3, 1,3, 1))
+semPaths(bifactorneg.fit, whatLabels = "std", layout = "tree")
+semPaths(bifactorneg.fit, intercepts = FALSE, residual = FALSE, layout = "tree2", sizeMan = 4, font = 3,
+         sizeLat=4.3, bifactor = "Purpose",edge.color="black", nCharNodes = 6, mar = c(3, 1,3, 1))
+
+```
+#summaries
+```{r}
+summary(two.fit, standardized = TRUE, rsquare=TRUE)
+(xtable(parameterEstimates(two.fit, ci = F, standardized = T,  fmi = F, remove.eq = F, 
+                   remove.ineq = F, remove.def = T)))
+summary(one.fit, standardized = TRUE, rsquare=TRUE)
+(xtable(parameterEstimates(one.fit, ci = F, standardized = T,  fmi = F, remove.eq = F, 
+                   remove.ineq = F, remove.def = T)))
+summary(second.fit, standardized = TRUE, rsquare=TRUE)
+(xtable(parameterEstimates(second.fit, ci = F, standardized = T,  fmi = F, remove.eq = F, 
+                   remove.ineq = F, remove.def = T)))
+summary(bifactor1.fit, standardized = TRUE, rsquare=TRUE)
+(xtable(parameterEstimates(bifactor1.fit, ci = F, standardized = T,  fmi = F, remove.eq = F, 
+                   remove.ineq = F, remove.def = T)))
+summary(bifactor2.fit, standardized = TRUE, rsquare=TRUE)
+(xtable(parameterEstimates(bifactor2.fit, ci = F, standardized = T,  fmi = F, remove.eq = F, 
+                   remove.ineq = F, remove.def = T)))
+summary(bifactor.negative.fit, standardized = TRUE, rsquare=TRUE)
+(xtable(parameterEstimates(bifactor.negative.fit, ci = F, standardized = T,  fmi = F, remove.eq = F, 
+                   remove.ineq = F, remove.def = T)))
+?parameterEstimates
+```
+#Residual correlations
+```{r}
+correl = residuals(two.fit, type="cor")
+correl
+View(correl$cor)
+correl1 = residuals(one.fit, type="cor")
+correl1
+View(correl1$cor)
+correl0 = residuals(second.fit, type="cor")
+correl0
+View(correl0$cor)
+correl4 = residuals(bifactor1.fit, type="cor")
+correl4
+View(correl4$cor)
+correl5 = residuals(bifactor2.fit, type="cor")
+correl5
+correl3 = residuals(bifactor.negative.fit, type="cor")
+correl3
+View(correl3$cor)
+```
+#Modification indicies
+```{r}
+#modindices(two.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(one.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(bifactor1.fit, sort. = TRUE, minimum.value = 3.84)
+#modindices(bifactor.negative.fit, sort. = TRUE, minimum.value = 3.84)
+```
+#Fit Measures
+```{r}
+fitmeasures(two.fit)#Models two factors:Positive and Negative for Purpose  
+fitmeasures(one.fit) #Models as a single purpose factor
+fitmeasures(second.fit)#Second order models as Purpose being the higher factor made up of Purpose and Positive
+fitmeasures(bifactor1.fit)#Models bifactor with Positive and Purpose as factors uncorolated with the main factor
+fitmeasures(bifactor2.fit)#Models bifactor with Positive and Purpose as factors uncorolated with the main factor
+fitmeasures(bifactor.negative.fit)#Models bifactor as the negatively worded item as a factor uncorolated with the main factor
+```
+#Create dataset for Target rotation
+```{r}
+all_surveys <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+PWBTR<-select(all_surveys, PWB_1, PWB_2, PWB_3,PWB_4, PWB_5,PWB_6,PWB_9, PWB_8,PWB_7)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+PWBTR<- data.frame(apply(PWBTR,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+PWBTR<-tbl_df(PWBTR)
+PWBTR
+str(PWBTR)
+colnames(PWBTR) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(9,list(f1=1:6,f2=7:9))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWBTR_cor <- corFiml(PWBTR) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWBTR_cor,2,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+fa2latex(fa(PWBTR_cor,2,rotate="TargetQ",n.obs = 816,Target=Targ_key), heading="Table 7. Factor Loadings for Exploratory Factor Analysis PWB")
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+```
+#Target toration as three factors based on EFA - works well as three factors but with cross loadings
+```{r}
+all_surveys <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+PWBTR<-select(all_surveys, PWB_1, PWB_3, PWB_5,PWB_6, PWB_7, PWB_4,PWB_8, PWB_2,PWB_9)
+PWB$PWB_1  <-  7- PWB$PWB_1
+PWB$PWB_2  <-  7- PWB$PWB_2
+PWB$PWB_3  <-  7- PWB$PWB_3
+PWB$PWB_4  <-  7- PWB$PWB_4
+PWB$PWB_9  <-  7- PWB$PWB_9
+PWBTR<- data.frame(apply(PWBTR,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+PWBTR<-tbl_df(PWBTR)
+PWBTR
+str(PWBTR)
+colnames(PWBTR) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(9,list(f1=1:4,f2=5:6, f3=7:9))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWBTR_cor <- corFiml(PWBTR) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWBTR_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+fa2latex(fa(PWBTR_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key), heading="Table 8. Factor Loadings for Exploratory Factor Analysis PWB")
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+#Create dataset for Target rotation
+```{r}
+all_surveys <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+PWB<-select(all_surveys, PWB_1, PWB_3, PWB_5,PWB_6, PWB_7, PWB_8,   PWB_2, PWB_4, PWB_9)
+PWB<- data.frame(apply(PWB,2, as.numeric))
+
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+PWB<-tbl_df(PWB)
+PWB
+str(PWB)
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(9,list(f1=1:4,f2=5:7, f3=8:9))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWB_cor <- corFiml(PWB) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWB_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+fa2latex(fa(PWB_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key), heading="Table 9. Factor Loadings for Exploratory Factor Analysis PWB")
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+Based on the above model we try F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9. this the best fit to the data. (PWB_4 crossloads)
+```{r}
+all_surveys <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+PWB<-select(all_surveys, PWB_1, PWB_3, PWB_5,PWB_6, PWB_7, PWB_8,PWB_4, PWB_2,  PWB_9)
+PWB<- data.frame(apply(PWB,2, as.numeric))
+PWB<-tbl_df(PWB)
+PWB
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7", "8", "9")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(9,list(f1=1:4,f2=5:7, f3=8:9))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWB_cor <- corFiml(PWB) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWB_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+fa2latex(fa(PWB_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key), heading="Table 10. Factor Loadings for Exploratory Factor Analysis PWB")
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+```
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```{r}
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+```
+Droping question 1 as well because it also loads on all of the factors. Much better fit to the data
+```{r}
+all_surveys <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+PWB<-select(all_surveys, PWB_3, PWB_5,PWB_6, PWB_8,PWB_7, PWB_2, PWB_9)
+PWB<- data.frame(apply(PWB,2, as.numeric))
+PWB<-tbl_df(PWB)
+PWB
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(7,list(f1=1:3,f2=4:5, f3=6:7))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWB_cor <- corFiml(PWB) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWB_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+fa2latex(fa(PWB_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key), heading="Table 11. Factor Loadings for Exploratory Factor Analysis PWB")
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+Dropping PWB_4 -- still not great and PWB_1 crossloads significantly and PWB_9 does not load well on any of the factors.
+```{r}
+all_surveys <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+PWB<-select(all_surveys, PWB_1, PWB_3, PWB_5,PWB_6, PWB_7, PWB_8, PWB_2,  PWB_9)
+PWB<- data.frame(apply(PWB,2, as.numeric))
+PWB<-tbl_df(PWB)
+PWB
+colnames(PWB) <- c("1","2", "3", "4", "5", "6", "7", "8")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be PWB
+Targ_key <- make.keys(8,list(f1=1:4,f2=5:6, f3=7:8))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+PWB_cor <- corFiml(PWB) # convert the raw data to correlation matrix uisng FIML
+out_targetQ <- fa(PWB_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key) #TargetT for orthogonal rotation
+fa2latex(fa(PWB_cor,3,rotate="TargetQ",n.obs = 816,Target=Targ_key), heading="Table 12. Factor Loadings for Exploratory Factor Analysis PWB")
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+

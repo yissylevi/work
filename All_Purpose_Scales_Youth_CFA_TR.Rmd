@@ -1,0 +1,1439 @@
+---
+title: "All Purpose Scales Youth CFA and TA"
+author: "Levi Brackman"
+date: "August 11 2015"
+output: html_document
+---
+
+```{r}
+##load packages
+library(psych)
+library(GPArotation)
+library(plyr)
+library(dplyr)
+library(lavaan)
+library(semPlot)
+# data preparation
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+purposescales<-select(data, PWB_1, PWB_2, PWB_3, PWB_4, PWB_5, PWB_6, PWB_7, PWB_8, PWB_9, APSI_1, APSI_2,  APSI_3,  APSI_4,  APSI_5,  APSI_6, APSI_7, APSI_8, LET_1, LET_2, LET_3,  LET_4,  LET_5,  LET_6, MLQ_1, MLQ_2, MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_9, MLQ_10)
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_4  <-  7- purposescales$PWB_4
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33")
+allpurpose_cor <- corFiml(purposescales)#uses FIML for missing data
+#purposescales<- purposescales[complete.cases(purposescales[,]),]
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(allpurpose_cor, n.obs=1288, fm="ml")
+#three factors are greater than one Eigenvalue scree plot says there are three factors. 
+#Paralel analysis suggests 6 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=3, over .7=4
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(allpurpose_cor), cor = TRUE)
+parallel2<-princomp(na.omit(allpurpose_cor), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(allpurpose_cor, nfactors=2, rotate="oblimin", fm="ml")
+twofactor
+#CFI
+1-((twofactor$STATISTIC - twofactor$dof)/(twofactor$null.chisq- twofactor$null.dof))
+fa2latex(fa(allpurpose_cor,2,n.obs=1288, rotate="oblimin", fm="ml"),heading="2f")
+fa2latex(fa(allpurpose_cor,3,n.obs=1288, rotate="oblimin", fm="ml"),heading="3f")
+fa2latex(fa(allpurpose_cor,4,n.obs=1288, rotate="oblimin", fm="ml"),heading="4f")
+fa2latex(fa(allpurpose_cor,5,n.obs=1288, rotate="oblimin", fm="ml"),heading="5f")
+fa2latex(fa(allpurpose_cor,6,n.obs=1288, rotate="oblimin", fm="ml"),heading="6f")
+
+
+```
+threefactor<-fa(allpurpose_cor, nfactors=3, n.obs=1288,  rotate="oblimin", fm="ml")
+threefactor
+#CFI
+1-((threefactor$STATISTIC - threefactor$dof)/(threefactor$null.chisq- threefactor$null.dof))
+
+fourfactor<-fa(allpurpose_cor, nfactors=4, n.obs=1288, rotate="oblimin", fm="ml")
+fourfactor
+#CFI
+1-((fourfactor$STATISTIC - fourfactor$dof)/(fourfactor$null.chisq- fourfactor$null.dof))
+fivefactor<-fa(allpurpose_cor, nfactors=5, n.obs=1288, rotate="oblimin", fm="ml")
+fivefactor
+#CFI
+1-((fivefactor$STATISTIC - fivefactor$dof)/(fivefactor$null.chisq- fivefactor$null.dof))
+sixfactor<-fa(allpurpose_cor, nfactors=6,n.obs=1288, rotate="oblimin", fm="ml")
+sixfactor
+#CFI
+1-((sixfactor$STATISTIC - sixfactor$dof)/(sixfactor$null.chisq- sixfactor$null.dof))
+
+threefactor2<-fa(allpurpose_cor[,-c(4,9,12,23)], nfactors=3,n.obs=1288, rotate="oblimin", fm="ml")
+threefactor2
+
+fourfactor2<-fa(allpurpose_cor[,-c(5, 12,23)], nfactors=4, n.obs=1288,rotate="oblimin", fm="ml")
+fourfactor2
+```
+# EFA removing problematic questions: PWB_2, PWB_4, PWB_6, PWB_8, PWB_9, APSI_3, LET_1, LET_2, LET_4,   LET_6, MLQ_9
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+purposescales<-select(data, PWB_1, PWB_3, PWB_5,  PWB_7,  APSI_1, APSI_2,  APSI_4,  APSI_5,  APSI_6, APSI_7, APSI_8,  LET_3, LET_5, MLQ_1, MLQ_2, MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_10)
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_5  <-  7- purposescales$PWB_5
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22")
+allpurpose_cor <- corFiml(purposescales)# uses FIML for missing data
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(allpurpose_cor, n.obs=1288, fm="ml")
+#three factors are greater than one Eigenvalue scree plot says there are three factors. 
+#Paralel analysis suggests 6 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=3, over .7=4
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(allpurpose_cor), cor = TRUE)
+parallel2<-princomp(na.omit(allpurpose_cor), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(allpurpose_cor, nfactors=2, n.obs=1288,rotate="oblimin", fm="ml")
+twofactor
+threefactor<-fa(allpurpose_cor, nfactors=3, n.obs=1288,rotate="oblimin", fm="ml")
+threefactor
+fourfactor<-fa(allpurpose_cor, nfactors=4, n.obs=1288,rotate="oblimin", fm="ml")
+fourfactor
+fivefactor<-fa(allpurpose_cor, nfactors=5,n.obs=1288, rotate="oblimin", fm="ml")
+fivefactor
+sixfactor<-fa(allpurpose_cor, nfactors=6,n.obs=1288, rotate="oblimin", fm="ml")
+sixfactor
+fourfactor2<-fa(purposescales, nfactors=4, n.obs=1288, rotate="oblimin", fm="ml")
+fourfactor2
+
+fa2latex(fa(allpurpose_cor,2,n.obs=1288, rotate="oblimin", fm="ml"),heading="2f")
+fa2latex(fa(allpurpose_cor,3,n.obs=1288, rotate="oblimin", fm="ml"),heading="3f")
+fa2latex(fa(allpurpose_cor,4,n.obs=1288, rotate="oblimin", fm="ml"),heading="4f")
+fa2latex(fa(allpurpose_cor,5,n.obs=1288, rotate="oblimin", fm="ml"),heading="5f")
+fa2latex(fa(allpurpose_cor,6,n.obs=1288, rotate="oblimin", fm="ml"),heading="6f")
+
+#1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33
+```
+# EFA removing additional problematic question: PWB_7
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+purposescales<-select(data, PWB_1, PWB_3, PWB_5, APSI_1, APSI_2,  APSI_4,  APSI_5,  APSI_6, APSI_7, APSI_8,  LET_3, LET_5, MLQ_1, MLQ_2, MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_10)
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_5  <-  7- purposescales$PWB_5
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21")
+allpurpose_cor <- corFiml(purposescales)# uses FIML for missing data
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(allpurpose_cor, n.obs=1288, fm="ml")
+#three factors are greater than one Eigenvalue scree plot says there are three factors. 
+#Paralel analysis suggests 6 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=3, over .7=4
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(allpurpose_cor), cor = TRUE)
+parallel2<-princomp(na.omit(allpurpose_cor), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(allpurpose_cor, nfactors=2, n.obs=1288,rotate="oblimin", fm="ml")
+twofactor
+threefactor<-fa(allpurpose_cor, nfactors=3, n.obs=1288,rotate="oblimin", fm="ml")
+threefactor
+fourfactor<-fa(allpurpose_cor, nfactors=4, n.obs=1288,rotate="oblimin", fm="ml")
+fourfactor
+fivefactor<-fa(allpurpose_cor, nfactors=5,n.obs=1288, rotate="oblimin", fm="ml")
+fivefactor
+sixfactor<-fa(allpurpose_cor, nfactors=6,n.obs=1288, rotate="oblimin", fm="ml")
+sixfactor
+fourfactor2<-fa(purposescales, nfactors=4, n.obs=1288, rotate="oblimin", fm="ml")
+fourfactor2
+
+fa2latex(fa(allpurpose_cor,2,n.obs=1288, rotate="oblimin", fm="ml"),heading="2f")
+fa2latex(fa(allpurpose_cor,3,n.obs=1288, rotate="oblimin", fm="ml"),heading="3f")
+fa2latex(fa(allpurpose_cor,4,n.obs=1288, rotate="oblimin", fm="ml"),heading="4f")
+fa2latex(fa(allpurpose_cor,5,n.obs=1288, rotate="oblimin", fm="ml"),heading="5f")
+fa2latex(fa(allpurpose_cor,6,n.obs=1288, rotate="oblimin", fm="ml"),heading="6f")
+
+#1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33
+
+```
+# EFA removing negatively worded items: 
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+purposescales<-select(data,  PWB_6, PWB_7, APSI_1, APSI_2,  APSI_3,  APSI_4,  APSI_5,   APSI_7, APSI_8,  LET_2,  LET_4,    LET_6, MLQ_1, MLQ_2, MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_10)
+
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21")
+allpurpose_cor <- corFiml(purposescales)# uses FIML for missing data
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(allpurpose_cor, n.obs=1288, fm="ml")
+#three factors are greater than one Eigenvalue scree plot says there are three factors. 
+#Paralel analysis suggests 6 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=3, over .7=4
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(allpurpose_cor), cor = TRUE)
+parallel2<-princomp(na.omit(allpurpose_cor), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(allpurpose_cor, nfactors=2, n.obs=1288,rotate="oblimin", fm="ml")
+twofactor
+threefactor<-fa(allpurpose_cor, nfactors=3, n.obs=1288,rotate="oblimin", fm="ml")
+threefactor
+fourfactor<-fa(allpurpose_cor, nfactors=4, n.obs=1288,rotate="oblimin", fm="ml")
+fourfactor
+fivefactor<-fa(allpurpose_cor, nfactors=5,n.obs=1288, rotate="oblimin", fm="ml")
+fivefactor
+sixfactor<-fa(allpurpose_cor, nfactors=6,n.obs=1288, rotate="oblimin", fm="ml")
+sixfactor
+fourfactor2<-fa(purposescales, nfactors=4, n.obs=1288, rotate="oblimin", fm="ml")
+fourfactor2
+
+fa2latex(fa(allpurpose_cor,2,n.obs=1288, rotate="oblimin", fm="ml"),heading="2f")
+fa2latex(fa(allpurpose_cor,3,n.obs=1288, rotate="oblimin", fm="ml"),heading="3f")
+fa2latex(fa(allpurpose_cor,4,n.obs=1288, rotate="oblimin", fm="ml"),heading="4f")
+fa2latex(fa(allpurpose_cor,5,n.obs=1288, rotate="oblimin", fm="ml"),heading="5f")
+fa2latex(fa(allpurpose_cor,6,n.obs=1288, rotate="oblimin", fm="ml"),heading="6f")
+
+#1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33
+``````
+This still leaves a problem with the remaining LET and PWB items which cross load. But some crossload more than others. So we remove the biggest offenders. Which are: PWB_6 and LET 6
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+purposescales<-select(data,  PWB_7, APSI_1, APSI_2,  APSI_3,  APSI_4,  APSI_5,   APSI_7, APSI_8,  LET_2,  LET_4,    MLQ_1, MLQ_2, MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_10)
+
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19")
+allpurpose_cor <- corFiml(purposescales)# uses FIML for missing data
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(allpurpose_cor, n.obs=1288, fm="ml")
+#three factors are greater than one Eigenvalue scree plot says there are three factors. 
+#Paralel analysis suggests 6 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=3, over .7=4
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(allpurpose_cor), cor = TRUE)
+parallel2<-princomp(na.omit(allpurpose_cor), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(allpurpose_cor, nfactors=2, n.obs=1288,rotate="oblimin", fm="ml")
+twofactor
+threefactor<-fa(allpurpose_cor, nfactors=3, n.obs=1288,rotate="oblimin", fm="ml")
+threefactor
+fourfactor<-fa(allpurpose_cor, nfactors=4, n.obs=1288,rotate="oblimin", fm="ml")
+fourfactor
+fivefactor<-fa(allpurpose_cor, nfactors=5,n.obs=1288, rotate="oblimin", fm="ml")
+fivefactor
+sixfactor<-fa(allpurpose_cor, nfactors=6,n.obs=1288, rotate="oblimin", fm="ml")
+sixfactor
+fourfactor2<-fa(purposescales, nfactors=4, n.obs=1288, rotate="oblimin", fm="ml")
+fourfactor2
+
+fa2latex(fa(allpurpose_cor,2,n.obs=1288, rotate="oblimin", fm="ml"),heading="2f")
+fa2latex(fa(allpurpose_cor,3,n.obs=1288, rotate="oblimin", fm="ml"),heading="3f")
+fa2latex(fa(allpurpose_cor,4,n.obs=1288, rotate="oblimin", fm="ml"),heading="4f")
+fa2latex(fa(allpurpose_cor,5,n.obs=1288, rotate="oblimin", fm="ml"),heading="5f")
+fa2latex(fa(allpurpose_cor,6,n.obs=1288, rotate="oblimin", fm="ml"),heading="6f")
+
+#1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33
+`````````
+Indicates that this now has three factors. Still not a good fit. Remove those that cross load and try this with three factors and drop MLQ 1 and two and APSI 4
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+purposescales<-select(data,  PWB_7, APSI_1, APSI_2,  APSI_3,   APSI_5,   APSI_7, APSI_8,  LET_2,  LET_4,  MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_10)
+
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16")
+allpurpose_cor <- corFiml(purposescales)# uses FIML for missing data
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(allpurpose_cor, n.obs=1288, fm="ml")
+#three factors are greater than one Eigenvalue scree plot says there are three factors. 
+#Paralel analysis suggests 6 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=3, over .7=4
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(allpurpose_cor), cor = TRUE)
+parallel2<-princomp(na.omit(allpurpose_cor), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(allpurpose_cor, nfactors=2, n.obs=1288,rotate="oblimin", fm="ml")
+twofactor
+threefactor<-fa(allpurpose_cor, nfactors=3, n.obs=1288,rotate="oblimin", fm="ml")
+threefactor
+fourfactor<-fa(allpurpose_cor, nfactors=4, n.obs=1288,rotate="oblimin", fm="ml")
+fourfactor
+fivefactor<-fa(allpurpose_cor, nfactors=5,n.obs=1288, rotate="oblimin", fm="ml")
+fivefactor
+sixfactor<-fa(allpurpose_cor, nfactors=6,n.obs=1288, rotate="oblimin", fm="ml")
+sixfactor
+fourfactor2<-fa(purposescales, nfactors=4, n.obs=1288, rotate="oblimin", fm="ml")
+fourfactor2
+
+fa2latex(fa(allpurpose_cor,2,n.obs=1288, rotate="oblimin", fm="ml"),heading="2f")
+fa2latex(fa(allpurpose_cor,3,n.obs=1288, rotate="oblimin", fm="ml"),heading="3f")
+fa2latex(fa(allpurpose_cor,4,n.obs=1288, rotate="oblimin", fm="ml"),heading="4f")
+fa2latex(fa(allpurpose_cor,5,n.obs=1288, rotate="oblimin", fm="ml"),heading="5f")
+fa2latex(fa(allpurpose_cor,6,n.obs=1288, rotate="oblimin", fm="ml"),heading="6f")
+
+#1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33
+````````````
+Indicates that this now has two factors. But still not a good fit even with three. Remove those that cross load and try this with three factors and APSI 3
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+purposescales<-select(data,  PWB_7, APSI_1, APSI_2,   APSI_5,   APSI_7,  LET_2,  MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_10)
+
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13")
+allpurpose_cor <- corFiml(purposescales)# uses FIML for missing data
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(allpurpose_cor, n.obs=1288, fm="ml")
+#three factors are greater than one Eigenvalue scree plot says there are three factors. 
+#Paralel analysis suggests 6 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=3, over .7=4
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(allpurpose_cor), cor = TRUE)
+parallel2<-princomp(na.omit(allpurpose_cor), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(allpurpose_cor, nfactors=2, n.obs=1288,rotate="oblimin", fm="ml")
+twofactor
+threefactor<-fa(allpurpose_cor, nfactors=3, n.obs=1288,rotate="oblimin", fm="ml")
+threefactor
+fourfactor<-fa(allpurpose_cor, nfactors=4, n.obs=1288,rotate="oblimin", fm="ml")
+fourfactor
+fivefactor<-fa(allpurpose_cor, nfactors=5,n.obs=1288, rotate="oblimin", fm="ml")
+fivefactor
+sixfactor<-fa(allpurpose_cor, nfactors=6,n.obs=1288, rotate="oblimin", fm="ml")
+sixfactor
+fourfactor2<-fa(purposescales, nfactors=4, n.obs=1288, rotate="oblimin", fm="ml")
+fourfactor2
+
+fa2latex(fa(allpurpose_cor,2,n.obs=1288, rotate="oblimin", fm="ml"),heading="2f")
+fa2latex(fa(allpurpose_cor,3,n.obs=1288, rotate="oblimin", fm="ml"),heading="3f")
+fa2latex(fa(allpurpose_cor,4,n.obs=1288, rotate="oblimin", fm="ml"),heading="4f")
+fa2latex(fa(allpurpose_cor,5,n.obs=1288, rotate="oblimin", fm="ml"),heading="5f")
+fa2latex(fa(allpurpose_cor,6,n.obs=1288, rotate="oblimin", fm="ml"),heading="6f")
+
+#1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33
+```
+Let’s try and remove APSI 1 which is the same as one from MLQ about purpose and APSI 5 which talks about moral standards
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+purposescales<-select(data,  PWB_7,  APSI_2,    APSI_7,  LET_2,  MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_10)
+
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11")
+allpurpose_cor <- corFiml(purposescales)# uses FIML for missing data
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(allpurpose_cor, n.obs=1288, fm="ml")
+#three factors are greater than one Eigenvalue scree plot says there are three factors. 
+#Paralel analysis suggests 6 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=3, over .7=4
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(allpurpose_cor), cor = TRUE)
+parallel2<-princomp(na.omit(allpurpose_cor), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(allpurpose_cor, nfactors=2, n.obs=1288,rotate="oblimin", fm="ml")
+twofactor
+threefactor<-fa(allpurpose_cor, nfactors=3, n.obs=1288,rotate="oblimin", fm="ml")
+threefactor
+fourfactor<-fa(allpurpose_cor, nfactors=4, n.obs=1288,rotate="oblimin", fm="ml")
+fourfactor
+fivefactor<-fa(allpurpose_cor, nfactors=5,n.obs=1288, rotate="oblimin", fm="ml")
+fivefactor
+sixfactor<-fa(allpurpose_cor, nfactors=6,n.obs=1288, rotate="oblimin", fm="ml")
+sixfactor
+fourfactor2<-fa(purposescales, nfactors=4, n.obs=1288, rotate="oblimin", fm="ml")
+fourfactor2
+
+fa2latex(fa(allpurpose_cor,2,n.obs=1288, rotate="oblimin", fm="ml"),heading="2f")
+fa2latex(fa(allpurpose_cor,3,n.obs=1288, rotate="oblimin", fm="ml"),heading="3f")
+fa2latex(fa(allpurpose_cor,4,n.obs=1288, rotate="oblimin", fm="ml"),heading="4f")
+fa2latex(fa(allpurpose_cor,5,n.obs=1288, rotate="oblimin", fm="ml"),heading="5f")
+fa2latex(fa(allpurpose_cor,6,n.obs=1288, rotate="oblimin", fm="ml"),heading="6f")
+
+#1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33
+```
+#Create dataset for Target rotation
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,  PWB_7, PWB_8, APSI_1, APSI_2, APSI_4,  APSI_5, APSI_7,  APSI_8, LET_2, LET_4, PWB_1,  PWB_2,  PWB_3,  PWB_4,  PWB_5,  PWB_6,  PWB_9, APSI_3, APSI_6,  LET_1, LET_3,    LET_5,  LET_6, MLQ_9,  MLQ_2, MLQ_3, MLQ_7, MLQ_8,MLQ_10,    MLQ_1, MLQ_4, MLQ_5, MLQ_6)
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_4  <-  7- purposescales$PWB_4
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(33,list(f1=1:10,f2=11:24, f3=25:29,f4=30:33))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation Droping 18 (APSI_3)
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,  PWB_7, PWB_8, APSI_1, APSI_2, APSI_4,  APSI_5, APSI_7,  APSI_8, LET_2, LET_4, PWB_1,  PWB_2,  PWB_3,  PWB_4,  PWB_5,  PWB_6,  PWB_9, APSI_6,  LET_1, LET_3,    LET_5,  LET_6, MLQ_9,  MLQ_2, MLQ_3, MLQ_7, MLQ_8,MLQ_10,    MLQ_1, MLQ_4, MLQ_5, MLQ_6)
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_4  <-  7- purposescales$PWB_4
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(32,list(f1=1:10,f2=11:23, f3=24:28,f4=29:32))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+```
+# Target rotation Droping 18 (APSI_3), 14(APSI_5), 17(APSI_8), 23(LET_6)
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,  PWB_7, PWB_8, APSI_1, APSI_2, APSI_4,  APSI_7, LET_2, LET_4, PWB_1,  PWB_2,  PWB_3,  PWB_4,  PWB_5,  PWB_6,  PWB_9, APSI_6,  LET_1, LET_3,    LET_5, MLQ_9,  MLQ_2, MLQ_3, MLQ_7, MLQ_8,MLQ_10,    MLQ_1, MLQ_4, MLQ_5, MLQ_6)
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_4  <-  7- purposescales$PWB_4
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(29,list(f1=1:10,f2=11:20, f3=21:25,f4=26:29))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation based on content anlysis 7 factors
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys, 
+#Factor 1 Present Focused:
+PWB_1, PWB_2, 
+#Factor 2 Understanding Self and Life:
+APSI_2,  APSI_4,  APSI_6, LET_6, PWB_8, PWB_4,
+#Factor 3 Making Plans:
+APSI_7, APSI_8,  PWB_7, PWB_5, PWB_6, PWB_9,
+#Factor 4 Meaningful activities:
+LET_4,  PWB_3, LET_2, LET_3,  LET_5,  
+#Factor 5 Values and Morals:
+APSI_5,  APSI_3,  
+#Factor 6 Have Purpose:
+APSI_1, LET_1, MLQ_4, MLQ_5, MLQ_6, MLQ_9, MLQ_1,
+#Factor 7 Searching for meaning
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10
+)
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_4  <-  7- purposescales$PWB_4
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(33,list(f1=1:2,f2=3:8, f3=9:14,f4=15:19, f5=20:21,f6=22:28, f7=29:33))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,7,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+
+fa2latex(fa(purposescales_cor,7,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation Droping based on theory 6 factors
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,  
+#Factor 1 Present Focused:
+PWB_1, PWB_2, 
+#Factor 2 Understanding Self and Life, Making Plans::
+APSI_1,  APSI_2,  APSI_4,  APSI_6, LET_6, PWB_8, PWB_4, APSI_7, APSI_8,  PWB_7, PWB_5, PWB_6, PWB_9,
+#Factor 3 Meaningful activities:
+LET_4,  PWB_3, LET_2, LET_3,  LET_5,  
+#Factor 4 Values and Morals:
+APSI_5,  APSI_3,  
+#Factor 5 Have Purpose:
+ LET_1, MLQ_4, MLQ_5, MLQ_6, MLQ_9, MLQ_1,
+#Factor 6 Searching for meaning
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10
+)
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_4  <-  7- purposescales$PWB_4
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(33,list(f1=1:2,f2=3:14, f3=15:19, f4=20:21,f5=22:28, f6=29:33))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,6,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,6,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation Droping based on theory 5 factors and results of previous analysis of 6 factors
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,  
+#Factor 1 Present Focused:
+PWB_1, PWB_2, PWB_4, PWB_5,
+#Factor 2 Understanding Self and Life, Making Plans:
+APSI_2,  APSI_4,  PWB_8, APSI_7, APSI_8,  PWB_7,  APSI_5,  APSI_1,
+#Factor 3 Meaningful activities:
+LET_4,  PWB_3, LET_2, LET_3,  LET_5,  LET_6, PWB_9, LET_1,
+#Factor 5 Have Purpose:
+MLQ_4, MLQ_5, MLQ_6, MLQ_9, MLQ_1, APSI_6,
+#Factor 6 Searching for meaning
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(31,list(f1=1:4,f2=5:12, f3=13:20, f4=21:26,f5=27:31))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation based on theory 5 factors and number 19 (PWB_9) was changed to factor 1 where it loaded better in the previous analysis
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,  
+#Factor 1 Present Focused:
+PWB_1, PWB_2, PWB_4, PWB_5,PWB_9,
+#Factor 2 Understanding Self and Life, Making Plans:
+APSI_2,  APSI_4,  PWB_8, APSI_7, APSI_8,  PWB_7,  APSI_5,  APSI_1,
+#Factor 3 Meaningful activities:
+LET_4,  PWB_3, LET_2, LET_3,  LET_5,  LET_6,  LET_1,
+#Factor 5 Have Purpose:
+MLQ_4, MLQ_5, MLQ_6, MLQ_9, MLQ_1, APSI_6,
+#Factor 6 Searching for meaning
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(31,list(f1=1:5,f2=6:13, f3=14:20, f4=21:26,f5=27:31))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation based on theory 5 factors same as previous but droping number 18 (LET_5) because it loaded on two factors (1 and 3)
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,  
+#Factor 1 Present Focused:
+PWB_1, PWB_2, PWB_4, PWB_5,PWB_9,
+#Factor 2 Understanding Self and Life, Making Plans:
+APSI_2,  APSI_4,  PWB_8, APSI_7, APSI_8,  PWB_7,  APSI_5,  APSI_1,
+#Factor 3 Meaningful activities:
+LET_4,  PWB_3, LET_2, LET_3, LET_6,  LET_1,
+#Factor 4 Have Purpose:
+MLQ_4, MLQ_5, MLQ_6, MLQ_9, MLQ_1, APSI_6,
+#Factor 5 Searching for meaning
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(30,list(f1=1:5,f2=6:13, f3=14:19, f4=20:25,f5=26:30))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation based on theory 5 Factor Based in Theory (results) activities factor seems not to hold up on its own so I am making it into two factors:positive and negative questions
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,
+#Factor 1 Present Focused:
+PWB_1, PWB_2, PWB_5, PWB_4, 
+#Factor 2 Understanding Self and Life, Making Plans:
+APSI_2,  APSI_4,  PWB_8, APSI_7, APSI_8,  PWB_7,  APSI_5,  APSI_1,
+#Factor 3 Meaningful activities:
+LET_4,  LET_2,  LET_6,  
+#Factor 4 Meaningful activities Negative
+PWB_9, LET_3, PWB_3,
+#Factor 5 Have Purpose:
+MLQ_4, MLQ_5, MLQ_6, MLQ_9, MLQ_1, APSI_6,LET_1,
+#Factor 6 Searching for meaning
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(30,list(f1=1:6,f2=6:14, f3=14:18, f4=19:25,f5=26:30))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation based on theory 5 Factor Based in Theory (results) but moving  17 (LET_3) to 1 and 19 (LET_1) to 4 where they load better
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys, 
+#Factor 1 Present Focused:
+PWB_1, PWB_2, PWB_4, 
+#Factor 2 Understanding Self and Life, Making Plans:
+APSI_2,  APSI_4,  PWB_8, APSI_7, APSI_8,  PWB_7,  APSI_5,  APSI_1, APSI_5, APSI_6,
+#Factor 3 Meaningful activities:
+LET_4,  LET_2,  LET_6,  
+#Factor 4 Meaningful activities Negative
+PWB_9, LET_3, PWB_3, PWB_5,
+#Factor 5 Have Purpose:
+MLQ_4, MLQ_5, MLQ_6, MLQ_9, MLQ_1, APSI_6,LET_1,
+#Factor 6 Searching for meaning
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(30,list(f1=1:3,f2=4:11, f3=12:14, f4=15:18,f5=19:25, f6=26:30))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,6,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,6,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation based taking out all questions that siqnificantly crossload PWB_1, PWB_4, PWB_7, LET_4, LET_6, LET_3, MLQ_9, LET_5
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,  
+#Factor 1:
+APSI_2, APSI_4,  PWB_8, APSI_7, APSI_8,  APSI_5,  APSI_1, LET_2,
+#Factor2:
+PWB_2, PWB_9, PWB_3, PWB_5, LET_1, APSI_6,
+#Factor3
+MLQ_4, MLQ_5, MLQ_6, MLQ_1, 
+#Factor 4
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(23,list(f1=1:8,f2=9:14, f3=15:18, f4=19:23))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation based on EFA of individual intruments
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,
+#Factor 1 Plans:
+PWB_1, PWB_3, PWB_5, PWB_6, 
+#Factor 2 Understanding Self and Life, Making Plans:
+APSI_1,  APSI_2,  APSI_4, APSI_5, APSI_7,  APSI_8,
+#Factor 3 Meaningful activities:
+LET_1,  LET_3,  LET_5,  
+#Factor 5 Have Purpose:
+MLQ_4, MLQ_5, MLQ_6, MLQ_9, MLQ_1, 
+#Factor 6 Searching for meaning
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_5  <-  7- purposescales$PWB_5
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(23,list(f1=1:4,f2=5:10, f3=11:13, f4=14:18,f5=19:23))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+```
+# Target rotation based on EFA of words using LDA
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,
+#Factor 1 Plans:
+PWB_9, APSI_1,  APSI_2,  APSI_4,APSI_8, LET_1, LET_4, LET_6,
+#Factor 2 Understanding Self and Life, Making Plans:
+PWB_1, PWB_3, PWB_4, PWB_5,  APSI_7, LET_3,   
+#Factor 3 Meaningful activities:
+PWB_2, PWB_6, LET_2, LET_5, PWB_7, 
+#Factor 4 Meaningful activities:
+PWB_8, APSI_3, APSI_5, APSI_6, 
+#Factor 5 Have Purpose:
+MLQ_4, MLQ_5, MLQ_6, MLQ_9, MLQ_1, 
+#Factor 6 Searching for meaning
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_5  <-  7- purposescales$PWB_5
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(33,list(f1=1:8,f2=9:14, f3=15:18, f4=19:22,f5=23:27, f6=28:33))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,6,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,6,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+```
+# Target rotation based on 5 factors 1. Understanding Self, 2. Making Plans, 3. Daily Activities, 4, Sense of Purpose, 5. Serching for Purpose
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,
+#Factor 1 Understanding Self:
+APSI_2, APSI_4,  APSI_5, APSI_6,
+#Factor 2: (making plans)
+PWB_8, APSI_7, APSI_8,  PWB_5, PWB_7, PWB_6,
+#Factor 3: (Daily Activities)
+LET_2, PWB_2, PWB_3, PWB_9,  LET_4,
+#Factor 4
+MLQ_4, MLQ_5, MLQ_6, MLQ_1, MLQ_9,
+#Factor 5
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+
+purposescales$PWB_5  <-  7- purposescales$PWB_5
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24", "25")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(25,list(f1=1:4,f2=5:10, f3=11:15, f4=16:20,f5=21:25))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+
+```
+# Target rotation based on 5 (moving some around based on previos results) factors -- take 2. 1. Understanding Self, 2. Making Plans, 3. Daily Activities, 4, Sense of Purpose, 5. Serching for Purpose
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,
+#Factor 1 Understanding Self:
+APSI_2, LET_2,   APSI_5, LET_4,
+#Factor 2: (making plans)
+PWB_8, APSI_7, APSI_8,  APSI_4,
+#Factor 3: (Daily Activities)
+PWB_2, PWB_3, PWB_9, PWB_6,
+#Factor 4
+MLQ_4, MLQ_5, MLQ_6, MLQ_1, MLQ_9,
+#Factor 5
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(22,list(f1=1:4,f2=5:8, f3=9:12, f4=13:17,f5=18:22))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation based on 5 (moving some around based on previos results) factors -- take 3. Removing factor 3. 1. Understanding Self, 2. Making Plans,  4, Sense of Purpose, 5. Serching for Purpose. Results: not a good fit. 
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,
+#Factor 1 Understanding Self:
+APSI_2, LET_2,   APSI_5, LET_4,
+#Factor 2: (making plans)
+PWB_8, APSI_7, APSI_8,  APSI_4,
+#Factor 4
+MLQ_4, MLQ_5, MLQ_6, MLQ_1, MLQ_9,
+#Factor 5
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(18,list(f1=1:4,f2=5:8, f3=9:13, f4=14:18))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+```
+# Target rotation based on 5 (moving some around based on previos results) factors -- take 4. 1. Understanding Self, 2. Making Plans, 3. Daily Activities, 4, Sense of Purpose, 5. Serching for Purpose. Removing question 4 (PWB_6) from factor 3.
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,
+#Factor 1 Understanding Self:
+APSI_2, LET_2,   APSI_5, LET_4,
+#Factor 2: (making plans)
+PWB_8, APSI_7, APSI_8,  APSI_4,
+#Factor 3: (Daily Activities)
+PWB_2, PWB_3, PWB_9,
+#Factor 4
+MLQ_4, MLQ_5, MLQ_6, MLQ_1, MLQ_9,
+#Factor 5
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+
+
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(21,list(f1=1:4,f2=5:8, f3=9:11, f4=12:16,f5=17:21))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,5,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation based on 4 factors -- based on new EFA
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,
+#Factor 1 Understanding Self:
+PWB_1, PWB_3, PWB_5, APSI_6, LET_1, LET_3, LET_5,
+#Factor 2: (making plans)
+PWB_2, PWB_7, PWB_8,  APSI_2, APSI_4, APSI_7, APSI_8,
+#Factor 3
+MLQ_4, MLQ_5, MLQ_6, MLQ_1, MLQ_9,
+#Factor 4
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_5  <-  7- purposescales$PWB_5
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22", "23", "24")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(24,list(f1=1:7,f2=8:14, f3=15:19, f4=20:24))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+# Target rotation based on 4 factors -- based on new EFA -- quick tweek based on previous results also droped MLQ_9 and PWB_2 because they were loading on two factors.
+```{r}
+all_surveys<-read.csv("allsurveysYT1.csv")
+purposescales<-select(all_surveys,
+#Factor 1 Understanding Self:
+PWB_1, PWB_3, APSI_6, LET_3, LET_5, 
+#Factor 2: (making plans)
+PWB_7, PWB_8,  APSI_2, APSI_4, APSI_7, APSI_8,
+#Factor 3
+MLQ_4, MLQ_5, MLQ_6, MLQ_1, 
+#Factor 4
+MLQ_2, MLQ_3, MLQ_7, MLQ_8, MLQ_10)
+
+
+
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(20,list(f1=1:5,f2=6:11, f3=12:15, f4=16:20))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+purposescales_cor <- corFiml(purposescales)
+out_targetQ <- fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+fa2latex(fa(purposescales_cor,4,rotate="TargetQ", n.obs = 1288, Target=Targ_key),heading="Table 7 Factor Based on theory")
+
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+Now let's look at this as a bifactor model
+```{r}
+
+bifactor.model = 'Definate =~ APSI_2 + APSI_4 +  PWB_8 + APSI_7 + APSI_8 +  APSI_5 +  APSI_1 + LET_2
+                Tend   =~ PWB_2 + PWB_9 + PWB_3 + PWB_5 + LET_1 + APSI_6
+              MLQP =~ MLQ_4 + MLQ_5 + MLQ_6 + MLQ_1
+              MLQS =~ MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10
+                Definate ~~ 0*Tend
+                Definate ~~ 0*MLQP
+                Definate~~0*MLQS
+                MLQP~~0*Tend
+                MLQP~~0*MLQS
+                MLQS~~0*Tend'
+                
+bifactor.fit=cfa(bifactor.model, data=all_surveys, missing = "fiml", std.lv = T)
+semPaths(bifactor.fit, whatLabels = "std", layout = "tree")
+summary(bifactor.fit, standardized = TRUE, rsquare=TRUE)
+modindices(bifactor.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(bifactor.fit)
+
+bifactor1.model = 'Definate =~ APSI_2 + APSI_4 +  PWB_8 + APSI_7 + APSI_8 +  APSI_5 +  APSI_1 + LET_2
+                Tend   =~ PWB_2 + PWB_9 + PWB_3 + PWB_5 + LET_1 + APSI_6
+              MLQP =~ MLQ_4 + MLQ_5 + MLQ_6 + MLQ_1
+              MLQS =~ MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10
+              Purpose =~ APSI_2 + APSI_4 +  PWB_8 + APSI_7 + APSI_8 +  APSI_5 +  APSI_1 + LET_2 + PWB_2 + PWB_9 + PWB_3 + PWB_5 + LET_1 + APSI_6 + MLQ_4 + MLQ_5 + MLQ_6 + MLQ_1 + MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10'
+              
+              bifactor1.fit=cfa(bifactor1.model, data=all_surveys, missing = "fiml", std.lv = T)
+semPaths(bifactor1.fit, whatLabels = "std", layout = "tree")
+summary(bifactor1.fit, standardized = TRUE, rsquare=TRUE)
+###modindices(bifactor1.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(bifactor1.fit)
+```
+see whether purpose scales corrolate with ADSQII
+```{r}
+
+Corrolation = 'Definate =~ APSI_2 + APSI_4 +  PWB_8 + APSI_7 + APSI_8 +  APSI_5 +  APSI_1 + LET_2
+                Tend   =~ PWB_2 + PWB_9 + PWB_3 + PWB_5 + LET_1 + APSI_6
+              MLQP =~ MLQ_4 + MLQ_5 + MLQ_6 + MLQ_1
+              MLQS =~ MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10
+              English =~ ASDQII_1 + ASDQII_2 + ASDQII_3 + ASDQII_4 + ASDQII_5 
+              Math =~ ASDQII_6 + ASDQII_7 + ASDQII_8 + ASDQII_9 + ASDQII_10              
+              Science =~ ASDQII_11 + ASDQII_12 + ASDQII_13 + ASDQII_14 + ASDQII_15
+              General =~ ASDQII_16 + ASDQII_17 + ASDQII_18 + ASDQII_19 + ASDQII_20'
+                  corrolation.fit=cfa(Corrolation, data=all_surveys, missing = "fiml", std.lv = T)
+semPaths(corrolation.fit, whatLabels = "std", layout = "tree")
+summary(corrolation.fit, standardized = TRUE, rsquare=TRUE)
+modindices(corrolation.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(corrolation.fit)
+corolations<-(corrolation.fit)
+fitted<-fitted(corrolation.fit)
+```
+See is APSI_6 (I don;t know where I fit in the world) is corrolated with APSI_2 and APSI_4 (3.	I have a firm sense of who I am. 
+	I know what I want out of life.) -- it is not.
+```{r}
+cor(all_surveys$APSI_4, all_surveys$APSI_2, use  = "complete.obs")
+?cor
+with(all_surveys, cor(APSI_6, APSI_4))
+```
+Corrorlations
+```{r}
+
+second.corrolation = '  F1  =~ PWB_1 + PWB_3 + APSI_6 + LET_1 + LET_3 + LET_5 
+                F2 =~   PWB_7 + PWB_8 +  APSI_2 + APSI_4 + APSI_7 + APSI_8
+               MLQP =~ MLQ_4 + MLQ_5 + MLQ_6 + MLQ_1
+              MLQS =~ MLQ_2 + MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10
+              English =~ ASDQII_1 + ASDQII_2 + ASDQII_3 + ASDQII_4 + ASDQII_5 
+              Math =~ ASDQII_6 + ASDQII_7 + ASDQII_8 + ASDQII_9 + ASDQII_10              
+              Science =~ ASDQII_11 + ASDQII_12 + ASDQII_13 + ASDQII_14 + ASDQII_15
+              General =~ ASDQII_16 + ASDQII_17 + ASDQII_18 + ASDQII_19 + ASDQII_20'
+
+                 second.fit=cfa(second.corrolation, data=all_surveys, missing = "fiml", std.lv = T)
+semPaths(second.fit, whatLabels = "std", layout = "tree")
+summary(second.fit, standardized = TRUE, rsquare=TRUE)
+modindices(second.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(second.fit)
+corolations<-(second.fit)
+fitted<-fitted(second.fit)
+
+# Control for negative items
+
+PWB_1, PWB_3, PWB_5, APSI_1, APSI_2,  APSI_4,  APSI_5,  APSI_6, APSI_7, APSI_8,  LET_3, LET_5, MLQ_1, MLQ_2, MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_10
+
+bifactor.model = 'F1 =~ APSI_1 + APSI_2 +  APSI_4 +  APSI_5 + APSI_7 + APSI_8 + MLQ_4 + MLQ_6
+                F2  =~ PWB_1 + PWB_3 + PWB_5 + APSI_6 + LET_3 + LET_5
+              F3 =~ MLQ_2, MLQ_3 + MLQ_7 + MLQ_8 + MLQ_10
+              PWB_1 ~~ PWB_3 + PWB_5 + APSI_6 + LET_3 + LET_5
+              PWB_3 ~~ PWB_5 + APSI_6 + LET_3 + LET_5
+              PWB_5 ~~ APSI_6 + LET_3 + LET_5
+              APSI_6 ~~ LET_3 + LET_5
+              LET_3 ~~ LET_5'
+              
+bifactor.fit=cfa(bifactor.model, data=all_surveys, missing = "fiml", std.lv = T)
+semPaths(bifactor.fit, whatLabels = "std", layout = "tree")
+summary(bifactor.fit, standardized = TRUE, rsquare=TRUE)
+modindices(bifactor.fit, sort. = TRUE, minimum.value = 3.84)
+fitmeasures(bifactor.fit)
+
+ 

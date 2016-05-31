@@ -1,0 +1,109 @@
+---
+title: "MLQ from PN no Negative Question Compared with Youth Dataset with Negative Questions"
+author: "Levi Brackman"
+date: "March 18, 2016"
+output: html_document
+---
+
+* MLQ_1: I understand my life’s meaning.	
+* MLQ_4: My life has a clear sense of purpose.	
+* MLQ_5: I have a good sense of what makes my life meaningful.	
+* MLQ_6: I have discovered a satisfying life purpose.	
+* MLQ_11: I have definite purpose in my life.
+
+```{r}
+data<-read.csv("/Users/levibrackman/Documents/stats_march_2016/Schools Study/Students self assessment data.csv")
+require(dplyr)
+sectionone<-select(data, MLQ_1_1,	MLQ_4_1,	MLQ_5_1,	MLQ_6_1,	MLQ_11_1)
+sectiononecomp<- sectionone[complete.cases(sectionone[,]),]
+```
+##Analysis of Purpsoe Navigator data with meaning purpose as two factors
+```{r, echo=FALSE}
+require(lavaan)
+meaning_purposemodel= ' Purpose  =~ MLQ_1_1 + MLQ_5_1  
+            Meaning =~ MLQ_4_1 + MLQ_6_1 + MLQ_11_1
+'
+meaning_purposefit=cfa(meaning_purposemodel, data=sectiononecomp)
+require(semPlot)
+semPaths(meaning_purposefit, whatLabels = "std", layout = "tree")
+summary(meaning_purposefit, standardized = TRUE, rsquare=TRUE)
+correlMP = residuals(meaning_purposefit, type="cor")
+correlMP
+zcorrelsMP = residuals(meaning_purposefit, type = "standardized")
+zcorrelsMP
+modindices(meaning_purposefit, sort. = TRUE, minimum.value = 3.84)
+meaningpurpose_fit<-fitmeasures(meaning_purposefit)[ c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")]#Models purpose and meaning
+tabel.fit8<-parameterEstimates(meaning_purposefit, zstat = F, pvalue = F, ci = F, 
+                   level = 0.95, boot.ci.type = "perc", standardized = T, 
+                   fmi = F, remove.system.eq = TRUE, remove.eq = TRUE, 
+                   remove.ineq = TRUE, remove.def = T, rsquare = FALSE, 
+                   add.attributes = FALSE)
+tabel.fit8<-rename(tabel.fit8, Factor = lhs, Veriable = rhs, Loadings = std.all)
+tabel.fit8<-select(tabel.fit8, Factor, op, Veriable, Loadings)
+tabel.fit8<-tabel.fit8[-c(6:10), ]
+print(xtable(tabel.fit8, caption = 'Factor Loadings for Confirmatory Factor Analysis with Lavaan of MLQ-P, One Purpose Factor', table.placement =""))
+```
+##Analysis of Purpsoe Navigator data with purpose as one factors
+```{r, echo=FALSE}
+require(lavaan)
+purposemodel= ' Purpose  =~ MLQ_1_1 + MLQ_5_1 + MLQ_4_1 + MLQ_6_1 + MLQ_11_1'
+purposefit=cfa(purposemodel, data=sectiononecomp)
+require(semPlot)
+semPaths(purposefit, whatLabels = "std", layout = "tree")
+summary(purposefit, standardized = TRUE, rsquare=TRUE)
+correlMP = residuals(purposefit, type="cor")
+correlMP
+zcorrelsMP = residuals(purposefit, type = "standardized")
+zcorrelsMP
+modindices(purposefit, sort. = TRUE, minimum.value = 3.84)
+purpose_fit1<-fitmeasures(purposefit)[ c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")]
+
+tabel.fit9<-parameterEstimates(purposefit, zstat = F, pvalue = F, ci = F, 
+                   level = 0.95, boot.ci.type = "perc", standardized = T, 
+                   fmi = F, remove.system.eq = TRUE, remove.eq = TRUE, 
+                   remove.ineq = TRUE, remove.def = T, rsquare = FALSE, 
+                   add.attributes = FALSE)
+tabel.fit9<-rename(tabel.fit9, Factor = lhs, Veriable = rhs, Loadings = std.all)
+tabel.fit9<-select(tabel.fit9, Factor, op, Veriable, Loadings)
+tabel.fit9<-tabel.fit9[-(6:11), ]
+print(xtable(tabel.fit9, caption = 'Factor Loadings for Confirmatory Factor Analysis with Lavaan of MLQ-P, One Purpose Factor', table.placement =""))
+
+#Models purpose and meaning
+```
+
+##Compare with other MLQ from large youth dataset with negatively worded item
+```{r}
+data <- read.csv("~/Dropbox/Git/stats/allsurveysYT1_Jan2016.csv", header=T)
+data<-tbl_df(data)
+MLQ<-select(data, MLQ_1, MLQ_2, MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_9, MLQ_10)
+MLQ$MLQ_9  <-  8- MLQ$MLQ_9
+purposemodelMLQ= ' Purpose  =~ MLQ_1 + MLQ_5 + MLQ_4 + MLQ_6 + MLQ_9'
+purposefit1=cfa(purposemodelMLQ, data=MLQ)
+require(semPlot)
+semPaths(purposefit1, whatLabels = "std", layout = "tree")
+summary(purposefit1, standardized = TRUE, rsquare=TRUE)
+correlMP = residuals(purposefit1, type="cor")
+correlMP
+zcorrelsMP = residuals(purposefit1, type = "standardized")
+zcorrelsMP
+modindices(purposefit1, sort. = TRUE, minimum.value = 3.84)
+options(scipen=999)
+MLQpurpose_fit<-fitmeasures(purposefit1)[ c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr")]#Models purpose and meaning
+```
+##Table of Fit Measures
+
+Colunm names explained:
+
+* MLQ_With_9 is the large Youth data frame from the study which includes MLQ_9 a negatively worded item
+* Meaning_Purpose_PN is the data from the purpose navigator with two factors
+* Purpose_PN is the data from the purpose navigator with just one factor
+
+**It seems that when we have a positive question instead of the negatively worded one we get a much better fit for the data.**
+```{r, echo=F}
+names<- data.frame(c('Chisq', 'DF', 'P-Value', 'CFI', 'TLI', 'RMSEA', 'RMSEA ci upper', 'RMSEA ci lower', 'SRMR'))
+meaningpurpose_fit<-data.frame(meaningpurpose_fit)
+onefactorfit<-data.frame(purpose_fit)
+all<-bind_cols(names, onefactorfit, meaningpurpose_fit)
+tableall_fit_measures<-rename(all, Fit_Measure = c..Chisq....DF....P.Value....CFI....TLI....RMSEA....RMSEA.ci.upper...,  'One Factor Fit' =  purpose_fit, 'Meaning/Purpose Fit' = meaningpurpose_fit)
+tableall_fit_measures
+xtable(tableall_fit_measures)

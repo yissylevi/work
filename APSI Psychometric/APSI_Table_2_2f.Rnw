@@ -1,0 +1,36 @@
+\documentclass[a4paper,12pt]{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+% Called in the psych package  fa2latex % Called in the psych package  fa(APSI, 2, rotate = "oblimin", fm = "ml") % Called in the psych package  Table 2. Factor analysis OF APSI as One Factor 
+\begin{table}[htdp]\APSI{fa2latex}\normalsize
+\begin{center}
+\begin{scriptsize} 
+\begin{tabular} {l r r r r r }
+ \multicolumn{ 5 }{l}{ Table 2. Factor Loadings for Exploratory Factor Analysis with Oblimin Rotation 
+of APSI } \cr 
+ \hline Variable  &   ML2  &  ML1  &  h2  &  u2  &  com \cr 
+  \hline 
+APSI\ 1   &  \bf{ 0.83}  &  -0.03  &  0.69  &  0.31  &  1.00 \cr 
+APSI\ 2  &  \bf{ 0.76}  &   0.00  &  0.58  &  0.42  &  1.00 \cr 
+APSI\ 3   &   0.00  &  \bf{ 1.00}  &  1.00  &  0.00  &  1.00 \cr 
+APSI\ 4   &  \bf{ 0.83}  &  -0.03  &  0.68  &  0.32  &  1.00 \cr 
+APSI\ 5   &  \bf{ 0.63}  &   0.18  &  0.49  &  0.51  &  1.17 \cr 
+APSI\ 6   &  -0.15  &  \bf{ 0.31}  &  0.10  &  0.90  &  1.43 \cr 
+APSI\ 7   &  \bf{ 0.77}  &   0.03  &  0.60  &  0.40  &  1.00 \cr 
+APSI\ 8   &  \bf{ 0.82}  &  -0.04  &  0.66  &  0.34  &  1.01 \cr 
+\hline \cr SS loadings & 3.65 &  1.13 &  \cr  
+\cr 
+            \hline \cr 
+ML2   & 1.00 & 0.22 \cr 
+ ML1   & 0.22 & 1.00 \cr 
+ \hline 
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\label{default}
+\end{table} 
+
+
+\end{document}

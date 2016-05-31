@@ -1,0 +1,112 @@
+---
+title: "All Purpose Scales CFA TR"
+author: "Levi Brackman"
+date: "27 July 2015"
+output: html_document
+---
+
+```{r}
+##load packages
+library(psych)
+library(GPArotation)
+library(plyr)
+library(dplyr)
+# data preparation
+data <- read.csv("stats/allsurveysT1.csv")
+purposescales<-select(data, PWB_1, PWB_2, PWB_3, PWB_4, PWB_5, PWB_6, PWB_7, PWB_8, PWB_9, APSI_1, APSI_2,  APSI_3,  APSI_4,  APSI_5,  APSI_6, APSI_7, APSI_8, LET_1, LET_2, LET_3,  LET_4,  LET_5,  LET_6, MLQ_1, MLQ_2, MLQ_3, MLQ_4, MLQ_5, MLQ_6,MLQ_7, MLQ_8, MLQ_9, MLQ_10)
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_4  <-  7- purposescales$PWB_4
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33")
+#purposescales<- purposescales[complete.cases(purposescales[,]),]
+##EFA
+##number of factors
+##parallal analysis and scree plot
+parallel<-fa.parallel(purposescales, fm="ml",fa="fa")
+#two factors are greater than one Eigenvalue scree plot says there are two factors. Paralel analysis suggests 4 factors
+#eigenvalues (kaiser)
+parallel$fa.values
+#over 1=2, over .7=2
+#doign aprincipal components analysis to see how many factors there might be using that method
+#Deal with NA doing principle componant analysis
+princomp(na.omit(purposescales), cor = TRUE)
+parallel2<-princomp(na.omit(purposescales), cor = TRUE)
+summary(parallel2)
+plot(parallel2)##results show at least two factors
+#simple structure
+twofactor<-fa(purposescales, nfactors=2, rotate="oblimin", fm="ml")
+twofactor
+threefactor<-fa(purposescales, nfactors=3, rotate="oblimin", fm="ml")
+threefactor
+fourfactor<-fa(purposescales, nfactors=4, rotate="oblimin", fm="ml")
+fourfactor
+fivefactor<-fa(purposescales, nfactors=5, rotate="oblimin", fm="ml")
+fivefactor
+#1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33
+ 
+#Create dataset for Target rotation
+```{r}
+all_surveys<-read.csv("allsurveysT1.csv")
+purposescales<-select(all_surveys,  PWB_7, PWB_8, APSI_1, APSI_2, APSI_4,  APSI_5, APSI_7,  APSI_8, LET_2, LET_4, PWB_1,  PWB_2,  PWB_3,  PWB_4,  PWB_5,  PWB_6,  PWB_9, APSI_3, APSI_6,  LET_1, LET_3,    LET_5,  LET_6, MLQ_9,  MLQ_2, MLQ_3, MLQ_7, MLQ_8,MLQ_10,    MLQ_1, MLQ_4, MLQ_5, MLQ_6)
+purposescales$PWB_1  <-  7- purposescales$PWB_1
+purposescales$PWB_2  <-  7- purposescales$PWB_2
+purposescales$PWB_3  <-  7- purposescales$PWB_3
+purposescales$PWB_4  <-  7- purposescales$PWB_4
+purposescales$PWB_9  <-  7- purposescales$PWB_9
+purposescales$MLQ_9  <-  8- purposescales$MLQ_9
+purposescales$LET_1  <-  6- purposescales$LET_1
+purposescales$LET_3  <-  6- purposescales$LET_3
+purposescales$LET_5  <-  6- purposescales$LET_5
+purposescales<- data.frame(apply(purposescales,2, as.numeric))
+
+```{r}
+library(GPArotation)
+library(psych)
+library(dplyr)
+
+purposescales<-tbl_df(purposescales)
+purposescales
+str(purposescales)
+colnames(purposescales) <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33")
+#Target rotation: choose "simple structure" a priori and can be applied to oblique and orthogonal rotation based on 
+#what paper says facotrs should be purposescales
+Targ_key <- make.keys(33,list(f1=1:10,f2=11:24, f3=25:29,f4=30:33))
+Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
+Targ_key <- list(Targ_key)
+out_targetQ <- fa(purposescales,4,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA")]
+out_targetQ
+#The best fit to the data seems to be three factors. F1: questions 1,3,5,6. f2: 8,7,4. f3: 2,9
+```
+CFI
+```{r}
+1-((out_targetQ$STATISTIC - out_targetQ$dof)/(out_targetQ$null.chisq- out_targetQ$null.dof))
+```
+
+
+Our Father, our King, accept our prayer with mercy and with favor. 
+Our Father, our King, open the gates of heaven to our prayer. 
+Our Father, our King, let it be remembered that we are but dust. 
+Our Father, our King, we beseech You, do not turn us away from You empty-handed. 
+Our Father, our King, may this hour be an hour of mercy and a time of favor before You. 
+Our Father, our King, have compassion upon us, and upon our infants and children. 
+Our Father, our King, do it for the sake of those who were slain for Your holy Name. 
+Our Father, our King, do it for the sake of those who were slaughtered for Your Oneness. 
+Our Father, our King, do it for the sake of those who went through fire and water for the sanctification of Your Name. 
+Our Father, our King, avenge the spilled blood of Your servants. 
+Our Father, our King, do it for Your sake, if not for ours. 
+Our Father, our King, do it for Your sake, and deliver us. 
+Our Father, our King, do it for the sake of Your abounding mercies. 
+Our Father, our King, do it for the sake of Your great, mighty and awesome Name which is proclaimed over us. 
+Our Father, our King, be gracious to us and answer us, for we have no meritorious deeds; deal charitably and kindly with us and deliver us. 
+

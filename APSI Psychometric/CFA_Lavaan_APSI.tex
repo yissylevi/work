@@ -1,0 +1,265 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+% latex table generated in R 3.2.2 by xtable 1.8-0 package
+% Wed Mar 23 00:51:58 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlr}
+  \hline
+ & Veriable & Loadings \\ 
+  \hline
+1 & APSI\_1 & 0.83 \\ 
+  2 & APSI\_2 & 0.77 \\ 
+  3 & APSI\_3 & 0.29 \\ 
+  4 & APSI\_4 & 0.82 \\ 
+  5 & APSI\_5 & 0.69 \\ 
+  6 & APSI\_6 & 0.04 \\ 
+  7 & APSI\_7 & 0.77 \\ 
+  8 & APSI\_8 & 0.81 \\ 
+   \hline
+\end{tabular}
+\caption{Factor Loadings for Confirmatory Factor Analysis with Lavaan of APSI, 3 Factors} 
+\end{table}
+% latex table generated in R 3.2.2 by xtable 1.8-0 package
+% Wed Mar 23 00:54:39 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllr}
+  \hline
+ & Factor & op & Veriable & Loadings \\ 
+  \hline
+1 & Factor1 & =\~{} & APSI\_1 & 0.83 \\ 
+  2 & Factor1 & =\~{} & APSI\_2 & 0.77 \\ 
+  3 & Factor1 & =\~{} & APSI\_4 & 0.82 \\ 
+  4 & Factor1 & =\~{} & APSI\_5 & 0.69 \\ 
+  5 & Factor1 & =\~{} & APSI\_7 & 0.77 \\ 
+  6 & Factor1 & =\~{} & APSI\_8 & 0.81 \\ 
+  7 & Factor2 & =\~{} & APSI\_3 & 1.00 \\ 
+  8 & Factor3 & =\~{} & APSI\_6 & 1.00 \\ 
+  20 & Factor1 & \~{}\~{} & Factor2 & 0.30 \\ 
+  21 & Factor1 & \~{}\~{} & Factor3 & 0.05 \\ 
+  22 & Factor2 & \~{}\~{} & Factor3 & -0.25 \\ 
+   \hline
+\end{tabular}
+\caption{Factor Loadings for Confirmatory Factor Analysis with Lavaan of APSI, 3 Factors} 
+\end{table}
+
+% latex table generated in R 3.2.2 by xtable 1.8-0 package
+% Tue Mar 22 19:37:04 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllr}
+  \hline
+ & Factor & op & Veriable & Loadings \\ 
+  \hline
+1 & Factor1 & =\~{} & APSI\_1 & 0.83 \\ 
+  2 & Factor1 & =\~{} & APSI\_2 & 0.77 \\ 
+  3 & Factor1 & =\~{} & APSI\_4 & 0.82 \\ 
+  4 & Factor1 & =\~{} & APSI\_5 & 0.68 \\ 
+  5 & Factor1 & =\~{} & APSI\_7 & 0.77 \\ 
+  6 & Factor1 & =\~{} & APSI\_8 & 0.81 \\ 
+  7 & APSI\_1 & \~{}\~{} & APSI\_1 & 0.31 \\ 
+  8 & APSI\_2 & \~{}\~{} & APSI\_2 & 0.41 \\ 
+  9 & APSI\_4 & \~{}\~{} & APSI\_4 & 0.33 \\ 
+  10 & APSI\_5 & \~{}\~{} & APSI\_5 & 0.54 \\ 
+  11 & APSI\_7 & \~{}\~{} & APSI\_7 & 0.40 \\ 
+  12 & APSI\_8 & \~{}\~{} & APSI\_8 & 0.35 \\ 
+  13 & Factor1 & \~{}\~{} & Factor1 & 1.00 \\ 
+   \hline
+\end{tabular}
+\caption{Factor Loadings for Confirmatory Factor Analysis with Lavaan of APSI, items 1, 2, 4, 5, 7, 8, One Factor} 
+\end{table}
+
+% latex table generated in R 3.2.2 by xtable 1.8-0 package
+% Tue Mar 22 19:37:36 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllr}
+  \hline
+ & Factor & op & Veriable & Loadings \\ 
+  \hline
+1 & FeelingNow & =\~{} & APSI\_1 & 0.86 \\ 
+  2 & FeelingNow & =\~{} & APSI\_2 & 0.80 \\ 
+  3 & FeelingNow & =\~{} & APSI\_5 & 0.70 \\ 
+  4 & Futuregoals & =\~{} & APSI\_4 & 0.84 \\ 
+  5 & Futuregoals & =\~{} & APSI\_7 & 0.80 \\ 
+  6 & Futuregoals & =\~{} & APSI\_8 & 0.83 \\ 
+  15 & FeelingNow & \~{}\~{} & Futuregoals & 0.91 \\ 
+   \hline
+\end{tabular}
+\caption{Factor Loadings for Confirmatory Factor Analysis with Lavaan of APSI, Two Factors} 
+\end{table}
+
+% latex table generated in R 3.2.2 by xtable 1.8-0 package
+% Wed Mar 23 23:41:08 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllr}
+  \hline
+ & Factor & op & Veriable & Loadings \\ 
+  \hline
+1 & FeelingNow & =\~{} & APSI\_1 & 0.86 \\ 
+  2 & FeelingNow & =\~{} & APSI\_2 & 0.80 \\ 
+  3 & FeelingNow & =\~{} & APSI\_5 & 0.70 \\ 
+  4 & Futuregoals & =\~{} & APSI\_4 & 0.84 \\ 
+  5 & Futuregoals & =\~{} & APSI\_7 & 0.80 \\ 
+  6 & Futuregoals & =\~{} & APSI\_8 & 0.83 \\ 
+  7 & Purpose & =\~{} & FeelingNow & 0.95 \\ 
+  8 & Purpose & =\~{} & Futuregoals & 0.95 \\ 
+  16 & Futuregoals & \~{}\~{} & Futuregoals & 0.09 \\ 
+  17 & Purpose & \~{}\~{} & Purpose & 1.00 \\ 
+   \hline
+\end{tabular}
+\caption{Factor Loadings for Confirmatory Factor Analysis with Lavaan of APSI, Two Factors with Higher Order Purpose Factor} 
+\end{table}
+% latex table generated in R 3.2.2 by xtable 1.8-0 package
+% Wed Mar 23 23:55:56 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllr}
+  \hline
+ & Factor & op & Veriable & Loadings \\ 
+  \hline
+1 & FeelingNow & =\~{} & APSI\_1 & 0.19 \\ 
+  2 & FeelingNow & =\~{} & APSI\_2 & 0.39 \\ 
+  3 & FeelingNow & =\~{} & APSI\_5 & 0.27 \\ 
+  4 & Futuregoals & =\~{} & APSI\_4 & 0.14 \\ 
+  5 & Futuregoals & =\~{} & APSI\_7 & 0.43 \\ 
+  6 & Futuregoals & =\~{} & APSI\_8 & 0.15 \\ 
+  7 & Purpose & =\~{} & APSI\_1 & 0.82 \\ 
+  8 & Purpose & =\~{} & APSI\_2 & 0.74 \\ 
+  9 & Purpose & =\~{} & APSI\_5 & 0.65 \\ 
+  10 & Purpose & =\~{} & APSI\_4 & 0.82 \\ 
+  11 & Purpose & =\~{} & APSI\_7 & 0.75 \\ 
+  12 & Purpose & =\~{} & APSI\_8 & 0.80 \\ 
+   \hline
+\end{tabular}
+\caption{Factor Loadings for Confirmatory Factor Analysis with Lavaan of APSI, 2 Factors and Bi-Factor Model} 
+\end{table}
+% latex table generated in R 3.2.2 by xtable 1.8-0 package
+% Wed Mar 23 23:54:10 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllr}
+  \hline
+ & Factor & op & Veriable & Loadings \\ 
+  \hline
+1 & FeelingPurposeNow & =\~{} & APSI\_1 & 0.86 \\ 
+  2 & FeelingPurposeNow & =\~{} & APSI\_2 & 0.80 \\ 
+  3 & FeelingPurposeNow & =\~{} & APSI\_5 & 0.70 \\ 
+  4 & Futuregoals & =\~{} & APSI\_4 & 0.84 \\ 
+  5 & Futuregoals & =\~{} & APSI\_7 & 0.80 \\ 
+  6 & Futuregoals & =\~{} & APSI\_8 & 0.83 \\ 
+  7 & Purpose & =\~{} & FeelingPurposeNow & 0.97 \\ 
+  8 & Purpose & =\~{} & Futuregoals & 0.93 \\ 
+  55 & FeelingPurposeNow & \~{}\~{} & FeelingPurposeNow & 0.05 \\ 
+  56 & Futuregoals & \~{}\~{} & Futuregoals & 0.13 \\ 
+  57 & Purpose & \~{}\~{} & Purpose & 1.00 \\ 
+  58 & English & \~{}\~{} & English & 1.00 \\ 
+  59 & Math & \~{}\~{} & Math & 1.00 \\ 
+  60 & Science & \~{}\~{} & Science & 1.00 \\ 
+  61 & Subjects & \~{}\~{} & Subjects & 1.00 \\ 
+  62 & Purpose & \~{}\~{} & English & 0.18 \\ 
+  63 & Purpose & \~{}\~{} & Math & 0.15 \\ 
+  64 & Purpose & \~{}\~{} & Science & 0.13 \\ 
+  65 & Purpose & \~{}\~{} & Subjects & 0.17 \\ 
+  66 & English & \~{}\~{} & Math & 0.24 \\ 
+  67 & English & \~{}\~{} & Science & 0.40 \\ 
+  68 & English & \~{}\~{} & Subjects & 0.68 \\ 
+  69 & Math & \~{}\~{} & Science & 0.52 \\ 
+  70 & Math & \~{}\~{} & Subjects & 0.69 \\ 
+  71 & Science & \~{}\~{} & Subjects & 0.70 \\ 
+   \hline
+\end{tabular}
+\caption{Factor Loadings for Discriminant Analysis with Lavaan of APSI conpared to Academic Self Concept} 
+\end{table}
+% latex table generated in R 3.2.2 by xtable 1.8-0 package
+% Thu Mar 24 00:31:10 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllr}
+  \hline
+ & Factor & op & Veriable & Loadings \\ 
+  \hline
+1 & FeelingPurposeNow & =\~{} & APSI\_1 & 0.87 \\ 
+  2 & FeelingPurposeNow & =\~{} & APSI\_2 & 0.80 \\ 
+  3 & FeelingPurposeNow & =\~{} & APSI\_5 & 0.69 \\ 
+  4 & Futuregoals & =\~{} & APSI\_4 & 0.84 \\ 
+  5 & Futuregoals & =\~{} & APSI\_7 & 0.79 \\ 
+  6 & Futuregoals & =\~{} & APSI\_8 & 0.82 \\ 
+  7 & Purpose & =\~{} & FeelingPurposeNow & 0.99 \\ 
+  8 & Purpose & =\~{} & Futuregoals & 0.92 \\ 
+  9 & MLQP & =\~{} & MLQ\_1 & 0.79 \\ 
+  10 & MLQP & =\~{} & MLQ\_4 & 0.81 \\ 
+  11 & MLQP & =\~{} & MLQ\_5 & 0.76 \\ 
+  12 & MLQP & =\~{} & MLQ\_6 & 0.81 \\ 
+  13 & MLQP & =\~{} & MLQ\_9 & -0.38 \\ 
+  14 & MLQS & =\~{} & MLQ\_2 & 0.80 \\ 
+  15 & MLQS & =\~{} & MLQ\_3 & 0.75 \\ 
+  16 & MLQS & =\~{} & MLQ\_7 & 0.74 \\ 
+  17 & MLQS & =\~{} & MLQ\_8 & 0.74 \\ 
+  18 & MLQS & =\~{} & MLQ\_10 & 0.80 \\ 
+  35 & FeelingPurposeNow & \~{}\~{} & FeelingPurposeNow & 0.02 \\ 
+  36 & Futuregoals & \~{}\~{} & Futuregoals & 0.16 \\ 
+  37 & Purpose & \~{}\~{} & Purpose & 1.00 \\ 
+  38 & MLQP & \~{}\~{} & MLQP & 1.00 \\ 
+  39 & MLQS & \~{}\~{} & MLQS & 1.00 \\ 
+  40 & Purpose & \~{}\~{} & MLQP & 0.69 \\ 
+  41 & Purpose & \~{}\~{} & MLQS & 0.15 \\ 
+  42 & MLQP & \~{}\~{} & MLQS & 0.16 \\ 
+   \hline
+\end{tabular}
+\caption{Factor Loadings for Convergant Analysis of APSI with MLQ-Present and MLQ Searching using Lavaan} 
+\end{table}
+\end{document}

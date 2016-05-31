@@ -1,0 +1,46 @@
+library(shiny)
+require(ggplot2)
+ui <- fluidPage(# Application title
+  titlePanel("App Demonstrating Measures of Variation: Standard Deviation"),
+  sidebarLayout(
+    sidebarPanel(
+      p("Imagine you are able to choose tokens that are worth money from a huge pile of normally distributed tokens (to learn about the normal distribution",
+        a("click here).",
+      href="http://www.levibrackman.com/2016/03/11/normal-distribution-rule-natural-world"),
+      "You want to maximize the amount of money you can make. Note there are also token worth negative amounts of money which when drawn will loose you money. You have three choices below. Play with the options and stake note of how the plot changes to determine which numbers to change to maximize your earnings."),
+      numericInput(inputId = "num", label = "The amount of times you want to draw tokens:", min = 100, max = 1000, value = 500, step = 50, width="130px"),
+      numericInput(inputId = "num1", label = "The Average Value You Want Your Token to be Worth (between $100 and $1000):", min = 100, max = 1000, value = 100, step = 5, width="130px"),
+      numericInput(inputId = "num2", label = "On a Scale of 1-50 how Spread Apart Would You Like the Overall Amount of Token Values to Be?:", min = 0, max = 50, value = 25, step = 5, width="130px"),
+      p("Numbers Chosen:"),
+      verbatimTextOutput("value"),  
+      h5("Created by Levi Brackman, see more at", 
+         a("my website.",
+           href = "https://www.levibrackman.com"))),
+    mainPanel(
+      p("This app demonstrates a Measure of Variation called the Standard Deviation in an intuitive manner without need for the math."),
+      p("The example we are using here is drawing tokens from a barrel that have either a positive or negative value. Imagine you are sitting in front of a huge barrel of tokens. Each token has a positive or negative value attached to it - it is either worth money or drawing it will cause you to owe money. You obviously want to make sure to draw more of the positive tokens."),
+      p("You have three levers to pull. The first lever controls how many times you are going to draw tokens. The second lever controls the worth of the average (mean) token you draw. to remind yourself about the mean",
+        a("click here.",
+        href="http://www.levibrackman.com/2016/04/01/politicians-lie-statistics/")),
+      p("The third lever we will call the 'Standard Deviation' lever. It's function is to control how varied the sample you draw from the barrel will be. A lower number will give you samples that are closer to the average you decided upon with the second lever and a higher number will give you a sample that has the potential to be further away from that mean."),
+      p("Remember the barrel with the tokens are normally distributed themselves."),
+      h4("Results in a Plot"),
+      plotOutput("box1"),
+      h4("The Lines on the Plot"),
+      p("The space between the dashed blue lines represent 1 Standard Deviation from the mean."),
+      p("All the space between the dashed blue line and the dashed green line is 2 Standard Deviations from the mean."),
+      p("Between the dashed green line and the dashed orange line is 3 Standard Deviations from the mean."),
+      h4("The 68–95–99.7 rule"),
+      p("When something is normally distributed (like it is in this example, because all the samples of tokens are taken from a normal distribution), than the 68–95–99.7 rule will apply."),
+      p("This means that 68% of samples will lie within 1 standard deviation of the mean (within the blue lines), 95% of samples will be within 2 standard deviations of the mean (within the green lines) and 99.7% will lie within 3 standard deviations of the mean (between the orange lines)."),
+      h4("Questions to Ponder"),
+      p("How to Make the Most from the Samples? One way is to ensure that you have no negative tokens in your sample is to have a higher mean and a lower standard deviation. Why do you think that is? How do Standard Deviations help you understand data better? What do Standard Deviations add to the mean and the medium?"),
+      h4("The Math and the Central Limit Theorem?"),
+      p("Are you interested in knowing the math behind Standard Deviations?", 
+        a("See the wikipedia page",
+        href = "https://en.wikipedia.org/wiki/Standard_deviation")), 
+      p("This also is the beginning of understanding the Central Limit Theorem which will be the topic of another app, but meanwhile you can read up on it",
+        a("at its wikipedia page",
+        href = "https://en.wikipedia.org/wiki/Central_limit_theorem"))),
+    )
+)
